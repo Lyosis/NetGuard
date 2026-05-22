@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0576F65C34EE476FA9C6FD60 /* NetworkDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */; };
+		06AEAA962BCD4A95B7EA273B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ADF771B0FD4DB9AF989530 /* ContentView.swift */; };
+		114714AFFC424293BEDFF43F /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14010F8673654982872A6C20 /* ScanResult.swift */; };
+		1D9C0937A2F74EC39D858FBF /* PortScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932796120BDE4AAEAB44CE21 /* PortScanner.swift */; };
+		1FF27724EE324F548864BCFF /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C3D9108104847C6AE1B19E2 /* SidebarView.swift */; };
+		43FF640517FF4FB28CAB94DC /* NetworkScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6341C305B6684DD19C903EBE /* NetworkScanner.swift */; };
+		477FD4FF7BDE4E8EA72CF7C0 /* NetworkAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A285B74DFAE43DC9BB73CC1 /* NetworkAlert.swift */; };
+		6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A819D17455B4AAFB4FC5783 /* Assets.xcassets */; };
+		72AFF281ED6A439C8FFD9F68 /* NetworkInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCCCFEFED8A41FBB75158A4 /* NetworkInfoService.swift */; };
+		8B1A2C3D4E5F6A7B8C9D0E1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */; };
+		991FEE69892C44339DAD3FB2 /* VulnerabilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */; };
+		9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */; };
+		BB001122334455667788AABB /* DeviceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA001122334455667788AABB /* DeviceDetailView.swift */; };
+		CC001122334455667788AABB /* DeviceEnricher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD001122334455667788AABB /* DeviceEnricher.swift */; };
+		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A819D17455B4AAFB4FC5783 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		14010F8673654982872A6C20 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
+		1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMapView.swift; sourceTree = "<group>"; };
+		2A285B74DFAE43DC9BB73CC1 /* NetworkAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAlert.swift; sourceTree = "<group>"; };
+		3C3D9108104847C6AE1B19E2 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		44ADF771B0FD4DB9AF989530 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		510C720947E44C558C259046 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DCCCFEFED8A41FBB75158A4 /* NetworkInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInfoService.swift; sourceTree = "<group>"; };
+		6341C305B6684DD19C903EBE /* NetworkScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkScanner.swift; sourceTree = "<group>"; };
+		6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardApp.swift; sourceTree = "<group>"; };
+		7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NetGuard.entitlements; sourceTree = "<group>"; };
+		790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
+		8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		932796120BDE4AAEAB44CE21 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
+		A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulnerabilityChecker.swift; sourceTree = "<group>"; };
+		AA001122334455667788AABB /* DeviceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailView.swift; sourceTree = "<group>"; };
+		DD001122334455667788AABB /* DeviceEnricher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEnricher.swift; sourceTree = "<group>"; };
+		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FC9EE8CF9D7C422A873E2F53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		046CC3DD91E94EEF920DB42A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3C3D9108104847C6AE1B19E2 /* SidebarView.swift */,
+				1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */,
+				AA001122334455667788AABB /* DeviceDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A9507C449024AAA9F0C8BF7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE9D5719B85D4158A25ED1B0 /* NetGuard.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6D1111D4CAE94DD28B66E77F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */,
+				5DCCCFEFED8A41FBB75158A4 /* NetworkInfoService.swift */,
+				6341C305B6684DD19C903EBE /* NetworkScanner.swift */,
+				932796120BDE4AAEAB44CE21 /* PortScanner.swift */,
+				A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */,
+				DD001122334455667788AABB /* DeviceEnricher.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		72B6E46197C642AD94A854F2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */,
+				2A285B74DFAE43DC9BB73CC1 /* NetworkAlert.swift */,
+				14010F8673654982872A6C20 /* ScanResult.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A767BEE7EC314056AE2D4B72 /* NetGuard */ = {
+			isa = PBXGroup;
+			children = (
+				6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */,
+				44ADF771B0FD4DB9AF989530 /* ContentView.swift */,
+				046CC3DD91E94EEF920DB42A /* Views */,
+				72B6E46197C642AD94A854F2 /* Models */,
+				6D1111D4CAE94DD28B66E77F /* Services */,
+				0A819D17455B4AAFB4FC5783 /* Assets.xcassets */,
+				510C720947E44C558C259046 /* Info.plist */,
+				7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */,
+			);
+			path = NetGuard;
+			sourceTree = "<group>";
+		};
+		C06AE3F94CD8430CA39D7EDA = {
+			isa = PBXGroup;
+			children = (
+				0A9507C449024AAA9F0C8BF7 /* Products */,
+				A767BEE7EC314056AE2D4B72 /* NetGuard */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		265AC834FAAB4842B9719196 /* NetGuard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 487FD79B99FA411CAF0B8999 /* Build configuration list for PBXNativeTarget "NetGuard" */;
+			buildPhases = (
+				E3FD840A99044B75BC30FE03 /* Sources */,
+				FC9EE8CF9D7C422A873E2F53 /* Frameworks */,
+				F38C2AA143F4460C9D5EEA88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetGuard;
+			productName = NetGuard;
+			productReference = FE9D5719B85D4158A25ED1B0 /* NetGuard.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		940B6A7CBC6C4A8DBAC67C6D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2650;
+				TargetAttributes = {
+					265AC834FAAB4842B9719196 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 66A7176A6C364F78874A69AD /* Build configuration list for PBXProject "NetGuard" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = fr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				fr,
+				Base,
+			);
+			mainGroup = C06AE3F94CD8430CA39D7EDA;
+			productRefGroup = 0A9507C449024AAA9F0C8BF7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				265AC834FAAB4842B9719196 /* NetGuard */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F38C2AA143F4460C9D5EEA88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E3FD840A99044B75BC30FE03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */,
+				06AEAA962BCD4A95B7EA273B /* ContentView.swift in Sources */,
+				1FF27724EE324F548864BCFF /* SidebarView.swift in Sources */,
+				9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */,
+				0576F65C34EE476FA9C6FD60 /* NetworkDevice.swift in Sources */,
+				477FD4FF7BDE4E8EA72CF7C0 /* NetworkAlert.swift in Sources */,
+				114714AFFC424293BEDFF43F /* ScanResult.swift in Sources */,
+				43FF640517FF4FB28CAB94DC /* NetworkScanner.swift in Sources */,
+				1D9C0937A2F74EC39D858FBF /* PortScanner.swift in Sources */,
+				991FEE69892C44339DAD3FB2 /* VulnerabilityChecker.swift in Sources */,
+				72AFF281ED6A439C8FFD9F68 /* NetworkInfoService.swift in Sources */,
+				8B1A2C3D4E5F6A7B8C9D0E1F /* AppState.swift in Sources */,
+				BB001122334455667788AABB /* DeviceDetailView.swift in Sources */,
+				CC001122334455667788AABB /* DeviceEnricher.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8C6698DD6D8E4D418AA3C2AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NetGuard/NetGuard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NetGuard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.netguard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		A7A78C66657D425AAA466F98 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NetGuard/NetGuard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NetGuard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.netguard.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		A950073F458C4E1B903F2B93 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D008D6AED92D4208BEC621F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_CYCLE = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		487FD79B99FA411CAF0B8999 /* Build configuration list for PBXNativeTarget "NetGuard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7A78C66657D425AAA466F98 /* Debug */,
+				8C6698DD6D8E4D418AA3C2AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		66A7176A6C364F78874A69AD /* Build configuration list for PBXProject "NetGuard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A950073F458C4E1B903F2B93 /* Debug */,
+				D008D6AED92D4208BEC621F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 940B6A7CBC6C4A8DBAC67C6D /* Project object */;
+}
