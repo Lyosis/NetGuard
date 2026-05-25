@@ -47,7 +47,7 @@ struct DeviceDetailView: View {
                 // Status badge
                 HStack(spacing: 5) {
                     Circle().fill(device.status.color).frame(width: 7, height: 7)
-                    Text(device.status.rawValue)
+                    Text(device.status.localizedName)
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(device.status.color)
                 }
@@ -65,36 +65,36 @@ struct DeviceDetailView: View {
 
     // MARK: - Identity section
     private var identitySection: some View {
-        DetailSection(title: "IDENTITÉ") {
+        DetailSection(title: L10n.Detail.sectionIdentity) {
             if !device.vendor.isEmpty {
-                DetailRow(icon: "building.2", label: "Fabricant",  value: device.vendor)
+                DetailRow(icon: "building.2", label: L10n.Detail.labelVendor,  value: device.vendor)
             }
-            DetailRow(icon: device.osGuess.icon, label: "Système",
-                      value: device.osGuess.rawValue)
+            DetailRow(icon: device.osGuess.icon, label: L10n.Detail.labelOS,
+                      value: device.osGuess.localizedName)
             if device.ttl > 0 {
-                DetailRow(icon: "clock.arrow.circlepath", label: "TTL",
+                DetailRow(icon: "clock.arrow.circlepath", label: L10n.Detail.labelTTL,
                           value: "\(device.ttl) sauts")
             }
             if !device.mac.isEmpty {
-                DetailRow(icon: "checkmark.seal", label: "Adresse MAC",
+                DetailRow(icon: "checkmark.seal", label: L10n.Detail.labelMAC,
                           value: device.mac, monospaced: true)
             }
             if !device.mdnsName.isEmpty {
-                DetailRow(icon: "bonjour", label: "Bonjour",
+                DetailRow(icon: "bonjour", label: L10n.Detail.labelBonjour,
                           value: device.mdnsName)
             }
             if !device.netbiosName.isEmpty {
-                DetailRow(icon: "network.badge.shield.half.filled", label: "NetBIOS",
+                DetailRow(icon: "network.badge.shield.half.filled", label: L10n.Detail.labelNetBIOS,
                           value: device.netbiosName)
             }
             if !device.hostname.isEmpty && device.hostname != device.mdnsName {
-                DetailRow(icon: "globe", label: "DNS",
+                DetailRow(icon: "globe", label: L10n.Detail.labelDNS,
                           value: device.hostname)
             }
-            DetailRow(icon: device.type.icon, label: "Type",
-                      value: device.type.rawValue)
+            DetailRow(icon: device.type.icon, label: L10n.Detail.labelType,
+                      value: device.type.localizedName)
             if device.isCurrentDevice {
-                DetailRow(icon: "arrow.up.circle.fill", label: "Rôle",
+                DetailRow(icon: "arrow.up.circle.fill", label: L10n.Detail.labelRole,
                           value: "Ce Mac (appareil courant)", accent: true)
             }
         }
@@ -102,23 +102,23 @@ struct DeviceDetailView: View {
 
     // MARK: - Network section
     private var networkSection: some View {
-        DetailSection(title: "RÉSEAU") {
+        DetailSection(title: L10n.Detail.sectionNetwork) {
             if device.responseTime > 0 {
-                DetailRow(icon: "speedometer", label: "Latence",
+                DetailRow(icon: "speedometer", label: L10n.Detail.labelLatency,
                           value: String(format: "%.1f ms", device.responseTime),
                           valueColor: latencyColor)
             }
             if !device.httpBanner.isEmpty {
-                DetailRow(icon: "server.rack", label: "Serveur HTTP",
+                DetailRow(icon: "server.rack", label: L10n.Detail.labelHTTPServer,
                           value: device.httpBanner)
             }
             if !device.httpTitle.isEmpty {
-                DetailRow(icon: "globe", label: "Page web",
+                DetailRow(icon: "globe", label: L10n.Detail.labelWebPage,
                           value: device.httpTitle)
             }
-            DetailRow(icon: "calendar", label: "Vu pour la 1ère fois",
+            DetailRow(icon: "calendar", label: L10n.Detail.labelFirstSeen,
                       value: device.firstSeen.formatted(date: .abbreviated, time: .shortened))
-            DetailRow(icon: "clock", label: "Dernière activité",
+            DetailRow(icon: "clock", label: L10n.Detail.labelLastSeen,
                       value: device.lastSeen.formatted(date: .abbreviated, time: .shortened))
         }
     }

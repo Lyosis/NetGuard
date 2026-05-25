@@ -1,0 +1,108 @@
+/* Localizable.strings — English (to be completed) */
+
+/* ── App ─────────────────────────────────────────── */
+"app.name"                   = "NetGuard";
+"app.last_scan.never"        = "Never scanned";
+"app.last_scan.seconds"      = "Last scan %d s ago";
+"app.last_scan.minutes"      = "Last scan %d min ago";
+"app.last_scan.hours"        = "Last scan %d h ago";
+
+/* ── Sidebar ──────────────────────────────────────── */
+"sidebar.section.network"    = "NETWORK";
+"sidebar.section.alerts"     = "ALERTS";
+"sidebar.metric.devices"     = "Devices";
+"sidebar.metric.ports"       = "Open ports";
+"sidebar.metric.encrypt"     = "Encryption";
+"sidebar.metric.unknown"     = "Unknown";
+"sidebar.alerts.mark_all"    = "Mark all read";
+"sidebar.alerts.scanning"    = "Scanning…";
+"sidebar.alerts.none"        = "No alerts — run a scan";
+"sidebar.alerts.see_all"     = "See all alerts (%ld)";
+"sidebar.scan.full"          = "Full scan";
+"sidebar.scan.quick"         = "Quick";
+"sidebar.sheet.all_alerts"   = "All alerts";
+"sidebar.sheet.close"        = "Close";
+"sidebar.network.interface"  = "Interface";
+"sidebar.network.local_ip"   = "Local IP";
+"sidebar.network.gateway"    = "Gateway";
+"sidebar.network.dns"        = "DNS";
+"sidebar.network.subnet"     = "Subnet";
+"sidebar.network.ssid"       = "SSID";
+"sidebar.network.security"   = "Security";
+
+/* ── Network map ──────────────────────────────────── */
+"map.title"                  = "Local network map";
+"map.internet"               = "Internet";
+"map.legend.safe"            = "Safe";
+"map.legend.unknown"         = "Unknown";
+"map.legend.alert"           = "Alert";
+"map.empty.title"            = "No devices detected";
+"map.empty.subtitle"         = "Run a scan to discover devices";
+"map.reset_view"             = "Reset view";
+
+/* ── Device detail ────────────────────────────────── */
+"detail.section.identity"    = "IDENTITY";
+"detail.section.network"     = "NETWORK";
+"detail.section.ports"       = "OPEN PORTS (%ld)";
+"detail.section.alerts"      = "ALERTS (%ld)";
+"detail.label.vendor"        = "Vendor";
+"detail.label.os"            = "OS";
+"detail.label.ttl"           = "TTL";
+"detail.ttl_value"           = "%ld hops";
+"detail.label.mac"           = "MAC address";
+"detail.label.bonjour"       = "Bonjour";
+"detail.label.netbios"       = "NetBIOS";
+"detail.label.dns"           = "DNS";
+"detail.label.type"          = "Type";
+"detail.label.role"          = "Role";
+"detail.current_device"      = "This Mac (current device)";
+"detail.label.latency"       = "Latency";
+"detail.label.http_server"   = "HTTP Server";
+"detail.label.web_page"      = "Web page";
+"detail.label.first_seen"    = "First seen";
+"detail.label.last_seen"     = "Last seen";
+"detail.placeholder"         = "Select a device";
+"detail.placeholder.sub"     = "Click a node on the map\nto see its details";
+
+/* ── Device types ─────────────────────────────────── */
+"device.type.router"         = "Router";
+"device.type.mac"            = "Mac";
+"device.type.iphone"         = "iPhone";
+"device.type.ipad"           = "iPad";
+"device.type.nas"            = "NAS";
+"device.type.printer"        = "Printer";
+"device.type.wifi"           = "WiFi AP";
+"device.type.firewall"       = "Firewall";
+"device.type.switch"         = "Switch";
+"device.type.unknown"        = "Unknown";
+"device.type.internet"       = "Internet";
+
+/* ── Device status ────────────────────────────────── */
+"device.status.safe"         = "Safe";
+"device.status.unknown"      = "Unknown";
+"device.status.alert"        = "Alert";
+"device.status.offline"      = "Offline";
+
+/* ── Operating system ────────────────────────────── */
+"os.macos"                   = "macOS / Linux";
+"os.windows"                 = "Windows";
+"os.linux"                   = "Linux";
+"os.ios"                     = "iOS / iPadOS";
+"os.router"                  = "Router / Firmware";
+"os.unknown"                 = "Unknown";
+
+/* ── Alert severity ───────────────────────────────── */
+"alert.severity.critical"    = "Critical";
+"alert.severity.high"        = "High";
+"alert.severity.medium"      = "Medium";
+"alert.severity.low"         = "Low";
+"alert.severity.info"        = "Info";
+
+/* ── Network monitor ──────────────────────────────── */
+"monitor.connected"          = "Network connected";
+"monitor.disconnected"       = "Network disconnected";
+"monitor.interface_changed"  = "Interface changed";
+"monitor.wifi"               = "WiFi";
+"monitor.ethernet"           = "Ethernet";
+"monitor.no_network"         = "No network";
+"monitor.banner.tap_rescan"  = "Tap to rescan";

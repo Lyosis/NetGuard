@@ -21,6 +21,7 @@ class AppState: ObservableObject {
     private let portScanner          = PortScanner()
     private let vulnChecker          = VulnerabilityChecker()
     private let enricher             = DeviceEnricher.shared
+    let networkMonitor               = NetworkMonitor()
 
     // MARK: - Computed
     var totalAlerts: Int     { alerts.filter { !$0.isRead }.count }
@@ -34,16 +35,21 @@ class AppState: ObservableObject {
     }
 
     var lastScanLabel: String {
-        guard let d = lastScanDate else { return "Jamais scanné" }
+        guard let d = lastScanDate else { return L10n.App.lastScanNever }
         let interval = Date().timeIntervalSince(d)
-        if interval < 60  { return "Dernier scan il y a \(Int(interval)) s" }
-        if interval < 3600 { return "Dernier scan il y a \(Int(interval/60)) min" }
-        return "Dernier scan il y a \(Int(interval/3600)) h"
+        if interval < 60   { return L10n.App.lastScanSeconds(Int(interval)) }
+        if interval < 3600 { return L10n.App.lastScanMinutes(Int(interval / 60)) }
+        return L10n.App.lastScanHours(Int(interval / 3600))
     }
 
     // MARK: - Init
     init() {
+        networkMonitor.start()
         Task { await refreshNetworkInfo() }
+    }
+
+    deinit {
+        networkMonitor.stop()
     }
 
     // MARK: - Refresh network info only (fast)

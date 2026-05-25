@@ -3,17 +3,35 @@ import SwiftUI
 
 // MARK: - Device Type
 enum DeviceType: String, Codable, CaseIterable {
-    case router      = "Router"
-    case mac         = "Mac"
-    case iphone      = "iPhone"
-    case ipad        = "iPad"
-    case nas         = "NAS"
-    case printer     = "Imprimante"
-    case wifi        = "WiFi AP"
-    case firewall    = "Firewall"
-    case `switch`    = "Switch"
-    case unknown     = "Inconnu"
-    case internet    = "Internet"
+    // rawValues = identifiants stables pour Codable (ne pas changer)
+    case router      = "router"
+    case mac         = "mac"
+    case iphone      = "iphone"
+    case ipad        = "ipad"
+    case nas         = "nas"
+    case printer     = "printer"
+    case wifi        = "wifi_ap"
+    case firewall    = "firewall"
+    case `switch`    = "switch"
+    case unknown     = "unknown"
+    case internet    = "internet"
+
+    /// Nom affiché, localisé via L10n
+    var localizedName: String {
+        switch self {
+        case .router:   return L10n.DeviceType.router
+        case .mac:      return L10n.DeviceType.mac
+        case .iphone:   return L10n.DeviceType.iphone
+        case .ipad:     return L10n.DeviceType.ipad
+        case .nas:      return L10n.DeviceType.nas
+        case .printer:  return L10n.DeviceType.printer
+        case .wifi:     return L10n.DeviceType.wifi
+        case .firewall: return L10n.DeviceType.firewall
+        case .switch:   return L10n.DeviceType.switch
+        case .unknown:  return L10n.DeviceType.unknown
+        case .internet: return L10n.DeviceType.internet
+        }
+    }
 
     var icon: String {
         switch self {
@@ -50,10 +68,19 @@ enum DeviceType: String, Codable, CaseIterable {
 
 // MARK: - Device Status
 enum DeviceStatus: String, Codable {
-    case safe    = "Sûr"
-    case unknown = "Inconnu"
-    case alert   = "Alerte"
-    case offline = "Hors ligne"
+    case safe    = "safe"
+    case unknown = "unknown"
+    case alert   = "alert"
+    case offline = "offline"
+
+    var localizedName: String {
+        switch self {
+        case .safe:    return L10n.DeviceStatus.safe
+        case .unknown: return L10n.DeviceStatus.unknown
+        case .alert:   return L10n.DeviceStatus.alert
+        case .offline: return L10n.DeviceStatus.offline
+        }
+    }
 
     var color: Color {
         switch self {
@@ -93,12 +120,23 @@ struct OpenPort: Identifiable, Codable {
 
 // MARK: - OS Guess
 enum OSGuess: String, Codable {
-    case macOS   = "macOS / Linux"
-    case windows = "Windows"
-    case linux   = "Linux"
-    case ios     = "iOS / iPadOS"
-    case router  = "Routeur / Firmware"
-    case unknown = "Inconnu"
+    case macOS   = "macos"
+    case windows = "windows"
+    case linux   = "linux"
+    case ios     = "ios"
+    case router  = "router_fw"
+    case unknown = "unknown"
+
+    var localizedName: String {
+        switch self {
+        case .macOS:   return L10n.OS.macOS
+        case .windows: return L10n.OS.windows
+        case .linux:   return L10n.OS.linux
+        case .ios:     return L10n.OS.ios
+        case .router:  return L10n.OS.router
+        case .unknown: return L10n.OS.unknown
+        }
+    }
 
     var icon: String {
         switch self {

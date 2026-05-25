@@ -17,6 +17,17 @@ struct SidebarView: View {
             headerSection
             Divider().overlay(Color.white.opacity(0.08))
 
+            // Bannière changement réseau (NWPathMonitor)
+            if let event = state.networkMonitor.changeEvent {
+                NetworkChangeBanner(event: event) {
+                    state.networkMonitor.dismissEvent()
+                } onRescan: {
+                    state.networkMonitor.dismissEvent()
+                    Task { await state.refreshNetworkInfo() }
+                }
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
             ScrollView {
                 VStack(spacing: 12) {
                     metricsGrid
@@ -31,6 +42,7 @@ struct SidebarView: View {
         }
         .background(Color(red: 0.08, green: 0.09, blue: 0.11))
         .frame(minWidth: 340, idealWidth: 380, maxWidth: 440)
+        .animation(.easeInOut(duration: 0.3), value: state.networkMonitor.changeEvent?.id)
     }
 
     // MARK: - Header
@@ -40,7 +52,7 @@ struct SidebarView: View {
                 .font(.system(size: 28, weight: .semibold))
                 .foregroundColor(.blue)
             VStack(alignment: .leading, spacing: 3) {
-                Text("NetGuard")
+                Text(L10n.App.name)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
                 HStack(spacing: 6) {
@@ -70,13 +82,13 @@ struct SidebarView: View {
     // MARK: - Metrics Grid
     private var metricsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-            MetricCard(title: "Appareils",    value: "\(state.devices.count)",
+            MetricCard(title: L10n.Sidebar.metricDevices, value: "\(state.devices.count)",
                        color: .white)
-            MetricCard(title: "Ports ouverts", value: "\(state.openPortCount)",
+            MetricCard(title: L10n.Sidebar.metricPorts, value: "\(state.openPortCount)",
                        color: state.openPortCount > 0 ? .orange : .green)
-            MetricCard(title: "Chiffrement",  value: wifiEncryptionShort,
+            MetricCard(title: L10n.Sidebar.metricEncrypt, value: wifiEncryptionShort,
                        color: wifiEncryptionColor)
-            MetricCard(title: "Inconnus",      value: "\(state.unknownCount)",
+            MetricCard(title: L10n.Sidebar.metricUnknown, value: "\(state.unknownCount)",
                        color: state.unknownCount > 0 ? .orange : .green)
         }
     }
@@ -102,7 +114,7 @@ struct SidebarView: View {
     // MARK: - Network Info
     private var networkInfoSection: some View {
         VStack(alignment: .leading, spacing: 6) {
-            SectionHeader(title: "RÉSEAU")
+            SectionHeader(title: L10n.Sidebar.sectionNetwork)
             ForEach(state.networkInfos.prefix(2), id: \.interfaceName) { info in
                 NetworkInfoRow(info: info)
             }
@@ -119,10 +131,10 @@ struct SidebarView: View {
     private var alertsSection: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                SectionHeader(title: "ALERTES")
+                SectionHeader(title: L10n.Sidebar.sectionAlerts)
                 Spacer()
                 if state.totalAlerts > 0 {
-                    Button("Tout lire") { state.markAllAlertsRead() }
+                    Button(L10n.Sidebar.markAllRead) { state.markAllAlertsRead() }
                         .font(.system(size: 13))
                         .foregroundColor(.blue)
                         .buttonStyle(.plain)
@@ -130,7 +142,7 @@ struct SidebarView: View {
             }
 
             if state.alerts.isEmpty {
-                Text(state.scanStatus.isScanning ? "Scan en cours…" : "Aucune alerte — lancez un scan")
+                Text(state.scanStatus.isScanning ? L10n.Sidebar.scanning : L10n.Sidebar.noAlerts)
                     .font(.system(size: 14))
                     .foregroundColor(.white.opacity(0.35))
                     .padding(.vertical, 10)
@@ -141,7 +153,7 @@ struct SidebarView: View {
                         .onTapGesture { state.markAlertRead(alert) }
                 }
                 if state.alerts.count > 5 {
-                    Button("Voir toutes les alertes (\(state.alerts.count))") {
+                    Button(L10n.Sidebar.seeAll(state.alerts.count)) {
                         showingAlerts = true
                     }
                     .font(.system(size: 13))
@@ -180,7 +192,7 @@ struct SidebarView: View {
                 Button {
                     Task { await state.startFullScan() }
                 } label: {
-                    Label("Scan complet", systemImage: "scope")
+                    Label(L10n.Sidebar.scanFull, systemImage: "scope")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(ScanButtonStyle(color: .blue))
@@ -189,7 +201,7 @@ struct SidebarView: View {
                 Button {
                     Task { await state.startQuickScan() }
                 } label: {
-                    Label("Rapide", systemImage: "bolt.fill")
+                    Label(L10n.Sidebar.scanQuick, systemImage: "bolt.fill")
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(ScanButtonStyle(color: Color(red: 0.2, green: 0.5, blue: 0.8)))
@@ -271,13 +283,13 @@ struct NetworkInfoRow: View {
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(.white.opacity(0.7))
             }
-            InfoRow(label: "IP locale",   value: info.localIP)
-            InfoRow(label: "Passerelle",  value: info.gateway)
-            InfoRow(label: "DNS",         value: info.dns.first ?? "—")
-            InfoRow(label: "Sous-réseau", value: info.subnetCIDR.isEmpty ? info.subnet : info.subnetCIDR)
+            InfoRow(label: L10n.Sidebar.labelLocalIP,  value: info.localIP)
+            InfoRow(label: L10n.Sidebar.labelGateway,  value: info.gateway)
+            InfoRow(label: L10n.Sidebar.labelDNS,      value: info.dns.first ?? "—")
+            InfoRow(label: L10n.Sidebar.labelSubnet,   value: info.subnetCIDR.isEmpty ? info.subnet : info.subnetCIDR)
             if let wifi = info.wifiInfo {
-                InfoRow(label: "SSID", value: wifi.ssid)
-                InfoRow(label: "Sécurité", value: wifi.security)
+                InfoRow(label: L10n.Sidebar.labelSSID,     value: wifi.ssid)
+                InfoRow(label: L10n.Sidebar.labelSecurity, value: wifi.security)
             }
         }
     }
@@ -350,11 +362,11 @@ struct AllAlertsSheet: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Toutes les alertes")
+                Text(L10n.Sidebar.allAlerts)
                     .font(.headline)
                     .foregroundColor(.white)
                 Spacer()
-                Button("Fermer") { dismiss() }
+                Button(L10n.Sidebar.close) { dismiss() }
                     .buttonStyle(.plain)
                     .foregroundColor(.blue)
             }
@@ -374,5 +386,44 @@ struct AllAlertsSheet: View {
         }
         .background(Color(red: 0.08, green: 0.09, blue: 0.11))
         .frame(minWidth: 500, minHeight: 400)
+    }
+}
+
+// MARK: - NetworkChangeBanner
+struct NetworkChangeBanner: View {
+    let event: NetworkChangeEvent
+    let onDismiss: () -> Void
+    let onRescan: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: event.icon)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.white)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(event.message)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.white)
+                    .lineLimit(2)
+                Text(L10n.Monitor.tapToRescan)
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.6))
+            }
+
+            Spacer()
+
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(.white.opacity(0.7))
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(event.color.opacity(0.85))
+        .contentShape(Rectangle())
+        .onTapGesture { onRescan() }
     }
 }

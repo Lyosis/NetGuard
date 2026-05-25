@@ -3,11 +3,21 @@ import SwiftUI
 
 // MARK: - Alert Severity
 enum AlertSeverity: String, Codable, Comparable {
-    case critical = "Critique"
-    case high     = "Élevé"
-    case medium   = "Moyen"
-    case low      = "Faible"
-    case info     = "Info"
+    case critical = "critical"
+    case high     = "high"
+    case medium   = "medium"
+    case low      = "low"
+    case info     = "info"
+
+    var localizedName: String {
+        switch self {
+        case .critical: return L10n.Severity.critical
+        case .high:     return L10n.Severity.high
+        case .medium:   return L10n.Severity.medium
+        case .low:      return L10n.Severity.low
+        case .info:     return L10n.Severity.info
+        }
+    }
 
     static func < (lhs: AlertSeverity, rhs: AlertSeverity) -> Bool {
         let order: [AlertSeverity] = [.info, .low, .medium, .high, .critical]

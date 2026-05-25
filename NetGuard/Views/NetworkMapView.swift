@@ -47,7 +47,7 @@ struct NetworkMapView: View {
                 // Title bar
                 VStack {
                     HStack {
-                        Text("Carte du réseau local")
+                        Text(L10n.Map.title)
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
                         Spacer()
@@ -63,7 +63,7 @@ struct NetworkMapView: View {
                                 .foregroundColor(.white.opacity(0.5))
                         }
                         .buttonStyle(.plain)
-                        .help("Réinitialiser la vue")
+                        .help(L10n.Map.resetView)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -173,10 +173,10 @@ struct NetworkMapView: View {
             Image(systemName: "network.slash")
                 .font(.system(size: 48))
                 .foregroundColor(.white.opacity(0.15))
-            Text("Aucun appareil détecté")
+            Text(L10n.Map.emptyTitle)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(.white.opacity(0.25))
-            Text("Lancez un scan pour découvrir les appareils")
+            Text(L10n.Map.emptySubtitle)
                 .font(.system(size: 15))
                 .foregroundColor(.white.opacity(0.15))
         }
@@ -206,9 +206,9 @@ struct NetworkMapView: View {
     private var legendView: some View {
         HStack(spacing: 16) {
             ForEach([
-                ("Sûr", Color(red: 0.2, green: 0.8, blue: 0.4)),
-                ("Inconnu", Color(red: 1.0, green: 0.6, blue: 0.0)),
-                ("Alerte", Color(red: 0.9, green: 0.2, blue: 0.2))
+                (L10n.Map.legendSafe, Color(red: 0.2, green: 0.8, blue: 0.4)),
+                (L10n.Map.legendUnknown, Color(red: 1.0, green: 0.6, blue: 0.0)),
+                (L10n.Map.legendAlert, Color(red: 0.9, green: 0.2, blue: 0.2))
             ], id: \.0) { item in
                 HStack(spacing: 5) {
                     Circle().fill(item.1).frame(width: 9, height: 9)
@@ -284,7 +284,7 @@ struct InternetNode: View {
                     .font(.system(size: 26))
                     .foregroundColor(.blue)
             }
-            Text("Internet")
+            Text(L10n.Map.internet)
                 .font(.system(size: 13, weight: .medium))
                 .foregroundColor(.white.opacity(0.7))
         }
@@ -405,8 +405,8 @@ struct DeviceTooltip: View {
             if !device.vendor.isEmpty {
                 TooltipRow(label: "Fab.", value: device.vendor)
             }
-            TooltipRow(label: "Type",   value: device.type.rawValue)
-            TooltipRow(label: "Statut", value: device.status.rawValue)
+            TooltipRow(label: L10n.Detail.labelType,   value: device.type.localizedName)
+            TooltipRow(label: L10n.DeviceStatus.unknown, value: device.status.localizedName)
             if !device.openPorts.isEmpty {
                 TooltipRow(
                     label: "Ports",
