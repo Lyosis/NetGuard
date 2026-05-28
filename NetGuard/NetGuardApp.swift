@@ -13,14 +13,14 @@ struct NetGuardApp: App {
         .windowToolbarStyle(.unified(showsTitle: true))
         .commands {
             CommandGroup(replacing: .newItem) { }
-            CommandMenu("Scan") {
-                Button("Scan complet") {
+            CommandMenu(L10n.Menu.scan) {
+                Button(L10n.Menu.scanFull) {
                     Task { await appState.startFullScan() }
                 }
                 .keyboardShortcut("r", modifiers: [.command])
                 .disabled(appState.scanStatus.isScanning)
 
-                Button("Scan rapide") {
+                Button(L10n.Menu.scanQuick) {
                     Task { await appState.startQuickScan() }
                 }
                 .keyboardShortcut("r", modifiers: [.command, .shift])
@@ -28,7 +28,7 @@ struct NetGuardApp: App {
 
                 Divider()
 
-                Button("Marquer toutes les alertes comme lues") {
+                Button(L10n.Menu.markAllRead) {
                     appState.markAllAlertsRead()
                 }
                 .keyboardShortcut("k", modifiers: [.command])

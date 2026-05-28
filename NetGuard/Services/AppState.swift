@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import Accessibility
 
 // MARK: - AppState (ViewModel central)
 @MainActor
@@ -52,6 +53,13 @@ class AppState: ObservableObject {
         networkMonitor.stop()
     }
 
+    // MARK: - Scan status helper
+    /// Met à jour `scanStatus` sur le MainActor depuis les handlers de progression `@Sendable`.
+    /// Évite la closure imbriquée `MainActor.run { self?... }` qui capture `self` dans du code concurrent (interdit en Swift 6).
+    private func setScanStatus(_ status: ScanStatus) {
+        self.scanStatus = status
+    }
+
     // MARK: - Refresh network info only (fast)
     func refreshNetworkInfo() async {
         let infos   = networkInfoService.fetchAllInterfaces()
@@ -86,27 +94,26 @@ class AppState: ObservableObject {
             localIP: localIP,
             gateway: gateway
         ) { [weak self] progress, msg in
-            await MainActor.run {
-                self?.scanStatus = .scanning(progress: 0.05 + progress * 0.35, message: msg)
-            }
+            await self?.setScanStatus(.scanning(progress: 0.05 + progress * 0.35, message: msg))
         }
 
         await MainActor.run { self.devices = discoveredDevices }
 
         // Step 3: Port scan
         await portScanner.scanMultipleHosts(devices: discoveredDevices) { [weak self] progress, msg in
-            await MainActor.run {
-                self?.scanStatus = .scanning(progress: 0.40 + progress * 0.30, message: msg)
-            }
+            await self?.setScanStatus(.scanning(progress: 0.40 + progress * 0.25, message: msg))
         }
 
         await MainActor.run { self.devices = discoveredDevices }
 
-        // Step 4: Enrich devices (OS, mDNS, HTTP banners, latency)
+        // Step 3b: Bonjour discovery (NWBrowser — tous les services en ~3s, en parallèle)
+        scanStatus = .scanning(progress: 0.65, message: "Découverte des services Bonjour…")
+        await enricher.discoverBonjourServices()
+        scanStatus = .scanning(progress: 0.70, message: "Services Bonjour découverts")
+
+        // Step 4: Enrich devices (OS, Bonjour, NetBIOS, HTTP banners, latency)
         await enricher.enrichAll(devices: discoveredDevices) { [weak self] progress, msg in
-            await MainActor.run {
-                self?.scanStatus = .scanning(progress: 0.70 + progress * 0.10, message: msg)
-            }
+            await self?.setScanStatus(.scanning(progress: 0.70 + progress * 0.10, message: msg))
         }
 
         await MainActor.run { self.devices = discoveredDevices }
@@ -117,9 +124,7 @@ class AppState: ObservableObject {
             devices: discoveredDevices,
             wifiInfo: wifiInfo
         ) { [weak self] progress, msg in
-            await MainActor.run {
-                self?.scanStatus = .scanning(progress: 0.80 + progress * 0.18, message: msg)
-            }
+            await self?.setScanStatus(.scanning(progress: 0.80 + progress * 0.18, message: msg))
         }
 
         // Step 6: Update device statuses
@@ -139,6 +144,11 @@ class AppState: ObservableObject {
             let duration    = Date().timeIntervalSince(start)
             self.scanStatus = .completed(duration: duration)
         }
+
+        // Annonce VoiceOver de fin de scan
+        AccessibilityNotification.Announcement(
+            L10n.A11y.scanDone(devices: discoveredDevices.count, alerts: newAlerts.count)
+        ).post()
     }
 
     // MARK: - Quick scan (hosts only, no ports)
@@ -157,9 +167,7 @@ class AppState: ObservableObject {
             localIP: primaryNetwork.localIP,
             gateway: primaryNetwork.gateway
         ) { [weak self] p, msg in
-            await MainActor.run {
-                self?.scanStatus = .scanning(progress: p * 0.95, message: msg)
-            }
+            await self?.setScanStatus(.scanning(progress: p * 0.95, message: msg))
         }
 
         let duration = Date().timeIntervalSince(start)
@@ -168,6 +176,11 @@ class AppState: ObservableObject {
             self.lastScanDate = Date()
             self.scanStatus   = .completed(duration: duration)
         }
+
+        // Annonce VoiceOver de fin de scan rapide
+        AccessibilityNotification.Announcement(
+            L10n.A11y.scanQuickDone(devices: discovered.count)
+        ).post()
     }
 
     // MARK: - Mark alert as read

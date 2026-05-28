@@ -61,6 +61,8 @@ struct DeviceDetailView: View {
         .padding(16)
         .background(detailCard)
         .cornerRadius(12)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(device.displayName), \(device.ip), \(device.status.localizedName)")
     }
 
     // MARK: - Identity section
@@ -82,6 +84,18 @@ struct DeviceDetailView: View {
             if !device.mdnsName.isEmpty {
                 DetailRow(icon: "bonjour", label: L10n.Detail.labelBonjour,
                           value: device.mdnsName)
+            }
+            if !device.bonjourServices.isEmpty {
+                DetailRow(
+                    icon: "dot.radiowaves.left.and.right",
+                    label: L10n.Detail.labelBonjourServices,
+                    value: device.bonjourServices
+                        .map { $0
+                            .replacingOccurrences(of: "._tcp", with: "")
+                            .replacingOccurrences(of: "_", with: "")
+                        }
+                        .joined(separator: " · ")
+                )
             }
             if !device.netbiosName.isEmpty {
                 DetailRow(icon: "network.badge.shield.half.filled", label: L10n.Detail.labelNetBIOS,
@@ -259,6 +273,7 @@ struct DetailRow: View {
                 .font(.system(size: 13))
                 .foregroundColor(accent ? .blue : .white.opacity(0.3))
                 .frame(width: 18)
+                .accessibilityHidden(true)
 
             Text(label)
                 .font(.system(size: 13))
@@ -274,5 +289,6 @@ struct DetailRow: View {
                 .multilineTextAlignment(.trailing)
                 .lineLimit(2)
         }
+        .accessibilityElement(children: .combine)
     }
 }

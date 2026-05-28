@@ -24,6 +24,25 @@
 	<string>NSApplication</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>NetGuard a besoin d'accéder au réseau local pour scanner et analyser les appareils connectés.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+		<string>_https._tcp</string>
+		<string>_ssh._tcp</string>
+		<string>_smb._tcp</string>
+		<string>_afpovertcp._tcp</string>
+		<string>_raop._tcp</string>
+		<string>_airplay._tcp</string>
+		<string>_ipp._tcp</string>
+		<string>_printer._tcp</string>
+		<string>_homekit._tcp</string>
+		<string>_googlecast._tcp</string>
+		<string>_companion-link._tcp</string>
+		<string>_sleep-proxy._tcp</string>
+		<string>_rfb._tcp</string>
+		<string>_ftp._tcp</string>
+		<string>_daap._tcp</string>
+	</array>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2025. Usage personnel uniquement.</string>
 </dict>

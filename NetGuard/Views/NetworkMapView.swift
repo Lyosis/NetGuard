@@ -64,6 +64,7 @@ struct NetworkMapView: View {
                         }
                         .buttonStyle(.plain)
                         .help(L10n.Map.resetView)
+                        .accessibilityLabel(L10n.Map.resetView)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -112,15 +113,17 @@ struct NetworkMapView: View {
                     isSelected: selectedNode?.id == node.device.id,
                     isHovered: hoveredNode?.id == node.device.id
                 )
-                .onTapGesture {
-                    withAnimation(.spring(response: 0.3)) {
-                        selectedNode = selectedNode?.id == node.device.id ? nil : node.device
-                        state.selectedDevice = selectedNode
-                    }
-                }
+                .onTapGesture { toggleSelection(node.device) }
                 .onHover { isHover in
                     hoveredNode = isHover ? node.device : nil
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(nodeAccessibilityLabel(node.device))
+                .accessibilityHint(L10n.A11y.nodeHint)
+                .accessibilityAddTraits(
+                    selectedNode?.id == node.device.id ? [.isButton, .isSelected] : .isButton
+                )
+                .accessibilityAction { toggleSelection(node.device) }
             }
 
             // Empty state
@@ -165,6 +168,24 @@ struct NetworkMapView: View {
         }
 
         return layouts
+    }
+
+    // MARK: - Selection & accessibilité
+    private func toggleSelection(_ device: NetworkDevice) {
+        withAnimation(.spring(response: 0.3)) {
+            selectedNode = selectedNode?.id == device.id ? nil : device
+            state.selectedDevice = selectedNode
+        }
+    }
+
+    /// Libellé VoiceOver d'un nœud : « iPhone de Paul, 192.168.1.5, Sûr, 2 alertes »
+    private func nodeAccessibilityLabel(_ device: NetworkDevice) -> String {
+        var parts = [device.type.localizedName,
+                     device.displayName,
+                     device.ip,
+                     device.status.localizedName]
+        if device.alertCount > 0 { parts.append(L10n.A11y.alerts(device.alertCount)) }
+        return parts.joined(separator: ", ")
     }
 
     // MARK: - Empty state
@@ -289,6 +310,8 @@ struct InternetNode: View {
                 .foregroundColor(.white.opacity(0.7))
         }
         .position(position)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(L10n.A11y.internet)
     }
 }
 

@@ -16,6 +16,7 @@
 		477FD4FF7BDE4E8EA72CF7C0 /* NetworkAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A285B74DFAE43DC9BB73CC1 /* NetworkAlert.swift */; };
 		6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A819D17455B4AAFB4FC5783 /* Assets.xcassets */; };
 		72AFF281ED6A439C8FFD9F68 /* NetworkInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCCCFEFED8A41FBB75158A4 /* NetworkInfoService.swift */; };
+		78ACA65C2FC8E03400D6687A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */; };
 		8B1A2C3D4E5F6A7B8C9D0E1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */; };
 		991FEE69892C44339DAD3FB2 /* VulnerabilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */; };
 		9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */; };
@@ -24,7 +25,6 @@
 		EE001122334455667788AACC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE001122334455667788AABB /* NetworkMonitor.swift */; };
 		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
 		FF001122334455667788AADD /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AACC /* L10n.swift */; };
-		FF001122334455667788BB11 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AAEE /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +39,7 @@
 		6341C305B6684DD19C903EBE /* NetworkScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkScanner.swift; sourceTree = "<group>"; };
 		6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardApp.swift; sourceTree = "<group>"; };
 		7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NetGuard.entitlements; sourceTree = "<group>"; };
+		78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
 		8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		932796120BDE4AAEAB44CE21 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
@@ -48,8 +49,6 @@
 		EE001122334455667788AABB /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF001122334455667788AACC /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
-		FF001122334455667788AAFF /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		FF001122334455667788BB00 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +113,7 @@
 				72B6E46197C642AD94A854F2 /* Models */,
 				6D1111D4CAE94DD28B66E77F /* Services */,
 				FF001122334455667788AABB /* Utils */,
-				FF001122334455667788AAEE /* Localizable.strings */,
+				78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */,
 				0A819D17455B4AAFB4FC5783 /* Assets.xcassets */,
 				510C720947E44C558C259046 /* Info.plist */,
 				7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */,
@@ -198,7 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */,
-				FF001122334455667788BB11 /* Localizable.strings in Resources */,
+				78ACA65C2FC8E03400D6687A /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,18 +228,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		FF001122334455667788AAEE /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FF001122334455667788AAFF /* fr */,
-				FF001122334455667788BB00 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		8C6698DD6D8E4D418AA3C2AE /* Release */ = {
@@ -352,13 +339,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -412,11 +400,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
