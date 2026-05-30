@@ -174,6 +174,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var bonjourServices: [String]   // services Bonjour découverts via NWBrowser
     @Published var userAlias: String           // nom personnalisé saisi par l'utilisateur
     @Published var userNote: String            // notes libres de l'utilisateur
+    @Published var sslCertificate: CertificateInfo?  // capté lors d'un GET HTTPS (A2)
 
     init(
         ip: String,
@@ -194,7 +195,8 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         parentIP: String? = nil,
         bonjourServices: [String] = [],
         userAlias: String = "",
-        userNote: String = ""
+        userNote: String = "",
+        sslCertificate: CertificateInfo? = nil
     ) {
         self.id = UUID()
         self.ip = ip
@@ -218,6 +220,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         self.bonjourServices = bonjourServices
         self.userAlias = userAlias
         self.userNote = userNote
+        self.sslCertificate = sslCertificate
     }
 
     var displayName: String {
@@ -240,7 +243,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         case id, ip, mac, hostname, mdnsName, netbiosName, vendor, type, status,
              openPorts, isCurrentDevice, responseTime, ttl, osGuess,
              httpBanner, httpTitle, firstSeen, lastSeen, parentIP, bonjourServices,
-             userAlias, userNote
+             userAlias, userNote, sslCertificate
     }
 
     required init(from decoder: Decoder) throws {
@@ -267,6 +270,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         bonjourServices = (try? c.decode([String].self,      forKey: .bonjourServices)) ?? []
         userAlias       = (try? c.decode(String.self,        forKey: .userAlias))       ?? ""
         userNote        = (try? c.decode(String.self,        forKey: .userNote))        ?? ""
+        sslCertificate  = try? c.decode(CertificateInfo.self, forKey: .sslCertificate)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -293,5 +297,6 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         try c.encode(bonjourServices, forKey: .bonjourServices)
         try c.encode(userAlias,       forKey: .userAlias)
         try c.encode(userNote,        forKey: .userNote)
+        try c.encodeIfPresent(sslCertificate, forKey: .sslCertificate)
     }
 }

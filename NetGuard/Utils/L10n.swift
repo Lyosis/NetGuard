@@ -115,6 +115,43 @@ enum L10n {
         static let placeholderSub   = t("detail.placeholder.sub",   "Clique sur un nœud de la carte\npour voir ses détails")
     }
 
+    // MARK: - Accès rapide (lanceurs de protocoles)
+    enum QuickAccess {
+        static let sectionTitle = t("qa.section",         "ACCÈS RAPIDE")
+        static let browser      = t("qa.browser",         "Navigateur")
+        static let ssh          = t("qa.ssh",             "SSH")
+        static let sftp         = t("qa.sftp",            "SFTP")
+        static let smb          = t("qa.smb",             "SMB")
+        static let afp          = t("qa.afp",             "AFP")
+        static let vnc          = t("qa.vnc",             "VNC")
+        static let ftp          = t("qa.ftp",             "FTP")
+        // Hints accessibilité
+        static let browserHint  = t("qa.browser.hint",    "Ouvre l'interface web de l'appareil dans le navigateur par défaut.")
+        static let sshHint      = t("qa.ssh.hint",        "Ouvre une session SSH dans le Terminal.")
+        static let sftpHint     = t("qa.sftp.hint",       "Ouvre une connexion SFTP dans le Finder.")
+        static let smbHint      = t("qa.smb.hint",        "Monte le partage SMB/Windows dans le Finder.")
+        static let afpHint      = t("qa.afp.hint",        "Monte le partage AFP (Apple Filing Protocol) dans le Finder.")
+        static let vncHint      = t("qa.vnc.hint",        "Ouvre l'écran distant dans Screen Sharing.")
+        static let ftpHint      = t("qa.ftp.hint",        "Ouvre une connexion FTP dans le Finder.")
+    }
+
+    // MARK: - Certificat SSL (A2)
+    enum Certificate {
+        static let sectionTitle    = t("cert.section",          "CERTIFICAT SSL")
+        static let labelSubject    = t("cert.label.subject",    "Sujet")
+        static let labelIssuer     = t("cert.label.issuer",     "Émetteur")
+        static let labelValidFrom  = t("cert.label.valid_from", "Valide depuis")
+        static let labelValidTo    = t("cert.label.valid_to",   "Expire le")
+        static let badgeTrusted    = t("cert.badge.trusted",    "Approuvé")
+        static let badgeUntrusted  = t("cert.badge.untrusted",  "Non approuvé")
+        static let badgeSelfSigned = t("cert.badge.self_signed","Auto-signé")
+        static let badgeExpired    = t("cert.badge.expired",    "Expiré")
+        static let badgeNearExpiry = t("cert.badge.near_expiry","Bientôt expiré")
+        static func daysLeft(_ n: Int) -> String {
+            t("cert.days_left", "%d jour(s) restant(s)", n)
+        }
+    }
+
     // MARK: - Annotations utilisateur (nom + notes)
     enum UserAnnotation {
         static let aliasPlaceholder = t("user.alias.placeholder",
