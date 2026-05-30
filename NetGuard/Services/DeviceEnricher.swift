@@ -344,6 +344,34 @@ actor DeviceEnricher {
         }
     }
 
+    // MARK: - Récupération d'un SecTrust frais (A3 — bouton « Voir le certificat »)
+    /// Effectue une requête `HEAD` minimale en HTTPS pour capter le `SecTrust`
+    /// serveur via le délégué `CertificateCapturingDelegate`.
+    /// Renvoie `nil` si aucun port HTTPS n'est ouvert ou si la connexion échoue.
+    func fetchSSLTrust(for ip: String, ports: [Int]) async -> SecTrust? {
+        let httpsPorts = [443, 8443].filter { ports.contains($0) }
+        guard let port = httpsPorts.first,
+              let url = URL(string: "https://\(ip):\(port)/") else { return nil }
+
+        let delegate = CertificateCapturingDelegate()
+        return await withCheckedContinuation { continuation in
+            var request = URLRequest(url: url, timeoutInterval: 3.0)
+            request.httpMethod = "HEAD"
+            request.setValue("NetGuard/1.0", forHTTPHeaderField: "User-Agent")
+
+            let config = URLSessionConfiguration.ephemeral
+            config.timeoutIntervalForRequest  = 3
+            config.timeoutIntervalForResource = 3
+            let session = URLSession(configuration: config,
+                                     delegate: delegate,
+                                     delegateQueue: nil)
+
+            session.dataTask(with: request) { _, _, _ in
+                continuation.resume(returning: delegate.capturedTrust(for: ip))
+            }.resume()
+        }
+    }
+
     // MARK: - HTTP Banner + Title grabbing (+ certificat SSL si HTTPS)
     private struct HTTPInfo {
         var banner: String
@@ -352,7 +380,10 @@ actor DeviceEnricher {
     }
 
     private func grabHTTP(ip: String, ports: [Int]) async -> HTTPInfo {
-        let httpPorts = [80, 8080, 8888, 443, 8443].filter { ports.contains($0) }
+        // HTTPS prioritaire : sur un NAS qui ouvre 80 + 443, on veut taper
+        // l'admin web HTTPS (et capter son certificat) plutôt que HTTP qui
+        // se contente d'une redirection.
+        let httpPorts = [443, 8443, 80, 8080, 8888].filter { ports.contains($0) }
         guard let port = httpPorts.first else {
             return HTTPInfo(banner: "", title: "", certificate: nil)
         }

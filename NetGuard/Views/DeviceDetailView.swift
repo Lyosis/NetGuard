@@ -1,9 +1,14 @@
 import SwiftUI
+import SecurityInterface
 
 // MARK: - DeviceDetailView
 struct DeviceDetailView: View {
     @ObservedObject var device: NetworkDevice
     @EnvironmentObject var state: AppState
+
+    // A3 — état du bouton « Voir le certificat »
+    @State private var isFetchingTrust = false
+    @State private var certFetchFailed = false
 
     var body: some View {
         ScrollView {
@@ -147,8 +152,73 @@ struct DeviceDetailView: View {
                               value: err,
                               valueColor: .orange)
                 }
+
+                // A3 — Bouton « Voir le certificat » (SFCertificatePanel)
+                viewCertificateButton
             }
         }
+    }
+
+    /// Bouton qui re-fetch un SecTrust frais via HTTPS HEAD puis ouvre le
+    /// panneau système macOS (`SFCertificatePanel`) avec tous les détails.
+    private var viewCertificateButton: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Button {
+                Task { await showCertificatePanel() }
+            } label: {
+                HStack(spacing: 8) {
+                    if isFetchingTrust {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .controlSize(.small)
+                            .tint(.white)
+                    } else {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .font(.system(size: 13, weight: .medium))
+                    }
+                    Text(L10n.Certificate.viewButton)
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 9)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.blue.opacity(0.18))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.blue.opacity(0.4), lineWidth: 0.5)
+                )
+                .foregroundColor(.white.opacity(0.95))
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isFetchingTrust)
+            .help(L10n.Certificate.viewButtonHint)
+            .accessibilityLabel(L10n.Certificate.viewButton)
+            .accessibilityHint(L10n.Certificate.viewButtonHint)
+            .padding(.top, 6)
+
+            if certFetchFailed {
+                Text(L10n.Certificate.fetchFailed)
+                    .font(.system(size: 11))
+                    .foregroundColor(.orange.opacity(0.85))
+            }
+        }
+    }
+
+    @MainActor
+    private func showCertificatePanel() async {
+        isFetchingTrust = true
+        certFetchFailed = false
+        defer { isFetchingTrust = false }
+
+        let ports = device.openPorts.map(\.port)
+        guard let trust = await DeviceEnricher.shared.fetchSSLTrust(for: device.ip, ports: ports) else {
+            certFetchFailed = true
+            return
+        }
+        SFCertificatePanel.shared().runModal(for: trust, showGroup: true)
     }
 
     // MARK: - Bindings annotations utilisateur
