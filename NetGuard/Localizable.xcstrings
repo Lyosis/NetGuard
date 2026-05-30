@@ -381,6 +381,23 @@
         }
       }
     },
+    "cert.fetch_failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't fetch the certificate (device offline?)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de récupérer le certificat (appareil hors ligne ?)."
+          }
+        }
+      }
+    },
     "cert.label.issuer": {
       "extractionState": "manual",
       "localizations": {
@@ -462,6 +479,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "CERTIFICAT SSL"
+          }
+        }
+      }
+    },
+    "cert.view_button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View certificate"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le certificat"
+          }
+        }
+      }
+    },
+    "cert.view_button.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the macOS system panel with full SSL certificate details."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre le panneau système macOS avec tous les détails du certificat SSL."
           }
         }
       }

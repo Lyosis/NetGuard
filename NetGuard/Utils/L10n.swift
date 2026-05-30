@@ -150,6 +150,12 @@ enum L10n {
         static func daysLeft(_ n: Int) -> String {
             t("cert.days_left", "%d jour(s) restant(s)", n)
         }
+        // A3 — bouton « Voir le certificat »
+        static let viewButton     = t("cert.view_button",       "Voir le certificat")
+        static let viewButtonHint = t("cert.view_button.hint",
+                                      "Ouvre le panneau système macOS avec tous les détails du certificat SSL.")
+        static let fetchFailed    = t("cert.fetch_failed",
+                                      "Impossible de récupérer le certificat (appareil hors ligne ?).")
     }
 
     // MARK: - Annotations utilisateur (nom + notes)
