@@ -10,8 +10,10 @@ struct DeviceDetailView: View {
             VStack(spacing: 14) {
                 deviceHeader
                 actionsSection
+                if hasAnyQuickAccess { quickAccessSection }
                 identitySection
                 networkSection
+                if device.sslCertificate != nil { certificateSection }
                 if !device.openPorts.isEmpty { portsSection }
                 let devAlerts = state.alerts.filter { $0.deviceIP == device.ip }
                 if !devAlerts.isEmpty { alertsSection(devAlerts) }
@@ -21,6 +23,132 @@ struct DeviceDetailView: View {
         }
         .background(Color(red: 0.08, green: 0.09, blue: 0.11))
         .frame(minWidth: 300, idealWidth: 340, maxWidth: 400)
+    }
+
+    // MARK: - Accès rapide (navigateur + lanceurs de protocoles)
+    private var openPortNumbers: Set<Int> {
+        Set(device.openPorts.map(\.port))
+    }
+    private var hasAnyQuickAccess: Bool {
+        let webPorts: Set<Int> = [80, 8080, 8888, 443, 8443]
+        let protoPorts: Set<Int> = [22, 445, 548, 5900, 21]
+        return !openPortNumbers.isDisjoint(with: webPorts.union(protoPorts))
+    }
+
+    @ViewBuilder
+    private var quickAccessSection: some View {
+        DetailSection(title: L10n.QuickAccess.sectionTitle) {
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 78), spacing: 8)],
+                alignment: .leading,
+                spacing: 8
+            ) {
+                // Navigateur — HTTPS prioritaire si dispo, sinon HTTP
+                if let webPort = firstOpenPort(among: [443, 8443, 80, 8080, 8888]) {
+                    let scheme = (webPort == 443 || webPort == 8443) ? "https" : "http"
+                    QuickAccessButton(icon: "globe",
+                                      label: L10n.QuickAccess.browser,
+                                      hint: L10n.QuickAccess.browserHint,
+                                      url: "\(scheme)://\(device.ip):\(webPort)/")
+                }
+                if openPortNumbers.contains(22) {
+                    QuickAccessButton(icon: "terminal",
+                                      label: L10n.QuickAccess.ssh,
+                                      hint: L10n.QuickAccess.sshHint,
+                                      url: "ssh://\(device.ip)")
+                    QuickAccessButton(icon: "doc.text",
+                                      label: L10n.QuickAccess.sftp,
+                                      hint: L10n.QuickAccess.sftpHint,
+                                      url: "sftp://\(device.ip)")
+                }
+                if openPortNumbers.contains(445) {
+                    QuickAccessButton(icon: "folder.fill.badge.person.crop",
+                                      label: L10n.QuickAccess.smb,
+                                      hint: L10n.QuickAccess.smbHint,
+                                      url: "smb://\(device.ip)")
+                }
+                if openPortNumbers.contains(548) {
+                    QuickAccessButton(icon: "externaldrive.connected.to.line.below.fill",
+                                      label: L10n.QuickAccess.afp,
+                                      hint: L10n.QuickAccess.afpHint,
+                                      url: "afp://\(device.ip)")
+                }
+                if openPortNumbers.contains(5900) {
+                    QuickAccessButton(icon: "rectangle.on.rectangle",
+                                      label: L10n.QuickAccess.vnc,
+                                      hint: L10n.QuickAccess.vncHint,
+                                      url: "vnc://\(device.ip)")
+                }
+                if openPortNumbers.contains(21) {
+                    QuickAccessButton(icon: "arrow.up.arrow.down.circle",
+                                      label: L10n.QuickAccess.ftp,
+                                      hint: L10n.QuickAccess.ftpHint,
+                                      url: "ftp://\(device.ip)")
+                }
+            }
+        }
+    }
+
+    private func firstOpenPort(among priority: [Int]) -> Int? {
+        priority.first(where: openPortNumbers.contains)
+    }
+
+    // MARK: - Certificate section (A2)
+    @ViewBuilder
+    private var certificateSection: some View {
+        if let cert = device.sslCertificate {
+            DetailSection(title: L10n.Certificate.sectionTitle) {
+                // Badges en haut (état)
+                HStack(spacing: 6) {
+                    if cert.isExpired {
+                        CertBadge(label: L10n.Certificate.badgeExpired,
+                                  color: Color(red: 0.9, green: 0.2, blue: 0.2))
+                    } else if cert.isNearExpiry {
+                        CertBadge(label: L10n.Certificate.badgeNearExpiry,
+                                  color: Color(red: 1.0, green: 0.6, blue: 0.0))
+                    }
+                    if cert.isSelfSigned {
+                        CertBadge(label: L10n.Certificate.badgeSelfSigned,
+                                  color: Color(red: 1.0, green: 0.6, blue: 0.0))
+                    }
+                    if cert.isTrusted {
+                        CertBadge(label: L10n.Certificate.badgeTrusted,
+                                  color: Color(red: 0.2, green: 0.75, blue: 0.4))
+                    } else if !cert.isSelfSigned && !cert.isExpired {
+                        CertBadge(label: L10n.Certificate.badgeUntrusted,
+                                  color: Color(red: 0.9, green: 0.4, blue: 0.1))
+                    }
+                    Spacer()
+                }
+                .padding(.bottom, 4)
+
+                DetailRow(icon: "person.text.rectangle",
+                          label: L10n.Certificate.labelSubject,
+                          value: cert.subject)
+                DetailRow(icon: "building.columns",
+                          label: L10n.Certificate.labelIssuer,
+                          value: cert.issuer)
+                DetailRow(icon: "calendar.badge.clock",
+                          label: L10n.Certificate.labelValidFrom,
+                          value: cert.validFrom.formatted(date: .abbreviated, time: .omitted))
+                DetailRow(icon: "calendar.badge.exclamationmark",
+                          label: L10n.Certificate.labelValidTo,
+                          value: cert.validTo.formatted(date: .abbreviated, time: .omitted),
+                          valueColor: cert.isExpired ? .red :
+                                      cert.isNearExpiry ? .orange : .white)
+                if !cert.isExpired {
+                    DetailRow(icon: "clock",
+                              label: L10n.Certificate.daysLeft(cert.daysUntilExpiry),
+                              value: "")
+                }
+                if let err = cert.trustErrorDescription, !cert.isTrusted {
+                    DetailRow(icon: "exclamationmark.triangle",
+                              label: "Erreur",
+                              value: err,
+                              valueColor: .orange)
+                }
+            }
+        }
     }
 
     // MARK: - Bindings annotations utilisateur
@@ -384,6 +512,69 @@ struct DetailRow: View {
                 .lineLimit(2)
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - QuickAccessButton (panneau détail — section ACCÈS RAPIDE)
+/// Bouton compact qui ouvre une URL via `NSWorkspace.shared.open(_:)`.
+/// Les protocoles `ssh://`, `smb://`, `afp://`, `vnc://`, `sftp://`, `ftp://`,
+/// `http(s)://` sont gérés par les apps système (Terminal, Finder,
+/// Screen Sharing, navigateur par défaut).
+struct QuickAccessButton: View {
+    let icon: String
+    let label: String
+    let hint: String
+    let url: String
+
+    var body: some View {
+        Button {
+            if let u = URL(string: url) {
+                NSWorkspace.shared.open(u)
+            }
+        } label: {
+            VStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.system(size: 14, weight: .medium))
+                    .frame(height: 18)
+                Text(label)
+                    .font(.system(size: 11, weight: .medium))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.white.opacity(0.08))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.white.opacity(0.12), lineWidth: 0.5)
+            )
+            .foregroundColor(.white.opacity(0.85))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .help(hint)
+        .accessibilityLabel(label)
+        .accessibilityHint(hint)
+    }
+}
+
+// MARK: - CertBadge (panneau détail — section CERTIFICAT SSL)
+/// Petit chip coloré (« Approuvé », « Auto-signé », « Expiré », etc.).
+struct CertBadge: View {
+    let label: String
+    let color: Color
+    var body: some View {
+        Text(label)
+            .font(.system(size: 10, weight: .semibold))
+            .foregroundColor(color)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(color.opacity(0.15))
+            .cornerRadius(10)
     }
 }
 

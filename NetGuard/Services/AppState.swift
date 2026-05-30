@@ -49,7 +49,23 @@ class AppState: ObservableObject {
     // MARK: - Init
     init() {
         networkMonitor.start()
+        loadCachedScan()
         Task { await refreshNetworkInfo() }
+    }
+
+    // MARK: - Cache du dernier scan (stop-gap avant SwiftData A5)
+    private func loadCachedScan() {
+        guard let snap = ScanCache.shared.load() else { return }
+        self.devices      = snap.devices
+        self.alerts       = snap.alerts
+        self.lastScanDate = snap.date
+        // Réapplique les annotations utilisateur (MAC déjà connue dans le cache)
+        applyUserAnnotations(to: snap.devices)
+    }
+
+    private func saveCachedScan() {
+        let label = "\(primaryNetwork.interfaceName) — \(primaryNetwork.subnetCIDR)"
+        ScanCache.shared.save(devices: devices, alerts: alerts, networkLabel: label)
     }
 
     deinit {
@@ -149,6 +165,9 @@ class AppState: ObservableObject {
             self.scanStatus = .completed(duration: duration)
         }
 
+        // Cache disque (stop-gap avant SwiftData A5)
+        saveCachedScan()
+
         // Annonce VoiceOver de fin de scan
         AccessibilityNotification.Announcement(
             L10n.A11y.scanDone(devices: discoveredDevices.count, alerts: newAlerts.count)
@@ -182,6 +201,9 @@ class AppState: ObservableObject {
             self.scanStatus   = .completed(duration: duration)
         }
 
+        // Cache disque (stop-gap avant SwiftData A5)
+        saveCachedScan()
+
         // Annonce VoiceOver de fin de scan rapide
         AccessibilityNotification.Announcement(
             L10n.A11y.scanQuickDone(devices: discovered.count)
@@ -192,11 +214,13 @@ class AppState: ObservableObject {
     func markAlertRead(_ alert: NetworkAlert) {
         if let idx = alerts.firstIndex(where: { $0.id == alert.id }) {
             alerts[idx].isRead = true
+            saveCachedScan()
         }
     }
 
     func markAllAlertsRead() {
         for i in alerts.indices { alerts[i].isRead = true }
+        saveCachedScan()
     }
 
     // MARK: - Annotations utilisateur (nom + notes, persistées par MAC)
@@ -238,6 +262,7 @@ class AppState: ObservableObject {
 
         device.openPorts = ports
         device.lastSeen  = Date()
+        saveCachedScan()
     }
 
     /// Enrichit un seul appareil : ping/TTL, NetBIOS, HTTP, OS guess, Bonjour.
@@ -250,6 +275,7 @@ class AppState: ObservableObject {
 
         await enricher.discoverBonjourServices()
         await enricher.enrichDevice(device)
+        saveCachedScan()
     }
 
     /// Vérifie les vulnérabilités d'un seul appareil. Remplace ses alertes
@@ -272,6 +298,8 @@ class AppState: ObservableObject {
         } else if device.type != .unknown {
             device.status = .safe
         }
+
+        saveCachedScan()
     }
 }
 

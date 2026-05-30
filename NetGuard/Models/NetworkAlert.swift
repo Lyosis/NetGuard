@@ -53,6 +53,7 @@ enum AlertCategory: String, Codable {
     case vulnerability   = "Vulnérabilité"
     case configuration   = "Configuration"
     case intrusion       = "Intrusion potentielle"
+    case certificate     = "Certificat SSL"
 }
 
 // MARK: - Network Alert

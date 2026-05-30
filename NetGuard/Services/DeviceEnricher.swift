@@ -79,6 +79,7 @@ actor DeviceEnricher {
             if !nbName.isEmpty    { device.netbiosName = nbName }
             if !httpInfo.banner.isEmpty { device.httpBanner = httpInfo.banner }
             if !httpInfo.title.isEmpty  { device.httpTitle  = httpInfo.title }
+            if let cert = httpInfo.certificate { device.sslCertificate = cert }
             device.lastSeen = Date()
         }
     }
@@ -343,17 +344,27 @@ actor DeviceEnricher {
         }
     }
 
-    // MARK: - HTTP Banner + Title grabbing
-    private struct HTTPInfo { var banner: String; var title: String }
+    // MARK: - HTTP Banner + Title grabbing (+ certificat SSL si HTTPS)
+    private struct HTTPInfo {
+        var banner: String
+        var title: String
+        var certificate: CertificateInfo?
+    }
 
     private func grabHTTP(ip: String, ports: [Int]) async -> HTTPInfo {
         let httpPorts = [80, 8080, 8888, 443, 8443].filter { ports.contains($0) }
-        guard let port = httpPorts.first else { return HTTPInfo(banner: "", title: "") }
-
-        let scheme = (port == 443 || port == 8443) ? "https" : "http"
-        guard let url = URL(string: "\(scheme)://\(ip):\(port)/") else {
-            return HTTPInfo(banner: "", title: "")
+        guard let port = httpPorts.first else {
+            return HTTPInfo(banner: "", title: "", certificate: nil)
         }
+
+        let isHTTPS = (port == 443 || port == 8443)
+        let scheme  = isHTTPS ? "https" : "http"
+        guard let url = URL(string: "\(scheme)://\(ip):\(port)/") else {
+            return HTTPInfo(banner: "", title: "", certificate: nil)
+        }
+
+        // Délégué qui accepte tous les certs (réseau local) + capture le SecTrust
+        let delegate = CertificateCapturingDelegate()
 
         return await withCheckedContinuation { continuation in
             var request = URLRequest(url: url, timeoutInterval: 3.0)
@@ -364,7 +375,7 @@ actor DeviceEnricher {
             config.timeoutIntervalForRequest  = 3
             config.timeoutIntervalForResource = 3
             let session = URLSession(configuration: config,
-                                     delegate: InsecureDelegate(),
+                                     delegate: delegate,
                                      delegateQueue: nil)
 
             session.dataTask(with: request) { data, response, _ in
@@ -383,22 +394,17 @@ actor DeviceEnricher {
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                     }
                 }
-                continuation.resume(returning: HTTPInfo(banner: banner, title: title))
-            }.resume()
-        }
-    }
-}
 
-// MARK: - InsecureDelegate (accept self-signed certs on local network)
-private class InsecureDelegate: NSObject, URLSessionDelegate {
-    func urlSession(_ session: URLSession,
-                    didReceive challenge: URLAuthenticationChallenge,
-                    completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-           let trust = challenge.protectionSpace.serverTrust {
-            completionHandler(.useCredential, URLCredential(trust: trust))
-        } else {
-            completionHandler(.performDefaultHandling, nil)
+                // Extraction du certificat si HTTPS et trust capté
+                var certificate: CertificateInfo? = nil
+                if isHTTPS, let trust = delegate.capturedTrust(for: ip) {
+                    certificate = CertificateInspector.inspect(trust: trust)
+                }
+
+                continuation.resume(returning: HTTPInfo(banner: banner,
+                                                        title: title,
+                                                        certificate: certificate))
+            }.resume()
         }
     }
 }
