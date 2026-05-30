@@ -1,1724 +1,1907 @@
 {
-  "sourceLanguage" : "fr",
-  "strings" : {
-    "%@ (%@)" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$@)"
+  "sourceLanguage": "fr",
+  "strings": {
+    "%@ (%@)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ (%2$@)"
           }
         }
       }
     },
-    "%@, %@, %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@, %3$@"
+    "%@, %@, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@, %2$@, %3$@"
           }
         }
       }
     },
-    "%lld" : {
-
+    "%lld": {},
+    "a11y.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d alerts"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d alertes"
+          }
+        }
+      }
+    },
+    "a11y.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet, gateway to the outside"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet, passerelle vers l'extérieur"
+          }
+        }
+      }
+    },
+    "a11y.node.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double-tap to see details."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez deux fois pour voir les détails."
+          }
+        }
+      }
+    },
+    "a11y.scan.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complete. %1$d devices, %2$d alerts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan terminé. %1$d appareils, %2$d alertes."
+          }
+        }
+      }
+    },
+    "a11y.scan.quick_done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan complete. %d devices."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide terminé. %d appareils."
+          }
+        }
+      }
+    },
+    "alert.severity.critical": {
+      "comment": "── Sévérité alertes ───────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critical"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critique"
+          }
+        }
+      }
+    },
+    "alert.severity.high": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Élevé"
+          }
+        }
+      }
+    },
+    "alert.severity.info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        }
+      }
+    },
+    "alert.severity.low": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
+        }
+      }
+    },
+    "alert.severity.medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyen"
+          }
+        }
+      }
     },
-    "→ %@" : {
-
+    "app.last_scan.hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d h ago"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d h"
+          }
+        }
+      }
     },
-    "a11y.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d alerts"
+    "app.last_scan.minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d min ago"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d alertes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d min"
           }
         }
       }
     },
-    "a11y.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet, gateway to the outside"
+    "app.last_scan.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never scanned"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet, passerelle vers l'extérieur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamais scanné"
           }
         }
       }
     },
-    "a11y.node.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Double-tap to see details."
+    "app.last_scan.seconds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d s ago"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Touchez deux fois pour voir les détails."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d s"
           }
         }
       }
     },
-    "a11y.scan.done" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complete. %1$d devices, %2$d alerts."
+    "app.name": {
+      "comment": "── App ───────────────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetGuard"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan terminé. %1$d appareils, %2$d alertes."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetGuard"
           }
         }
       }
     },
-    "a11y.scan.quick_done" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick scan complete. %d devices."
+    "detail.actions.check_vuln": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vulnerabilities"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan rapide terminé. %d appareils."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vulnérabilités"
           }
         }
       }
     },
-    "alert.severity.critical" : {
-      "comment" : "── Sévérité alertes ───────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Critical"
+    "detail.actions.check_vuln.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyses vulnerabilities from already-scanned ports."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Critique"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse les vulnérabilités à partir des ports déjà scannés."
           }
         }
       }
     },
-    "alert.severity.high" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "High"
+    "detail.actions.enrich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enrich"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Élevé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enrichir"
           }
         }
       }
     },
-    "alert.severity.info" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Info"
+    "detail.actions.enrich.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetches OS, Bonjour name, NetBIOS, HTTP banner and latency."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Info"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupère OS, nom Bonjour, NetBIOS, bannière HTTP et latence."
           }
         }
       }
     },
-    "alert.severity.low" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Low"
+    "detail.actions.running": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faible"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En cours…"
           }
         }
       }
     },
-    "alert.severity.medium" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medium"
+    "detail.actions.scan_ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moyen"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanner les ports"
           }
         }
       }
     },
-    "app.last_scan.hours" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d h ago"
+    "detail.actions.scan_ports.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scans all common ports of this device."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d h"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne tous les ports communs de cet appareil."
           }
         }
       }
     },
-    "app.last_scan.minutes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d min ago"
+    "detail.actions.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACTIONS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d min"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACTIONS"
           }
         }
       }
     },
-    "app.last_scan.never" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Never scanned"
+    "detail.current_device": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac (current device)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jamais scanné"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce Mac (appareil courant)"
           }
         }
       }
     },
-    "app.last_scan.seconds" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d s ago"
+    "detail.label.bonjour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d s"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour"
           }
         }
       }
     },
-    "app.name" : {
-      "comment" : "── App ───────────────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetGuard"
+    "detail.label.bonjour_services": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetGuard"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
           }
         }
       }
     },
-    "detail.current_device" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This Mac (current device)"
+    "detail.label.dns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ce Mac (appareil courant)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         }
       }
     },
-    "detail.label.bonjour" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bonjour"
+    "detail.label.first_seen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First seen"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bonjour"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vu pour la 1ère fois"
           }
         }
       }
     },
-    "detail.label.bonjour_services" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Services"
+    "detail.label.http_server": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTP Server"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Services"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serveur HTTP"
           }
         }
       }
     },
-    "detail.label.dns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+    "detail.label.last_seen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last seen"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière activité"
           }
         }
       }
     },
-    "detail.label.first_seen" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "First seen"
+    "detail.label.latency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latency"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vu pour la 1ère fois"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latence"
           }
         }
       }
     },
-    "detail.label.http_server" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HTTP Server"
+    "detail.label.mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAC address"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Serveur HTTP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse MAC"
           }
         }
       }
     },
-    "detail.label.last_seen" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last seen"
+    "detail.label.netbios": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetBIOS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernière activité"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetBIOS"
           }
         }
       }
     },
-    "detail.label.latency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latency"
+    "detail.label.os": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latence"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
           }
         }
       }
     },
-    "detail.label.mac" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MAC address"
+    "detail.label.role": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Role"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adresse MAC"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rôle"
           }
         }
       }
     },
-    "detail.label.netbios" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetBIOS"
+    "detail.label.ttl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TTL"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetBIOS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TTL"
           }
         }
       }
     },
-    "detail.label.os" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OS"
+    "detail.label.type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
           }
         }
       }
     },
-    "detail.label.role" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Role"
+    "detail.label.vendor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vendor"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rôle"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fabricant"
           }
         }
       }
     },
-    "detail.label.ttl" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TTL"
+    "detail.label.web_page": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Web page"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TTL"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page web"
           }
         }
       }
     },
-    "detail.label.type" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
+    "detail.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a device"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionne un appareil"
           }
         }
       }
     },
-    "detail.label.vendor" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vendor"
+    "detail.placeholder.sub": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click a node on the map\nto see its details"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fabricant"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique sur un nœud de la carte\npour voir ses détails"
           }
         }
       }
     },
-    "detail.label.web_page" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Web page"
+    "detail.section.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTS (%ld)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Page web"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTES (%ld)"
           }
         }
       }
     },
-    "detail.placeholder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select a device"
+    "detail.section.identity": {
+      "comment": "── Détail appareil ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IDENTITY"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionne un appareil"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IDENTITÉ"
           }
         }
       }
     },
-    "detail.placeholder.sub" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Click a node on the map\nto see its details"
+    "detail.section.network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NETWORK"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clique sur un nœud de la carte\npour voir ses détails"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RÉSEAU"
           }
         }
       }
     },
-    "detail.section.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTS (%ld)"
+    "detail.section.ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OPEN PORTS (%ld)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTES (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PORTS OUVERTS (%ld)"
           }
         }
       }
     },
-    "detail.section.identity" : {
-      "comment" : "── Détail appareil ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IDENTITY"
+    "detail.ttl_value": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld hops"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IDENTITÉ"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld sauts"
           }
         }
       }
     },
-    "detail.section.network" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NETWORK"
+    "device.status.alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RÉSEAU"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte"
           }
         }
       }
     },
-    "detail.section.ports" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OPEN PORTS (%ld)"
+    "device.status.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PORTS OUVERTS (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hors ligne"
           }
         }
       }
     },
-    "detail.ttl_value" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%ld hops"
+    "device.status.safe": {
+      "comment": "── Statut appareil ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%ld sauts"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sûr"
           }
         }
       }
     },
-    "device.status.alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert"
+    "device.status.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "device.status.offline" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offline"
+    "device.type.firewall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hors ligne"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall"
           }
         }
       }
     },
-    "device.status.safe" : {
-      "comment" : "── Statut appareil ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Safe"
+    "device.type.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sûr"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
           }
         }
       }
     },
-    "device.status.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "device.type.ipad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
           }
         }
       }
     },
-    "device.type.firewall" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Firewall"
+    "device.type.iphone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Firewall"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
           }
         }
       }
     },
-    "device.type.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+    "device.type.mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
           }
         }
       }
     },
-    "device.type.ipad" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad"
+    "device.type.nas": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NAS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NAS"
           }
         }
       }
     },
-    "device.type.iphone" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone"
+    "device.type.printer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Printer"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimante"
           }
         }
       }
     },
-    "device.type.mac" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac"
+    "device.type.router": {
+      "comment": "── Types d'appareils ──────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Router"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routeur"
           }
         }
       }
     },
-    "device.type.nas" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NAS"
+    "device.type.switch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NAS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch"
           }
         }
       }
     },
-    "device.type.printer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Printer"
+    "device.type.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprimante"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "device.type.router" : {
-      "comment" : "── Types d'appareils ──────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Router"
+    "device.type.wifi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi AP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Routeur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi AP"
           }
         }
       }
     },
-    "device.type.switch" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch"
+    "map.empty.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run a scan to discover devices"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancez un scan pour découvrir les appareils"
           }
         }
       }
     },
-    "device.type.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "map.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No devices detected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun appareil détecté"
           }
         }
       }
     },
-    "device.type.wifi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi AP"
+    "map.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi AP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
           }
         }
       }
     },
-    "map.empty.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Run a scan to discover devices"
+    "map.legend.alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lancez un scan pour découvrir les appareils"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte"
           }
         }
       }
     },
-    "map.empty.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No devices detected"
+    "map.legend.safe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun appareil détecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sûr"
           }
         }
       }
     },
-    "map.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+    "map.legend.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "map.legend.alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert"
+    "map.reset_view": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset view"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser la vue"
           }
         }
       }
     },
-    "map.legend.safe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Safe"
+    "map.title": {
+      "comment": "── Carte réseau ───────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local network map"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sûr"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carte du réseau local"
           }
         }
       }
     },
-    "map.legend.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "menu.alerts.mark_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark all alerts as read"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer toutes les alertes comme lues"
           }
         }
       }
     },
-    "map.reset_view" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset view"
+    "menu.scan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser la vue"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
           }
         }
       }
     },
-    "map.title" : {
-      "comment" : "── Carte réseau ───────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local network map"
+    "menu.scan.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carte du réseau local"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complet"
           }
         }
       }
     },
-    "menu.alerts.mark_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark all alerts as read"
+    "menu.scan.quick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Marquer toutes les alertes comme lues"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide"
           }
         }
       }
     },
-    "menu.scan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
+    "monitor.banner.tap_rescan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to rescan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuyer pour rescanner"
           }
         }
       }
     },
-    "menu.scan.full" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full scan"
+    "monitor.connected": {
+      "comment": "── Moniteur réseau ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network connected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau connecté"
           }
         }
       }
     },
-    "menu.scan.quick" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick scan"
+    "monitor.disconnected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network disconnected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan rapide"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau déconnecté"
           }
         }
       }
     },
-    "monitor.banner.tap_rescan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to rescan"
+    "monitor.ethernet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethernet"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appuyer pour rescanner"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethernet"
           }
         }
       }
     },
-    "monitor.connected" : {
-      "comment" : "── Moniteur réseau ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network connected"
+    "monitor.interface_changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface changed"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réseau connecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface changée"
           }
         }
       }
     },
-    "monitor.disconnected" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network disconnected"
+    "monitor.no_network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No network"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réseau déconnecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun réseau"
           }
         }
       }
     },
-    "monitor.ethernet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ethernet"
+    "monitor.wifi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ethernet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi"
           }
         }
       }
     },
-    "monitor.interface_changed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface changed"
+    "os.ios": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS / iPadOS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface changée"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS / iPadOS"
           }
         }
       }
     },
-    "monitor.no_network" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No network"
+    "os.linux": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linux"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun réseau"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linux"
           }
         }
       }
     },
-    "monitor.wifi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi"
+    "os.macos": {
+      "comment": "── Système d'exploitation ─────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS / Linux"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS / Linux"
           }
         }
       }
     },
-    "os.ios" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS / iPadOS"
+    "os.router": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Router / Firmware"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS / iPadOS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routeur / Firmware"
           }
         }
       }
     },
-    "os.linux" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Linux"
+    "os.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Linux"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "os.macos" : {
-      "comment" : "── Système d'exploitation ─────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS / Linux"
+    "os.windows": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS / Linux"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows"
           }
         }
       }
     },
-    "os.router" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Router / Firmware"
+    "sidebar.alerts.mark_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark all read"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Routeur / Firmware"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout lire"
           }
         }
       }
     },
-    "os.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "sidebar.alerts.none": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No alerts — run a scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune alerte — lancez un scan"
           }
         }
       }
     },
-    "os.windows" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Windows"
+    "sidebar.alerts.scanning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Windows"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan en cours…"
           }
         }
       }
     },
-    "sidebar.alerts.mark_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark all read"
+    "sidebar.alerts.see_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See all alerts (%ld)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tout lire"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir toutes les alertes (%ld)"
           }
         }
       }
     },
-    "sidebar.alerts.none" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No alerts — run a scan"
+    "sidebar.metric.devices": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devices"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucune alerte — lancez un scan"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appareils"
           }
         }
       }
     },
-    "sidebar.alerts.scanning" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanning…"
+    "sidebar.metric.encrypt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encryption"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan en cours…"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiffrement"
           }
         }
       }
     },
-    "sidebar.alerts.see_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See all alerts (%ld)"
+    "sidebar.metric.ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open ports"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voir toutes les alertes (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ports ouverts"
           }
         }
       }
     },
-    "sidebar.metric.devices" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devices"
+    "sidebar.metric.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appareils"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnus"
           }
         }
       }
     },
-    "sidebar.metric.encrypt" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Encryption"
+    "sidebar.network.dns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chiffrement"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         }
       }
     },
-    "sidebar.metric.ports" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open ports"
+    "sidebar.network.gateway": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gateway"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ports ouverts"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passerelle"
           }
         }
       }
     },
-    "sidebar.metric.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "sidebar.network.interface": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnus"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface"
           }
         }
       }
     },
-    "sidebar.network.dns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+    "sidebar.network.local_ip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local IP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IP locale"
           }
         }
       }
     },
-    "sidebar.network.gateway" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gateway"
+    "sidebar.network.security": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Security"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passerelle"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sécurité"
           }
         }
       }
     },
-    "sidebar.network.interface" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface"
+    "sidebar.network.ssid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSID"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSID"
           }
         }
       }
     },
-    "sidebar.network.local_ip" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local IP"
+    "sidebar.network.subnet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subnet"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IP locale"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sous-réseau"
           }
         }
       }
     },
-    "sidebar.network.security" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Security"
+    "sidebar.scan.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sécurité"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complet"
           }
         }
       }
     },
-    "sidebar.network.ssid" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSID"
+    "sidebar.scan.quick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSID"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapide"
           }
         }
       }
     },
-    "sidebar.network.subnet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subnet"
+    "sidebar.section.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sous-réseau"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTES"
           }
         }
       }
     },
-    "sidebar.scan.full" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full scan"
+    "sidebar.section.network": {
+      "comment": "── Sidebar ────────────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NETWORK"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RÉSEAU"
           }
         }
       }
     },
-    "sidebar.scan.quick" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick"
+    "sidebar.sheet.all_alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All alerts"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rapide"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les alertes"
           }
         }
       }
     },
-    "sidebar.section.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTS"
+    "sidebar.sheet.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTES"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fermer"
           }
         }
       }
     },
-    "sidebar.section.network" : {
-      "comment" : "── Sidebar ────────────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NETWORK"
+    "user.alias.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom name (e.g. My NAS)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RÉSEAU"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom personnalisé (ex : Mon NAS)"
           }
         }
       }
     },
-    "sidebar.sheet.all_alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All alerts"
+    "user.notes.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a note…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toutes les alertes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une note…"
           }
         }
       }
     },
-    "sidebar.sheet.close" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
+    "user.notes.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTES"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fermer"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTES"
           }
         }
       }
-    }
+    },
+    "→ %@": {}
   },
-  "version" : "1.2"
+  "version": "1.2"
 }

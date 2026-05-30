@@ -23,6 +23,7 @@
 		BB001122334455667788AABB /* DeviceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA001122334455667788AABB /* DeviceDetailView.swift */; };
 		CC001122334455667788AABB /* DeviceEnricher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD001122334455667788AABB /* DeviceEnricher.swift */; };
 		EE001122334455667788AACC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE001122334455667788AABB /* NetworkMonitor.swift */; };
+		A1001122334455667788DD01 /* UserAnnotationsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1001122334455667788DD02 /* UserAnnotationsStore.swift */; };
 		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
 		FF001122334455667788AADD /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AACC /* L10n.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		AA001122334455667788AABB /* DeviceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailView.swift; sourceTree = "<group>"; };
 		DD001122334455667788AABB /* DeviceEnricher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEnricher.swift; sourceTree = "<group>"; };
 		EE001122334455667788AABB /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		A1001122334455667788DD02 /* UserAnnotationsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAnnotationsStore.swift; sourceTree = "<group>"; };
 		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF001122334455667788AACC /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +92,7 @@
 				A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */,
 				DD001122334455667788AABB /* DeviceEnricher.swift */,
 				EE001122334455667788AABB /* NetworkMonitor.swift */,
+				A1001122334455667788DD02 /* UserAnnotationsStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				BB001122334455667788AABB /* DeviceDetailView.swift in Sources */,
 				CC001122334455667788AABB /* DeviceEnricher.swift in Sources */,
 				EE001122334455667788AACC /* NetworkMonitor.swift in Sources */,
+				A1001122334455667788DD01 /* UserAnnotationsStore.swift in Sources */,
 				FF001122334455667788AADD /* L10n.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

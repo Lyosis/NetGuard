@@ -9,16 +9,75 @@ struct DeviceDetailView: View {
         ScrollView {
             VStack(spacing: 14) {
                 deviceHeader
+                actionsSection
                 identitySection
                 networkSection
                 if !device.openPorts.isEmpty { portsSection }
                 let devAlerts = state.alerts.filter { $0.deviceIP == device.ip }
                 if !devAlerts.isEmpty { alertsSection(devAlerts) }
+                notesSection
             }
             .padding(16)
         }
         .background(Color(red: 0.08, green: 0.09, blue: 0.11))
         .frame(minWidth: 300, idealWidth: 340, maxWidth: 400)
+    }
+
+    // MARK: - Bindings annotations utilisateur
+    private var aliasBinding: Binding<String> {
+        Binding(
+            get: { device.userAlias },
+            set: { newValue in
+                device.userAlias = newValue
+                state.persistAnnotation(for: device)
+            }
+        )
+    }
+    private var noteBinding: Binding<String> {
+        Binding(
+            get: { device.userNote },
+            set: { newValue in
+                device.userNote = newValue
+                state.persistAnnotation(for: device)
+            }
+        )
+    }
+
+    // MARK: - Actions section
+    private var actionsSection: some View {
+        let running = state.runningDeviceAction[device.id]
+        let anyRunning = running != nil
+        return DetailSection(title: L10n.DetailActions.sectionTitle) {
+            HStack(spacing: 8) {
+                ActionButton(
+                    icon: "network",
+                    label: L10n.DetailActions.scanPorts,
+                    hint: L10n.DetailActions.scanPortsHint,
+                    isRunning: running == .ports,
+                    isDisabled: anyRunning
+                ) {
+                    Task { await state.scanPortsFor(device) }
+                }
+                ActionButton(
+                    icon: "magnifyingglass",
+                    label: L10n.DetailActions.enrich,
+                    hint: L10n.DetailActions.enrichHint,
+                    isRunning: running == .enrich,
+                    isDisabled: anyRunning
+                ) {
+                    Task { await state.enrichDeviceManually(device) }
+                }
+                ActionButton(
+                    icon: "shield",
+                    label: L10n.DetailActions.checkVuln,
+                    hint: L10n.DetailActions.checkVulnHint,
+                    isRunning: running == .vulnerabilities,
+                    isDisabled: anyRunning
+                ) {
+                    Task { await state.checkVulnerabilitiesFor(device) }
+                }
+            }
+        }
     }
 
     // MARK: - Header
@@ -55,13 +114,26 @@ struct DeviceDetailView: View {
                 .padding(.vertical, 4)
                 .background(device.status.color.opacity(0.12))
                 .cornerRadius(20)
+
+                // Nom personnalisé (édition inline)
+                TextField(L10n.UserAnnotation.aliasPlaceholder, text: aliasBinding)
+                    .textFieldStyle(.plain)
+                    .multilineTextAlignment(.center)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.white.opacity(0.75))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Color.white.opacity(0.05))
+                    .cornerRadius(6)
+                    .padding(.top, 2)
+                    .accessibilityLabel(L10n.UserAnnotation.aliasPlaceholder)
             }
         }
         .frame(maxWidth: .infinity)
         .padding(16)
         .background(detailCard)
         .cornerRadius(12)
-        .accessibilityElement(children: .ignore)
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("\(device.displayName), \(device.ip), \(device.status.localizedName)")
     }
 
@@ -221,6 +293,28 @@ struct DeviceDetailView: View {
         }
     }
 
+    // MARK: - Notes section (annotations utilisateur)
+    private var notesSection: some View {
+        DetailSection(title: L10n.UserAnnotation.notesSection) {
+            ZStack(alignment: .topLeading) {
+                if device.userNote.isEmpty {
+                    Text(L10n.UserAnnotation.notesPlaceholder)
+                        .font(.system(size: 13))
+                        .foregroundColor(.white.opacity(0.25))
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 8)
+                        .allowsHitTesting(false)
+                }
+                TextEditor(text: noteBinding)
+                    .scrollContentBackground(.hidden)
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.9))
+                    .frame(minHeight: 80)
+            }
+            .accessibilityLabel(L10n.UserAnnotation.notesSection)
+        }
+    }
+
     // MARK: - Helpers
     private var latencyColor: Color {
         switch device.responseTime {
@@ -290,5 +384,59 @@ struct DetailRow: View {
                 .lineLimit(2)
         }
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - ActionButton (panneau détail)
+/// Bouton compact icône + label avec état loading. Utilisé dans la section
+/// ACTIONS pour les analyses à la demande (ports, enrichir, vulnérabilités).
+struct ActionButton: View {
+    let icon: String
+    let label: String
+    let hint: String
+    let isRunning: Bool
+    let isDisabled: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                ZStack {
+                    if isRunning {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .controlSize(.small)
+                            .tint(.white)
+                    } else {
+                        Image(systemName: icon)
+                            .font(.system(size: 14, weight: .medium))
+                    }
+                }
+                .frame(height: 18)
+
+                Text(label)
+                    .font(.system(size: 11, weight: .medium))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .padding(.horizontal, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(isDisabled ? Color.white.opacity(0.04) : Color.blue.opacity(0.18))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.white.opacity(isDisabled ? 0.05 : 0.14), lineWidth: 0.5)
+            )
+            .foregroundColor(isDisabled ? .white.opacity(0.3) : .white.opacity(0.9))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(isDisabled)
+        .help(hint)
+        .accessibilityLabel(label)
+        .accessibilityHint(hint)
     }
 }

@@ -186,11 +186,36 @@ Checks implémentés :
 
 **Cible** : Capturer le certificat SSL pendant le GET HTTPS et l'analyser.
 
+**Workflow technique** (cible macOS 26, on utilise les APIs modernes uniquement) :
+
+```
+URLSessionDelegate.urlSession(_:didReceive challenge:completionHandler:)
+  ↓
+let trust = challenge.protectionSpace.serverTrust       // SecTrust
+  ↓
+var err: CFError?
+let isTrusted = SecTrustEvaluateWithError(trust, &err)  // macOS 10.14+
+  ↓
+let chain = SecTrustCopyCertificateChain(trust) as? [SecCertificate]  // macOS 12+
+let leaf  = chain?.first
+  ↓
+// Extraction d'infos
+SecCertificateCopySubjectSummary(leaf)        → CFString (sujet/CN)
+SecCertificateCopyNotValidBeforeDate(leaf)    → CFDate (macOS 13+)
+SecCertificateCopyNotValidAfterDate(leaf)     → CFDate (macOS 13+)
+SecCertificateCopyData(leaf) + parser le DER pour l'issuer
+```
+
+> ⚠️ **Ne pas utiliser** `SecTrustGetCertificateAtIndex(_:_:)` — déprécié en faveur de `SecTrustCopyCertificateChain(_:)` (macOS 12+).
+> Toutes les APIs ci-dessus sont disponibles dès macOS 13, donc OK sur cible macOS 26.
+
 **Informations à extraire** :
-- Sujet / Issuer (`SecCertificateCopySubjectSummary`)
-- Date d'expiration
-- Auto-signé ou non (`SecTrustEvaluateWithError`)
-- Résultat de validation (trusted / récupérable / fatal)
+- Sujet / CN (`SecCertificateCopySubjectSummary`)
+- Issuer (parser DER ou utiliser `SecCertificateCopyKey` + helpers)
+- Dates de validité (`SecCertificateCopyNotValidBeforeDate` / `…AfterDate`)
+- Auto-signé : sujet == issuer
+- Validé ou non (`SecTrustEvaluateWithError` → Bool + CFError)
+- Cause d'échec lisible : `CFErrorCopyDescription(err)`
 
 **Nouvelles propriétés sur `NetworkDevice`** :
 ```swift
@@ -202,14 +227,25 @@ struct CertificateInfo: Codable {
     var validFrom: Date
     var validTo: Date
     var isSelfSigned: Bool
-    var isExpired: Bool
+    var isExpired: Bool          // dérivé : validTo < Date()
     var isTrusted: Bool
+    var trustErrorDescription: String?   // si !isTrusted, raison lisible
 }
 ```
 
+**Capture du certificat dans `DeviceEnricher.grabHTTP()`** :
+- Remplacer/étendre `InsecureDelegate` par un `CertificateCapturingDelegate` qui :
+  1. Garde la connexion fonctionnelle (toujours accepter le challenge pour collecter le cert)
+  2. Stocke la `SecTrust` reçue dans un `[host: SecTrust]` interne au délégué
+- Après le `dataTask.resume()`, lire le `SecTrust` pour le host, le valider, peupler `CertificateInfo`
+
 **Nouvelles alertes dans `VulnerabilityChecker`** :
-- Certificat expiré → `.critical`
-- Certificat auto-signé non reconnu → `.medium`
+- Certificat expiré → `.critical` (« Le certificat de 192.168.1.X a expiré le … »)
+- Certificat auto-signé sur un service web → `.medium`
+- Certificat invalide (autre raison `trustErrorDescription`) → `.high`
+
+**Important — thread safety** :
+- Les fonctions `Sec*` C ne sont pas isolées par un acteur. L'analyse du certificat doit se faire dans l'actor `DeviceEnricher` ou via une fonction `nonisolated` pour éviter les blocages MainActor.
 
 ---
 
@@ -413,10 +449,17 @@ struct CertificateInfo: Codable {
     var validFrom: Date
     var validTo: Date
     var isSelfSigned: Bool
-    var isExpired: Bool
+    var isExpired: Bool                  // dérivé : validTo < Date()
     var isTrusted: Bool
+    var trustErrorDescription: String?   // raison lisible si !isTrusted
 }
 ```
+
+**APIs utilisées** (toutes disponibles macOS 13+, on cible 26) :
+- `SecTrustEvaluateWithError(_:_:)` — validation (Bool + CFError)
+- `SecTrustCopyCertificateChain(_:)` — chaîne complète (remplace l'ancien `SecTrustGetCertificateAtIndex`)
+- `SecCertificateCopySubjectSummary(_:)` — CN/sujet
+- `SecCertificateCopyNotValidBeforeDate(_:)` / `…AfterDate(_:)` — dates de validité directes (pas de parsing DER)
 
 ### Nouveau : ScanSnapshot (SwiftData)
 ```swift

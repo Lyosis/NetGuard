@@ -15,6 +15,9 @@ class AppState: ObservableObject {
     @Published var scanStatus: ScanStatus         = .idle
     @Published var selectedDevice: NetworkDevice? = nil
     @Published var lastScanDate: Date?            = nil
+    /// Action en cours sur un appareil (clé = device.id). Permet de griser le
+    /// bouton concerné et d'afficher un spinner dans le panneau détail.
+    @Published var runningDeviceAction: [UUID: DeviceAction] = [:]
 
     // MARK: - Services
     private let networkInfoService   = NetworkInfoService.shared
@@ -97,6 +100,7 @@ class AppState: ObservableObject {
             await self?.setScanStatus(.scanning(progress: 0.05 + progress * 0.35, message: msg))
         }
 
+        applyUserAnnotations(to: discoveredDevices)
         await MainActor.run { self.devices = discoveredDevices }
 
         // Step 3: Port scan
@@ -170,6 +174,7 @@ class AppState: ObservableObject {
             await self?.setScanStatus(.scanning(progress: p * 0.95, message: msg))
         }
 
+        applyUserAnnotations(to: discovered)
         let duration = Date().timeIntervalSince(start)
         await MainActor.run {
             self.devices    = discovered
@@ -193,4 +198,87 @@ class AppState: ObservableObject {
     func markAllAlertsRead() {
         for i in alerts.indices { alerts[i].isRead = true }
     }
+
+    // MARK: - Annotations utilisateur (nom + notes, persistées par MAC)
+
+    /// Charge l'alias + note pour chaque device depuis `UserAnnotationsStore`.
+    /// Appelée après chaque scan une fois les MAC connues.
+    private func applyUserAnnotations(to list: [NetworkDevice]) {
+        let store = UserAnnotationsStore.shared
+        for device in list {
+            let (alias, note) = store.annotation(for: device.mac)
+            device.userAlias = alias
+            device.userNote  = note
+        }
+    }
+
+    /// Sauvegarde l'annotation courante d'un device (appelée à chaque édition
+    /// du champ alias ou notes dans `DeviceDetailView`).
+    func persistAnnotation(for device: NetworkDevice) {
+        UserAnnotationsStore.shared.save(
+            mac:   device.mac,
+            alias: device.userAlias,
+            note:  device.userNote
+        )
+    }
+
+    // MARK: - Actions à la demande sur un appareil (panneau détail)
+
+    /// Scanne les ports d'un seul appareil. Met à jour `device.openPorts`.
+    func scanPortsFor(_ device: NetworkDevice) async {
+        guard runningDeviceAction[device.id] == nil else { return }
+        runningDeviceAction[device.id] = .ports
+        defer { runningDeviceAction[device.id] = nil }
+
+        let ports = await portScanner.scanPorts(
+            host: device.ip,
+            ports: CommonPort.all.map(\.number),
+            timeout: 1.0
+        ) { _, _ in }   // pas de progression UI pour cette action ponctuelle
+
+        device.openPorts = ports
+        device.lastSeen  = Date()
+    }
+
+    /// Enrichit un seul appareil : ping/TTL, NetBIOS, HTTP, OS guess, Bonjour.
+    /// Lance d'abord la découverte Bonjour globale (3 s) pour que la table soit
+    /// à jour avant l'enrichissement.
+    func enrichDeviceManually(_ device: NetworkDevice) async {
+        guard runningDeviceAction[device.id] == nil else { return }
+        runningDeviceAction[device.id] = .enrich
+        defer { runningDeviceAction[device.id] = nil }
+
+        await enricher.discoverBonjourServices()
+        await enricher.enrichDevice(device)
+    }
+
+    /// Vérifie les vulnérabilités d'un seul appareil. Remplace ses alertes
+    /// dans `self.alerts` et met à jour son statut (safe / alert).
+    func checkVulnerabilitiesFor(_ device: NetworkDevice) async {
+        guard runningDeviceAction[device.id] == nil else { return }
+        runningDeviceAction[device.id] = .vulnerabilities
+        defer { runningDeviceAction[device.id] = nil }
+
+        let newAlerts = await vulnChecker.checkDevice(device)
+
+        // Remplacer les alertes existantes de ce device par les nouvelles
+        alerts.removeAll { $0.deviceIP == device.ip }
+        alerts.append(contentsOf: newAlerts)
+        alerts.sort { $0.severity > $1.severity }
+
+        // Mettre à jour le statut visuel
+        if newAlerts.contains(where: { $0.severity >= .high }) {
+            device.status = .alert
+        } else if device.type != .unknown {
+            device.status = .safe
+        }
+    }
+}
+
+// MARK: - DeviceAction
+/// Action ponctuelle en cours sur un appareil (affichage du spinner du bouton).
+enum DeviceAction {
+    case ports
+    case enrich
+    case vulnerabilities
 }

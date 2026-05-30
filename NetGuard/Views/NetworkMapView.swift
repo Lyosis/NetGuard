@@ -73,7 +73,7 @@ struct NetworkMapView: View {
                 }
             }
         }
-        .onChange(of: state.selectedDevice?.id) { _ in selectedNode = state.selectedDevice }
+        .onChange(of: state.selectedDevice?.id) { selectedNode = state.selectedDevice }
     }
 
     // MARK: - Map Content
@@ -393,78 +393,6 @@ struct DeviceNode: View {
         .position(position)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         .animation(.easeInOut(duration: 0.15), value: isHovered)
-
-        // Tooltip on hover
-        .overlay {
-            if isHovered || isSelected {
-                DeviceTooltip(device: device)
-                    .offset(y: -(nodeSize / 2 + 65))
-                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
-                    .animation(.easeInOut(duration: 0.15), value: isHovered)
-            }
-        }
     }
 }
 
-// MARK: - Device Tooltip
-struct DeviceTooltip: View {
-    let device: NetworkDevice
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack {
-                Image(systemName: device.type.icon)
-                    .font(.system(size: 13))
-                    .foregroundColor(device.type.color)
-                Text(device.displayName)
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(.white)
-            }
-            Divider().opacity(0.2)
-            TooltipRow(label: "IP",  value: device.ip)
-            if !device.mac.isEmpty {
-                TooltipRow(label: "MAC", value: device.mac)
-            }
-            if !device.vendor.isEmpty {
-                TooltipRow(label: "Fab.", value: device.vendor)
-            }
-            TooltipRow(label: L10n.Detail.labelType,   value: device.type.localizedName)
-            TooltipRow(label: L10n.DeviceStatus.unknown, value: device.status.localizedName)
-            if !device.openPorts.isEmpty {
-                TooltipRow(
-                    label: "Ports",
-                    value: device.openPorts.prefix(5).map { "\($0.port)" }.joined(separator: ", ")
-                        + (device.openPorts.count > 5 ? "…" : "")
-                )
-            }
-        }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(red: 0.1, green: 0.11, blue: 0.14))
-                .shadow(color: .black.opacity(0.5), radius: 8)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-        )
-        .frame(minWidth: 190)
-    }
-}
-
-struct TooltipRow: View {
-    let label: String
-    let value: String
-    var body: some View {
-        HStack {
-            Text(label)
-                .font(.system(size: 12))
-                .foregroundColor(.white.opacity(0.4))
-                .frame(width: 42, alignment: .leading)
-            Text(value)
-                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                .foregroundColor(.white.opacity(0.8))
-                .lineLimit(1)
-        }
-    }
-}

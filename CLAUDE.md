@@ -44,7 +44,8 @@ Dépôt : `git@github.com:Lyosis/NetGuard.git`
 - `DeviceEnricher.grabHTTP()` → capturer + analyser le certificat SSL pendant le GET HTTPS
 - Nouveau champ `sslCertificate: CertificateInfo?` sur `NetworkDevice`
 - Nouvelles alertes : cert expiré (critical), cert auto-signé (medium)
-- API : `SecTrustCreateWithCertificates` → `SecTrustEvaluateWithError` → `SecTrustGetCertificateAtIndex`
+- API (macOS 13+, modernes) : `SecTrustEvaluateWithError` + `SecTrustCopyCertificateChain` + `SecCertificateCopyNotValidBeforeDate` / `…AfterDate` + `SecCertificateCopySubjectSummary`
+- ⚠️ Ne pas utiliser `SecTrustGetCertificateAtIndex` (déprécié, remplacé par `SecTrustCopyCertificateChain`)
 - Doc Cupertino : `apple-docs://security/sectrustevaluatewitherror(_:_:)`
 
 **A3. SFCertificatePanel — bouton "Voir le certificat"**

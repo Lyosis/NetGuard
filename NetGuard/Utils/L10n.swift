@@ -115,6 +115,31 @@ enum L10n {
         static let placeholderSub   = t("detail.placeholder.sub",   "Clique sur un nœud de la carte\npour voir ses détails")
     }
 
+    // MARK: - Annotations utilisateur (nom + notes)
+    enum UserAnnotation {
+        static let aliasPlaceholder = t("user.alias.placeholder",
+                                        "Nom personnalisé (ex : Mon NAS)")
+        static let notesSection     = t("user.notes.section",     "NOTES")
+        static let notesPlaceholder = t("user.notes.placeholder",
+                                        "Ajouter une note…")
+    }
+
+    // MARK: - Actions sur le panneau détail
+    enum DetailActions {
+        static let sectionTitle  = t("detail.actions.section",        "ACTIONS")
+        static let scanPorts     = t("detail.actions.scan_ports",     "Scanner les ports")
+        static let enrich        = t("detail.actions.enrich",         "Enrichir")
+        static let checkVuln     = t("detail.actions.check_vuln",     "Vulnérabilités")
+        static let running       = t("detail.actions.running",        "En cours…")
+        // Hints accessibilité
+        static let scanPortsHint = t("detail.actions.scan_ports.hint",
+                                     "Scanne tous les ports communs de cet appareil.")
+        static let enrichHint    = t("detail.actions.enrich.hint",
+                                     "Récupère OS, nom Bonjour, NetBIOS, bannière HTTP et latence.")
+        static let checkVulnHint = t("detail.actions.check_vuln.hint",
+                                     "Analyse les vulnérabilités à partir des ports déjà scannés.")
+    }
+
     // MARK: - Types d'appareils
     enum DeviceType {
         static let router    = t("device.type.router",   "Routeur")
