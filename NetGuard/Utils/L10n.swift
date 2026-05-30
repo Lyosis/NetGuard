@@ -12,6 +12,9 @@ enum L10n {
     private static func t(_ key: String, _ fallback: String, _ arg: CVarArg) -> String {
         String(format: NSLocalizedString(key, value: fallback, comment: ""), arg)
     }
+    private static func t(_ key: String, _ fallback: String, _ a1: CVarArg, _ a2: CVarArg) -> String {
+        String(format: NSLocalizedString(key, value: fallback, comment: ""), a1, a2)
+    }
 
     // MARK: - App
     enum App {
@@ -20,6 +23,32 @@ enum L10n {
         static func lastScanSeconds(_ n: Int) -> String { t("app.last_scan.seconds", "Dernier scan il y a %d s",   n) }
         static func lastScanMinutes(_ n: Int) -> String { t("app.last_scan.minutes", "Dernier scan il y a %d min", n) }
         static func lastScanHours(_ n: Int)   -> String { t("app.last_scan.hours",   "Dernier scan il y a %d h",   n) }
+    }
+
+    // MARK: - Accessibilité (VoiceOver)
+    enum A11y {
+        /// Annonce vocale de fin de scan : « Scan terminé. 12 appareils, 3 alertes. »
+        static func scanDone(devices: Int, alerts: Int) -> String {
+            t("a11y.scan.done", "Scan terminé. %1$d appareils, %2$d alertes.", devices, alerts)
+        }
+        /// Annonce vocale de fin de scan rapide : « Scan rapide terminé. 12 appareils. »
+        static func scanQuickDone(devices: Int) -> String {
+            t("a11y.scan.quick_done", "Scan rapide terminé. %d appareils.", devices)
+        }
+        /// Indice d'action sur un nœud de la carte
+        static let nodeHint   = t("a11y.node.hint", "Touchez deux fois pour voir les détails.")
+        /// Fragment de libellé : « 3 alertes »
+        static func alerts(_ n: Int) -> String { t("a11y.alerts", "%d alertes", n) }
+        /// Libellé du bouton Internet sur la carte
+        static let internet   = t("a11y.internet", "Internet, passerelle vers l'extérieur")
+    }
+
+    // MARK: - Barre de menus (macOS)
+    enum Menu {
+        static let scan         = t("menu.scan",            "Scan")
+        static let scanFull      = t("menu.scan.full",       "Scan complet")
+        static let scanQuick     = t("menu.scan.quick",      "Scan rapide")
+        static let markAllRead   = t("menu.alerts.mark_all", "Marquer toutes les alertes comme lues")
     }
 
     // MARK: - Sidebar
@@ -70,8 +99,9 @@ enum L10n {
         static let labelTTL         = t("detail.label.ttl",         "TTL")
         static func ttlValue(_ n: Int) -> String { t("detail.ttl_value", "%ld sauts", n) }
         static let labelMAC         = t("detail.label.mac",         "Adresse MAC")
-        static let labelBonjour     = t("detail.label.bonjour",     "Bonjour")
-        static let labelNetBIOS     = t("detail.label.netbios",     "NetBIOS")
+        static let labelBonjour         = t("detail.label.bonjour",          "Bonjour")
+        static let labelBonjourServices = t("detail.label.bonjour_services", "Services")
+        static let labelNetBIOS         = t("detail.label.netbios",          "NetBIOS")
         static let labelDNS         = t("detail.label.dns",         "DNS")
         static let labelType        = t("detail.label.type",        "Type")
         static let labelRole        = t("detail.label.role",        "Rôle")
@@ -83,6 +113,31 @@ enum L10n {
         static let labelLastSeen    = t("detail.label.last_seen",   "Dernière activité")
         static let placeholder      = t("detail.placeholder",       "Sélectionne un appareil")
         static let placeholderSub   = t("detail.placeholder.sub",   "Clique sur un nœud de la carte\npour voir ses détails")
+    }
+
+    // MARK: - Annotations utilisateur (nom + notes)
+    enum UserAnnotation {
+        static let aliasPlaceholder = t("user.alias.placeholder",
+                                        "Nom personnalisé (ex : Mon NAS)")
+        static let notesSection     = t("user.notes.section",     "NOTES")
+        static let notesPlaceholder = t("user.notes.placeholder",
+                                        "Ajouter une note…")
+    }
+
+    // MARK: - Actions sur le panneau détail
+    enum DetailActions {
+        static let sectionTitle  = t("detail.actions.section",        "ACTIONS")
+        static let scanPorts     = t("detail.actions.scan_ports",     "Scanner les ports")
+        static let enrich        = t("detail.actions.enrich",         "Enrichir")
+        static let checkVuln     = t("detail.actions.check_vuln",     "Vulnérabilités")
+        static let running       = t("detail.actions.running",        "En cours…")
+        // Hints accessibilité
+        static let scanPortsHint = t("detail.actions.scan_ports.hint",
+                                     "Scanne tous les ports communs de cet appareil.")
+        static let enrichHint    = t("detail.actions.enrich.hint",
+                                     "Récupère OS, nom Bonjour, NetBIOS, bannière HTTP et latence.")
+        static let checkVulnHint = t("detail.actions.check_vuln.hint",
+                                     "Analyse les vulnérabilités à partir des ports déjà scannés.")
     }
 
     // MARK: - Types d'appareils

@@ -171,6 +171,9 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var firstSeen: Date
     @Published var lastSeen: Date
     @Published var parentIP: String?
+    @Published var bonjourServices: [String]   // services Bonjour découverts via NWBrowser
+    @Published var userAlias: String           // nom personnalisé saisi par l'utilisateur
+    @Published var userNote: String            // notes libres de l'utilisateur
 
     init(
         ip: String,
@@ -188,7 +191,10 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         osGuess: OSGuess = .unknown,
         httpBanner: String = "",
         httpTitle: String = "",
-        parentIP: String? = nil
+        parentIP: String? = nil,
+        bonjourServices: [String] = [],
+        userAlias: String = "",
+        userNote: String = ""
     ) {
         self.id = UUID()
         self.ip = ip
@@ -209,6 +215,9 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         self.firstSeen = Date()
         self.lastSeen = Date()
         self.parentIP = parentIP
+        self.bonjourServices = bonjourServices
+        self.userAlias = userAlias
+        self.userNote = userNote
     }
 
     var displayName: String {
@@ -230,7 +239,8 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case id, ip, mac, hostname, mdnsName, netbiosName, vendor, type, status,
              openPorts, isCurrentDevice, responseTime, ttl, osGuess,
-             httpBanner, httpTitle, firstSeen, lastSeen, parentIP
+             httpBanner, httpTitle, firstSeen, lastSeen, parentIP, bonjourServices,
+             userAlias, userNote
     }
 
     required init(from decoder: Decoder) throws {
@@ -254,6 +264,9 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         firstSeen       = (try? c.decode(Date.self,      forKey: .firstSeen))  ?? Date()
         lastSeen        = try c.decode(Date.self,        forKey: .lastSeen)
         parentIP        = try c.decodeIfPresent(String.self, forKey: .parentIP)
+        bonjourServices = (try? c.decode([String].self,      forKey: .bonjourServices)) ?? []
+        userAlias       = (try? c.decode(String.self,        forKey: .userAlias))       ?? ""
+        userNote        = (try? c.decode(String.self,        forKey: .userNote))        ?? ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -277,5 +290,8 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         try c.encode(firstSeen,       forKey: .firstSeen)
         try c.encode(lastSeen,        forKey: .lastSeen)
         try c.encode(parentIP,        forKey: .parentIP)
+        try c.encode(bonjourServices, forKey: .bonjourServices)
+        try c.encode(userAlias,       forKey: .userAlias)
+        try c.encode(userNote,        forKey: .userNote)
     }
 }

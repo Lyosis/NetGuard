@@ -1,12 +1,42 @@
 import Foundation
 import Network
 
+// MARK: - BonjourInfo
+/// Informations Bonjour associées à un appareil (indexées par IPv4)
+private struct BonjourInfo {
+    var instanceName: String        // ex: "Mon NAS" (nom Bonjour instance)
+    var services: [String]          // ex: ["_smb._tcp", "_afpovertcp._tcp"]
+}
+
 // MARK: - DeviceEnricher
-/// Enrichit chaque appareil avec OS, mDNS, NetBIOS, HTTP banner, latence précise
+/// Enrichit chaque appareil avec OS, Bonjour (NWBrowser), NetBIOS, HTTP banner, latence précise
 actor DeviceEnricher {
 
     static let shared = DeviceEnricher()
     private init() {}
+
+    // MARK: - Bonjour state (partagé entre discoverBonjourServices et enrichDevice)
+    private var bonjourTable: [String: BonjourInfo] = [:]
+
+    /// Types de services Bonjour à découvrir
+    private static let bonjourServiceTypes: [String] = [
+        "_http._tcp",
+        "_https._tcp",
+        "_ssh._tcp",
+        "_smb._tcp",
+        "_afpovertcp._tcp",
+        "_raop._tcp",
+        "_airplay._tcp",
+        "_ipp._tcp",
+        "_printer._tcp",
+        "_homekit._tcp",
+        "_googlecast._tcp",
+        "_companion-link._tcp",
+        "_sleep-proxy._tcp",
+        "_rfb._tcp",
+        "_ftp._tcp",
+        "_daap._tcp",
+    ]
 
     // MARK: - Enrich all devices
     func enrichAll(
@@ -24,11 +54,13 @@ actor DeviceEnricher {
     // MARK: - Enrich single device
     func enrichDevice(_ device: NetworkDevice) async {
         async let ping    = precisePing(ip: device.ip)
-        async let mdns    = resolveMDNS(ip: device.ip)
         async let nb      = resolveNetBIOS(ip: device.ip)
         async let http    = grabHTTP(ip: device.ip, ports: device.openPorts.map(\.port))
 
-        let (pingResult, mdnsName, nbName, httpInfo) = await (ping, mdns, nb, http)
+        let (pingResult, nbName, httpInfo) = await (ping, nb, http)
+
+        // Récupérer les infos Bonjour depuis la table déjà remplie
+        let bonjour = bonjourTable[device.ip]
 
         // Compute OS guess on the actor before switching to MainActor
         let (vendor, devType, hostname) = await MainActor.run {
@@ -40,11 +72,175 @@ actor DeviceEnricher {
             device.responseTime = pingResult.ms
             device.ttl          = pingResult.ttl
             device.osGuess      = os
-            if !mdnsName.isEmpty  { device.mdnsName   = mdnsName }
+            if let b = bonjour {
+                if !b.instanceName.isEmpty { device.mdnsName = b.instanceName }
+                device.bonjourServices = b.services
+            }
             if !nbName.isEmpty    { device.netbiosName = nbName }
             if !httpInfo.banner.isEmpty { device.httpBanner = httpInfo.banner }
             if !httpInfo.title.isEmpty  { device.httpTitle  = httpInfo.title }
             device.lastSeen = Date()
+        }
+    }
+
+    // MARK: - Bonjour Discovery (NWBrowser)
+
+    /// Lance la découverte Bonjour pour tous les types de services en parallèle,
+    /// résout les endpoints en IPv4, puis popule `bonjourTable`.
+    /// Durée totale : ~3s browse + ~2s resolve (en parallèle).
+    func discoverBonjourServices() async {
+        // 1. Découverte de tous les types en parallèle (3s timeout)
+        let allResults: [BrowseResult] = await withTaskGroup(of: [BrowseResult].self) { group in
+            for serviceType in Self.bonjourServiceTypes {
+                group.addTask {
+                    await self.browse(serviceType, timeout: 3.0)
+                }
+            }
+            var combined: [BrowseResult] = []
+            for await partial in group {
+                combined.append(contentsOf: partial)
+            }
+            return combined
+        }
+
+        // 2. Résolution des endpoints en IPv4 en parallèle (2s timeout par connexion)
+        var table: [String: BonjourInfo] = [:]
+        await withTaskGroup(of: (String?, BrowseResult).self) { group in
+            for result in allResults {
+                group.addTask {
+                    let ip = await self.resolveToIP(result.endpoint)
+                    return (ip, result)
+                }
+            }
+            for await (ip, result) in group {
+                guard let ip else { continue }
+                if var existing = table[ip] {
+                    if !existing.services.contains(result.serviceType) {
+                        existing.services.append(result.serviceType)
+                    }
+                    if existing.instanceName.isEmpty {
+                        existing.instanceName = result.instanceName
+                    }
+                    table[ip] = existing
+                } else {
+                    table[ip] = BonjourInfo(instanceName: result.instanceName,
+                                            services: [result.serviceType])
+                }
+            }
+        }
+
+        bonjourTable = table
+    }
+
+    // MARK: - NWBrowser (un type de service, retourne tous les résultats en ~timeout secondes)
+
+    private struct BrowseResult {
+        var instanceName: String
+        var serviceType: String
+        var endpoint: NWEndpoint
+    }
+
+    private func browse(_ serviceType: String, timeout: TimeInterval) async -> [BrowseResult] {
+        // NWBrowser doit être utilisé depuis une DispatchQueue — on utilise une queue sérialisée
+        // par type de service pour éviter les conflits de concurrence Swift 6.
+        let queueLabel = "netguard.bonjour.\(serviceType.filter { $0.isLetter || $0 == "." })"
+        let queue = DispatchQueue(label: queueLabel, qos: .utility)
+
+        // Box @unchecked Sendable : manipulée exclusivement sur `queue`
+        final class Box: @unchecked Sendable {
+            var results: [BrowseResult] = []
+        }
+        let box = Box()
+
+        return await withCheckedContinuation { (continuation: CheckedContinuation<[BrowseResult], Never>) in
+            // Utiliser un flag pour éviter le double-resume
+            final class Flag: @unchecked Sendable { var done = false }
+            let flag = Flag()
+
+            let browser = NWBrowser(
+                for: .bonjourWithTXTRecord(type: serviceType, domain: "local."),
+                using: NWParameters()
+            )
+
+            browser.browseResultsChangedHandler = { currentResults, _ in
+                // Appelé sur queue (NWBrowser hérite de la queue passée à start)
+                box.results = currentResults.compactMap { result -> BrowseResult? in
+                    guard case let .service(name, type, _, _) = result.endpoint else { return nil }
+                    // Normaliser le type : supprimer le point final éventuel ("_ssh._tcp." → "_ssh._tcp")
+                    let normalizedType = type.hasSuffix(".") ? String(type.dropLast()) : type
+                    return BrowseResult(instanceName: name,
+                                        serviceType: normalizedType,
+                                        endpoint: result.endpoint)
+                }
+            }
+
+            browser.start(queue: queue)
+
+            queue.asyncAfter(deadline: .now() + timeout) {
+                guard !flag.done else { return }
+                flag.done = true
+                browser.cancel()
+                continuation.resume(returning: box.results)
+            }
+        }
+    }
+
+    // MARK: - Résolution endpoint → IPv4 via NWConnection
+
+    private func resolveToIP(_ endpoint: NWEndpoint) async -> String? {
+        let queue = DispatchQueue(label: "netguard.resolve", qos: .utility)
+
+        final class State: @unchecked Sendable {
+            var resumed = false
+        }
+        let state = State()
+
+        return await withCheckedContinuation { (continuation: CheckedContinuation<String?, Never>) in
+            let conn = NWConnection(to: endpoint, using: .tcp)
+
+            conn.stateUpdateHandler = { newState in
+                guard !state.resumed else { return }
+                switch newState {
+                case .ready:
+                    state.resumed = true
+                    // Lire l'adresse réelle depuis le chemin courant
+                    if let path = conn.currentPath,
+                       case let .hostPort(host, _) = path.remoteEndpoint {
+                        let ipString: String?
+                        switch host {
+                        case .ipv4(let addr):
+                            // NWIPv4Address n'est pas directement StringConvertible en Swift 6
+                            // On passe par debugDescription : "192.168.1.5"
+                            ipString = "\(addr)"
+                        case .name(let name, _):
+                            // Fallback si on récupère un nom plutôt qu'une IP
+                            ipString = name.isEmpty ? nil : name
+                        default:
+                            ipString = nil
+                        }
+                        conn.cancel()
+                        continuation.resume(returning: ipString)
+                    } else {
+                        conn.cancel()
+                        continuation.resume(returning: nil)
+                    }
+                case .failed, .cancelled:
+                    state.resumed = true
+                    continuation.resume(returning: nil)
+                default:
+                    break
+                }
+            }
+
+            conn.start(queue: queue)
+
+            // Timeout de 2s par résolution
+            queue.asyncAfter(deadline: .now() + 2.0) {
+                guard !state.resumed else { return }
+                state.resumed = true
+                conn.cancel()
+                continuation.resume(returning: nil)
+            }
         }
     }
 
@@ -115,44 +311,6 @@ actor DeviceEnricher {
             if type == .router || type == .firewall || type == .switch { return .router }
             return .linux
         default: return .unknown
-        }
-    }
-
-    // MARK: - mDNS / Bonjour resolution
-    private func resolveMDNS(ip: String) async -> String {
-        return await withCheckedContinuation { continuation in
-            // dns-sd lookup by address
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/dns-sd")
-            process.arguments = ["-Q", ip + ".in-addr.arpa.", "PTR"]
-            let pipe = Pipe()
-            process.standardOutput = pipe
-            process.standardError  = Pipe()
-
-            // dns-sd runs indefinitely, kill after 1.5s
-            DispatchQueue.global().asyncAfter(deadline: .now() + 1.5) {
-                process.terminate()
-                let out = String(data: pipe.fileHandleForReading.readDataToEndOfFile(),
-                                 encoding: .utf8) ?? ""
-                // Parse hostname from output
-                let lines = out.components(separatedBy: "\n")
-                for line in lines {
-                    if line.contains("PTR") {
-                        let parts = line.split(separator: " ", omittingEmptySubsequences: true)
-                        if let last = parts.last {
-                            let name = String(last).trimmingCharacters(in: .whitespaces)
-                                        .replacingOccurrences(of: ".local.", with: "")
-                                        .replacingOccurrences(of: ".", with: "")
-                            if !name.isEmpty && !name.hasPrefix("_") {
-                                continuation.resume(returning: name)
-                                return
-                            }
-                        }
-                    }
-                }
-                continuation.resume(returning: "")
-            }
-            try? process.run()
         }
     }
 
