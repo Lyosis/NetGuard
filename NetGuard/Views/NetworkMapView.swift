@@ -73,7 +73,7 @@ struct NetworkMapView: View {
                 }
             }
         }
-        .onChange(of: state.selectedDevice?.id) { selectedNode = state.selectedDevice }
+        .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
     }
 
     // MARK: - Map Content

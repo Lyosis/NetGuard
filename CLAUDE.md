@@ -6,7 +6,7 @@ Dépôt : `git@github.com:Lyosis/NetGuard.git`
 
 ## Stack technique
 
-- **macOS 26+**, Apple Silicon, SwiftUI, **no sandbox**
+- **macOS 15.0+** (deployment target), **macOS 26+ Liquid Glass + FoundationModels** via `#available`, Universal Binary (arm64 + x86_64), SwiftUI, **no sandbox**
 - **Swift 6** strict concurrency
 - Architecture : `HSplitView` 3 colonnes (Sidebar | NetworkMapView | DeviceDetailView)
 - Services : `actor` NetworkScanner, PortScanner, DeviceEnricher, VulnerabilityChecker, AppState (@MainActor)
