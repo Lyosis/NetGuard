@@ -18,6 +18,23 @@ class AppState: ObservableObject {
     /// Action en cours sur un appareil (clé = device.id). Permet de griser le
     /// bouton concerné et d'afficher un spinner dans le panneau détail.
     @Published var runningDeviceAction: [UUID: DeviceAction] = [:]
+    /// Filtre actif sur la carte (cliquable depuis les MetricCards de la sidebar).
+    @Published var deviceFilter: DeviceFilter = .all
+
+    /// Sous-ensemble de `devices` à afficher selon le filtre courant.
+    /// `.all` → tout, `.known` → tout sauf `.unknown`, `.unknown` → uniquement `.unknown`.
+    var filteredDevices: [NetworkDevice] {
+        switch deviceFilter {
+        case .all:     return devices
+        case .known:   return devices.filter { $0.effectiveType != .unknown }
+        case .unknown: return devices.filter { $0.effectiveType == .unknown }
+        }
+    }
+
+    /// Bascule entre le filtre demandé et `.all` (re-clic = désactivation).
+    func toggleFilter(_ target: DeviceFilter) {
+        deviceFilter = (deviceFilter == target) ? .all : target
+    }
 
     // MARK: - Services
     private let networkInfoService   = NetworkInfoService.shared
@@ -30,7 +47,7 @@ class AppState: ObservableObject {
     // MARK: - Computed
     var totalAlerts: Int     { alerts.filter { !$0.isRead }.count }
     var openPortCount: Int   { devices.flatMap(\.openPorts).count }
-    var unknownCount: Int    { devices.filter { $0.type == .unknown }.count }
+    var unknownCount: Int    { devices.filter { $0.effectiveType == .unknown }.count }
     var alertDevices: Int    { devices.filter { $0.status == .alert }.count }
 
     var wifiEncryption: String {
@@ -51,6 +68,11 @@ class AppState: ObservableObject {
         networkMonitor.start()
         loadCachedScan()
         Task { await refreshNetworkInfo() }
+        // Précharge la base OUI IEEE (~3 MB) en background pour ne pas
+        // ralentir le premier scan complet.
+        Task.detached(priority: .utility) {
+            await OUIDatabase.shared.preload()
+        }
     }
 
     // MARK: - Cache du dernier scan (stop-gap avant SwiftData A5)
@@ -230,20 +252,31 @@ class AppState: ObservableObject {
     private func applyUserAnnotations(to list: [NetworkDevice]) {
         let store = UserAnnotationsStore.shared
         for device in list {
-            let (alias, note) = store.annotation(for: device.mac)
-            device.userAlias = alias
-            device.userNote  = note
+            let a = store.annotation(for: device.mac)
+            device.userAlias = a.alias
+            device.userNote  = a.note
+            device.userOverrideType = a.overrideType
         }
     }
 
     /// Sauvegarde l'annotation courante d'un device (appelée à chaque édition
-    /// du champ alias ou notes dans `DeviceDetailView`).
+    /// du champ alias, des notes, ou du type forcé dans `DeviceDetailView`).
     func persistAnnotation(for device: NetworkDevice) {
         UserAnnotationsStore.shared.save(
-            mac:   device.mac,
-            alias: device.userAlias,
-            note:  device.userNote
+            mac:          device.mac,
+            alias:        device.userAlias,
+            note:         device.userNote,
+            overrideType: device.userOverrideType
         )
+    }
+
+    /// Force ou efface le type d'un appareil. `nil` revient à l'auto-détection.
+    /// Met à jour `runningDeviceAction[device.id]`, persiste l'annotation, et
+    /// resauvegarde le cache pour que la valeur survive au quit.
+    func setOverrideType(for device: NetworkDevice, to type: DeviceType?) {
+        device.userOverrideType = type
+        persistAnnotation(for: device)
+        saveCachedScan()
     }
 
     // MARK: - Actions à la demande sur un appareil (panneau détail)
@@ -309,4 +342,12 @@ enum DeviceAction {
     case ports
     case enrich
     case vulnerabilities
+}
+
+// MARK: - DeviceFilter
+/// Filtre de la carte réseau, contrôlé depuis les MetricCards de la sidebar.
+enum DeviceFilter {
+    case all
+    case known      // tous sauf .unknown
+    case unknown
 }

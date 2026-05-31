@@ -106,6 +106,11 @@ enum L10n {
         static let labelType        = t("detail.label.type",        "Type")
         static let labelRole        = t("detail.label.role",        "Rôle")
         static let currentDevice    = t("detail.current_device",    "Ce Mac (appareil courant)")
+        static let labelPrivacy     = t("detail.label.privacy",     "Confidentialité")
+        static let privateMACBadge  = t("detail.privacy.mac_private",
+                                        "MAC privée — à vérifier sur l'appareil")
+        static let privateMACHint   = t("detail.privacy.mac_private.hint",
+                                        "Cet appareil utilise une adresse MAC privée (option WiFi privé d'iOS/iPadOS/macOS Sonoma+/Android 10+). Le type est déduit par heuristique — confirme depuis l'appareil lui-même.")
         static let labelLatency     = t("detail.label.latency",     "Latence")
         static let labelHTTPServer  = t("detail.label.http_server", "Serveur HTTP")
         static let labelWebPage     = t("detail.label.web_page",    "Page web")
@@ -158,6 +163,14 @@ enum L10n {
                                       "Impossible de récupérer le certificat (appareil hors ligne ?).")
     }
 
+    // MARK: - Forcer le type (override utilisateur)
+    enum Override {
+        static let autoDetect  = t("override.auto",         "Auto-détecté")
+        static let forcedBadge = t("override.forced_badge", "Forcé")
+        static let menuHint    = t("override.menu.hint",
+                                   "Choisis manuellement le type si l'auto-détection est incorrecte. « Auto-détecté » revient au type deviné par NetGuard.")
+    }
+
     // MARK: - Annotations utilisateur (nom + notes)
     enum UserAnnotation {
         static let aliasPlaceholder = t("user.alias.placeholder",
@@ -194,6 +207,8 @@ enum L10n {
         static let wifi      = t("device.type.wifi",     "WiFi AP")
         static let firewall  = t("device.type.firewall", "Firewall")
         static let `switch`  = t("device.type.switch",  "Switch")
+        static let appletv   = t("device.type.appletv",  "Apple TV / HomePod")
+        static let iot       = t("device.type.iot",      "Objet connecté")
         static let unknown   = t("device.type.unknown",  "Inconnu")
         static let internet  = t("device.type.internet", "Internet")
     }

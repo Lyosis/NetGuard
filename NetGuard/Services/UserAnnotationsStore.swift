@@ -17,6 +17,7 @@ final class UserAnnotationsStore {
     private struct Annotation: Codable {
         var alias: String
         var note: String
+        var overrideType: DeviceType?   // ajouté v1.1 — optionnel, rétrocompat
     }
 
     // MARK: État
@@ -26,22 +27,22 @@ final class UserAnnotationsStore {
 
     // MARK: API publique
 
-    /// Renvoie (alias, note) pour le MAC donné, ou ("", "") si absent.
-    func annotation(for mac: String) -> (alias: String, note: String) {
+    /// Renvoie (alias, note, overrideType) pour le MAC donné, ou (vide, vide, nil) si absent.
+    func annotation(for mac: String) -> (alias: String, note: String, overrideType: DeviceType?) {
         loadIfNeeded()
-        guard let key = normalize(mac), let a = cache[key] else { return ("", "") }
-        return (a.alias, a.note)
+        guard let key = normalize(mac), let a = cache[key] else { return ("", "", nil) }
+        return (a.alias, a.note, a.overrideType)
     }
 
-    /// Sauvegarde l'annotation. Si alias et note sont vides → supprime l'entrée.
-    /// Si le MAC est vide → ne persiste rien (pas d'identifiant stable).
-    func save(mac: String, alias: String, note: String) {
+    /// Sauvegarde l'annotation. Si alias, note et overrideType sont tous vides
+    /// → supprime l'entrée. Si le MAC est vide → ne persiste rien.
+    func save(mac: String, alias: String, note: String, overrideType: DeviceType?) {
         loadIfNeeded()
         guard let key = normalize(mac) else { return }
-        if alias.isEmpty && note.isEmpty {
+        if alias.isEmpty && note.isEmpty && overrideType == nil {
             cache.removeValue(forKey: key)
         } else {
-            cache[key] = Annotation(alias: alias, note: note)
+            cache[key] = Annotation(alias: alias, note: note, overrideType: overrideType)
         }
         persist()
     }

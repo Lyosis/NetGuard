@@ -11,6 +11,16 @@
         }
       }
     },
+    "%@, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@, %2$@"
+          }
+        }
+      }
+    },
     "%@, %@, %@": {
       "localizations": {
         "fr": {
@@ -22,6 +32,8 @@
       }
     },
     "%lld": {},
+    "Filtre actif. Touchez pour désactiver.": {},
+    "Touchez pour filtrer la carte sur cette catégorie.": {},
     "a11y.alerts": {
       "extractionState": "manual",
       "localizations": {
@@ -840,6 +852,23 @@
         }
       }
     },
+    "detail.label.privacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité"
+          }
+        }
+      }
+    },
     "detail.label.role": {
       "extractionState": "manual",
       "localizations": {
@@ -955,6 +984,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clique sur un nœud de la carte\npour voir ses détails"
+          }
+        }
+      }
+    },
+    "detail.privacy.mac_private": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private MAC — verify on the device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAC privée — à vérifier sur l'appareil"
+          }
+        }
+      }
+    },
+    "detail.privacy.mac_private.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device uses a private MAC address (private Wi-Fi option on iOS/iPadOS/macOS Sonoma+/Android 10+). Type is inferred heuristically — confirm from the device itself."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet appareil utilise une adresse MAC privée (option WiFi privé d'iOS/iPadOS/macOS Sonoma+/Android 10+). Le type est déduit par heuristique — confirme depuis l'appareil lui-même."
           }
         }
       }
@@ -1114,6 +1177,23 @@
         }
       }
     },
+    "device.type.appletv": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple TV / HomePod"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple TV / HomePod"
+          }
+        }
+      }
+    },
     "device.type.firewall": {
       "extractionState": "manual",
       "localizations": {
@@ -1144,6 +1224,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Internet"
+          }
+        }
+      }
+    },
+    "device.type.iot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objet connecté"
           }
         }
       }
@@ -1726,6 +1823,57 @@
           "stringUnit": {
             "state": "translated",
             "value": "Windows"
+          }
+        }
+      }
+    },
+    "override.auto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-détecté"
+          }
+        }
+      }
+    },
+    "override.forced_badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forcé"
+          }
+        }
+      }
+    },
+    "override.menu.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manually choose the type if auto-detection is wrong. “Auto-detected” reverts to NetGuard's guess."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis manuellement le type si l'auto-détection est incorrecte. « Auto-détecté » revient au type deviné par NetGuard."
           }
         }
       }

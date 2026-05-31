@@ -221,6 +221,72 @@ struct DeviceDetailView: View {
         SFCertificatePanel.shared().runModal(for: trust, showGroup: true)
     }
 
+    // MARK: - Ligne Type avec Menu picker (auto-détecté + override utilisateur)
+    /// Liste des types proposés dans le menu (on cache `.internet` qui n'a pas
+    /// de sens pour un appareil du LAN, et `.unknown` qui est l'absence d'override).
+    private static let selectableTypes: [DeviceType] = [
+        .router, .wifi, .switch, .firewall,
+        .mac, .iphone, .ipad,
+        .nas, .printer,
+        .appletv, .iot
+    ]
+
+    private var typeOverrideRow: some View {
+        let overridden = device.userOverrideType != nil
+        return HStack(spacing: 10) {
+            Image(systemName: device.effectiveType.icon)
+                .font(.system(size: 13))
+                .foregroundColor(.white.opacity(0.3))
+                .frame(width: 18)
+                .accessibilityHidden(true)
+
+            Text(L10n.Detail.labelType)
+                .font(.system(size: 13))
+                .foregroundColor(.white.opacity(0.45))
+
+            Spacer()
+
+            Menu {
+                Button(L10n.Override.autoDetect) {
+                    state.setOverrideType(for: device, to: nil)
+                }
+                Divider()
+                ForEach(Self.selectableTypes, id: \.self) { type in
+                    Button {
+                        state.setOverrideType(for: device, to: type)
+                    } label: {
+                        Label(type.localizedName, systemImage: type.icon)
+                    }
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    Text(device.effectiveType.localizedName)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.white.opacity(0.85))
+                    if overridden {
+                        Text(L10n.Override.forcedBadge)
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 2)
+                            .background(Color.blue.opacity(0.15))
+                            .cornerRadius(4)
+                    }
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundColor(.white.opacity(0.4))
+                }
+            }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+            .fixedSize()
+            .help(L10n.Override.menuHint)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(L10n.Detail.labelType), \(device.effectiveType.localizedName)")
+        .accessibilityHint(L10n.Override.menuHint)
+    }
+
     // MARK: - Bindings annotations utilisateur
     private var aliasBinding: Binding<String> {
         Binding(
@@ -283,14 +349,14 @@ struct DeviceDetailView: View {
         VStack(spacing: 10) {
             ZStack {
                 Circle()
-                    .fill(device.type.color.opacity(0.15))
+                    .fill(device.effectiveType.color.opacity(0.15))
                     .frame(width: 70, height: 70)
                 Circle()
                     .stroke(device.status.color.opacity(0.6), lineWidth: 2)
                     .frame(width: 70, height: 70)
-                Image(systemName: device.type.icon)
+                Image(systemName: device.effectiveType.icon)
                     .font(.system(size: 30, weight: .medium))
-                    .foregroundColor(device.type.color)
+                    .foregroundColor(device.effectiveType.color)
             }
             VStack(spacing: 4) {
                 Text(device.displayName)
@@ -375,8 +441,14 @@ struct DeviceDetailView: View {
                 DetailRow(icon: "globe", label: L10n.Detail.labelDNS,
                           value: device.hostname)
             }
-            DetailRow(icon: device.type.icon, label: L10n.Detail.labelType,
-                      value: device.type.localizedName)
+            typeOverrideRow
+            if device.isPrivateMAC {
+                DetailRow(icon: "lock.shield",
+                          label: L10n.Detail.labelPrivacy,
+                          value: L10n.Detail.privateMACBadge,
+                          valueColor: Color(red: 1.0, green: 0.7, blue: 0.2))
+                    .help(L10n.Detail.privateMACHint)
+            }
             if device.isCurrentDevice {
                 DetailRow(icon: "arrow.up.circle.fill", label: L10n.Detail.labelRole,
                           value: "Ce Mac (appareil courant)", accent: true)

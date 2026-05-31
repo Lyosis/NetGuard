@@ -82,14 +82,24 @@ struct SidebarView: View {
     // MARK: - Metrics Grid
     private var metricsGrid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-            MetricCard(title: L10n.Sidebar.metricDevices, value: "\(state.devices.count)",
-                       color: .white)
+            MetricCard(
+                title: L10n.Sidebar.metricDevices,
+                value: "\(state.devices.count)",
+                color: .white,
+                isActive: state.deviceFilter == .known,
+                action: { state.toggleFilter(.known) }
+            )
             MetricCard(title: L10n.Sidebar.metricPorts, value: "\(state.openPortCount)",
                        color: state.openPortCount > 0 ? .orange : .green)
             MetricCard(title: L10n.Sidebar.metricEncrypt, value: wifiEncryptionShort,
                        color: wifiEncryptionColor)
-            MetricCard(title: L10n.Sidebar.metricUnknown, value: "\(state.unknownCount)",
-                       color: state.unknownCount > 0 ? .orange : .green)
+            MetricCard(
+                title: L10n.Sidebar.metricUnknown,
+                value: "\(state.unknownCount)",
+                color: state.unknownCount > 0 ? .orange : .green,
+                isActive: state.deviceFilter == .unknown,
+                action: { state.toggleFilter(.unknown) }
+            )
         }
     }
 
@@ -224,13 +234,27 @@ struct MetricCard: View {
     let title: String
     let value: String
     let color: Color
+    /// Bordure bleue et fond plus clair quand `true`. Indique un filtre actif.
+    var isActive: Bool = false
+    /// Si fourni, la carte devient un bouton qui invoque cette closure au tap.
+    /// Un petit chevron est affiché en haut à droite pour signaler l'interactivité.
+    var action: (() -> Void)? = nil
 
-    var body: some View {
+    private var cardContent: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(title)
-                .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.white.opacity(0.45))
-                .lineLimit(1)
+            HStack {
+                Text(title)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.white.opacity(isActive ? 0.85 : 0.45))
+                    .lineLimit(1)
+                Spacer()
+                if action != nil {
+                    Image(systemName: isActive ? "xmark.circle.fill"
+                                               : "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 11))
+                        .foregroundColor(isActive ? .blue : .white.opacity(0.3))
+                }
+            }
             Text(value)
                 .font(.system(size: 30, weight: .bold, design: .rounded))
                 .foregroundColor(color)
@@ -238,8 +262,32 @@ struct MetricCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
-        .background(Color(red: 0.12, green: 0.13, blue: 0.16))
-        .cornerRadius(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(isActive
+                      ? Color.blue.opacity(0.15)
+                      : Color(red: 0.12, green: 0.13, blue: 0.16))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(isActive ? Color.blue.opacity(0.55) : Color.clear,
+                        lineWidth: 1)
+        )
+        .contentShape(Rectangle())
+    }
+
+    var body: some View {
+        if let action {
+            Button(action: action) { cardContent }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(title), \(value)")
+                .accessibilityHint(isActive
+                    ? "Filtre actif. Touchez pour désactiver."
+                    : "Touchez pour filtrer la carte sur cette catégorie.")
+                .accessibilityAddTraits(.isButton)
+        } else {
+            cardContent
+        }
     }
 }
 
