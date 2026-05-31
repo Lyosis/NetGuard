@@ -26,7 +26,7 @@ struct DeviceDetailView: View {
             }
             .padding(16)
         }
-        .background(Color(red: 0.08, green: 0.09, blue: 0.11))
+        .glassPanelBackground()
         .frame(minWidth: 300, idealWidth: 340, maxWidth: 400)
     }
 
