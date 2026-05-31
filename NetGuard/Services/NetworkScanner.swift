@@ -53,7 +53,7 @@ actor NetworkScanner {
             await withTaskGroup(of: String?.self) { group in
                 for ip in chunk {
                     group.addTask {
-                        await self.pingHost(ip)
+                        await self.probeHost(ip)
                     }
                 }
                 for await result in group {
@@ -116,6 +116,66 @@ actor NetworkScanner {
 
         await progressHandler(1.0, "Découverte terminée")
         return devices
+    }
+
+    // MARK: - Host probing (ICMP + TCP en parallèle)
+    /// Combine un ping ICMP et 3 TCP probes (80/443/22). Le premier qui répond
+    /// gagne. Détecte les hôtes qui filtrent ICMP (switchs managés, IPMI,
+    /// imprimantes pro, certains NAS) tant qu'au moins un port admin TCP
+    /// répond.
+    private func probeHost(_ ip: String) async -> String? {
+        await withTaskGroup(of: String?.self) { group in
+            group.addTask { await self.pingHost(ip) }
+            group.addTask { await self.tcpProbe(ip: ip, port: 80,  timeout: 0.5) }
+            group.addTask { await self.tcpProbe(ip: ip, port: 443, timeout: 0.5) }
+            group.addTask { await self.tcpProbe(ip: ip, port: 22,  timeout: 0.5) }
+
+            // Race : on consomme jusqu'à la première réussite, puis on annule.
+            for await result in group {
+                if let alive = result {
+                    group.cancelAll()
+                    return alive
+                }
+            }
+            return nil
+        }
+    }
+
+    /// TCP probe : tente d'ouvrir un socket TCP vers `ip:port`. Si la
+    /// connexion devient `.ready` (handshake complet) avant `timeout`, on
+    /// renvoie l'IP. Sinon nil.
+    private nonisolated func tcpProbe(ip: String, port: Int, timeout: TimeInterval) async -> String? {
+        guard let nwPort = NWEndpoint.Port(rawValue: UInt16(port)) else { return nil }
+        let host = NWEndpoint.Host(ip)
+
+        final class State: @unchecked Sendable { var resumed = false }
+        let state = State()
+        let lock = NSLock()
+        let conn = NWConnection(host: host, port: nwPort, using: .tcp)
+
+        return await withCheckedContinuation { continuation in
+            func finish(_ result: String?) {
+                lock.lock()
+                defer { lock.unlock() }
+                guard !state.resumed else { return }
+                state.resumed = true
+                conn.cancel()
+                continuation.resume(returning: result)
+            }
+
+            conn.stateUpdateHandler = { newState in
+                switch newState {
+                case .ready:                  finish(ip)
+                case .failed, .cancelled:     finish(nil)
+                default: break
+                }
+            }
+            conn.start(queue: .global(qos: .utility))
+
+            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + timeout) {
+                finish(nil)
+            }
+        }
     }
 
     // MARK: - Ping
