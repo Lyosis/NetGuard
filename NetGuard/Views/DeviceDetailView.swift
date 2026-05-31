@@ -228,7 +228,7 @@ struct DeviceDetailView: View {
         .router, .wifi, .switch, .firewall,
         .mac, .iphone, .ipad,
         .nas, .printer,
-        .appletv, .iot
+        .appletv, .gaming, .iot
     ]
 
     private var typeOverrideRow: some View {
@@ -433,6 +433,11 @@ struct DeviceDetailView: View {
                         .joined(separator: " · ")
                 )
             }
+            if let upnp = device.upnp, let summary = upnpSummary(upnp) {
+                DetailRow(icon: "antenna.radiowaves.left.and.right",
+                          label: L10n.Detail.labelUPnP,
+                          value: summary)
+            }
             if !device.netbiosName.isEmpty {
                 DetailRow(icon: "network.badge.shield.half.filled", label: L10n.Detail.labelNetBIOS,
                           value: device.netbiosName)
@@ -593,6 +598,23 @@ struct DeviceDetailView: View {
         case 20..<50: return .yellow
         default:      return .orange
         }
+    }
+
+    /// Résume les champs UPnP disponibles en une ligne lisible.
+    /// Évite la redondance (« Sonos Inc. — Sonos Play:1 » plutôt que
+    /// « Sonos Inc. — Sonos Inc. Sonos Play:1 »).
+    private func upnpSummary(_ u: UPnPInfo) -> String? {
+        var parts: [String] = []
+        if let name = u.friendlyName, !name.isEmpty { parts.append(name) }
+        if let model = u.modelName, !model.isEmpty,
+           !parts.contains(where: { $0.localizedCaseInsensitiveContains(model) }) {
+            parts.append(model)
+        }
+        if let manuf = u.manufacturer, !manuf.isEmpty,
+           !parts.contains(where: { $0.localizedCaseInsensitiveContains(manuf) }) {
+            parts.append(manuf)
+        }
+        return parts.isEmpty ? nil : parts.joined(separator: " — ")
     }
 
     private var detailCard: some ShapeStyle {

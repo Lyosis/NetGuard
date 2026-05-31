@@ -38,16 +38,18 @@ actor NetworkScanner {
         // 4. Résoudre les noms d'hôtes depuis le cache DNS
         await progressHandler(0.10, "Résolution noms d'hôtes…")
 
-        // 5. Ping sweep sur le sous-réseau /24 (256 hôtes max, par lots de 32)
+        // 5. Ping sweep sur le sous-réseau /24 + sweep SSDP en parallèle.
+        //    SSDP multicast tourne pendant tout le ping sweep — coût marginal,
+        //    gain important pour les devices silencieux côté ICMP/TCP.
         let allIPs = generateIPs(base: baseIP, count: min(hostCount, 254))
         let chunkSize = 32
         var activeIPs: Set<String> = []
-
-        // Toujours inclure l'IP locale
         activeIPs.insert(localIP)
 
+        async let ssdpTask: [String: UPnPInfo] = SSDPDiscovery().discover(timeout: 3.0)
+
         for (chunkIdx, chunk) in allIPs.chunked(into: chunkSize).enumerated() {
-            let progress = 0.10 + Double(chunkIdx * chunkSize) / Double(allIPs.count) * 0.60
+            let progress = 0.10 + Double(chunkIdx * chunkSize) / Double(allIPs.count) * 0.55
             await progressHandler(progress, "Ping sweep \(chunkIdx * chunkSize + 1)–\(min((chunkIdx + 1) * chunkSize, allIPs.count))…")
 
             await withTaskGroup(of: String?.self) { group in
@@ -63,6 +65,11 @@ actor NetworkScanner {
                 }
             }
         }
+
+        // 5b. Récupérer les résultats SSDP et inclure les IP non vues par ICMP/TCP.
+        await progressHandler(0.68, "Découverte UPnP/SSDP…")
+        let ssdpMap = await ssdpTask
+        for ip in ssdpMap.keys { activeIPs.insert(ip) }
 
         // 6. Rafraîchir la table ARP après le ping pour avoir les MAC
         await progressHandler(0.72, "Mise à jour table ARP…")
@@ -109,7 +116,8 @@ actor NetworkScanner {
                 status: .unknown,
                 isCurrentDevice: isCurrent,
                 responseTime: 0,
-                parentIP: isGW ? nil : gateway
+                parentIP: isGW ? nil : gateway,
+                upnp: ssdpMap[ip]
             )
             devices.append(device)
         }
@@ -154,7 +162,7 @@ actor NetworkScanner {
         let conn = NWConnection(host: host, port: nwPort, using: .tcp)
 
         return await withCheckedContinuation { continuation in
-            func finish(_ result: String?) {
+            let finish: @Sendable (String?) -> Void = { result in
                 lock.lock()
                 defer { lock.unlock() }
                 guard !state.resumed else { return }

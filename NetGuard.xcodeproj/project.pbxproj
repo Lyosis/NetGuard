@@ -29,6 +29,7 @@
 		A3001122334455667788DD07 /* ScanCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788DD08 /* ScanCache.swift */; };
 		A4001122334455667788DD09 /* OUIDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4001122334455667788DD0A /* OUIDatabase.swift */; };
 		A4001122334455667788DD0B /* manuf.txt in Resources */ = {isa = PBXBuildFile; fileRef = A4001122334455667788DD0C /* manuf.txt */; };
+		A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5001122334455667788DD12 /* SSDPDiscovery.swift */; };
 		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
 		FF001122334455667788AADD /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AACC /* L10n.swift */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		A3001122334455667788DD08 /* ScanCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCache.swift; sourceTree = "<group>"; };
 		A4001122334455667788DD0A /* OUIDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUIDatabase.swift; sourceTree = "<group>"; };
 		A4001122334455667788DD0C /* manuf.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Resources/manuf.txt; sourceTree = "<group>"; };
+		A5001122334455667788DD12 /* SSDPDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSDPDiscovery.swift; sourceTree = "<group>"; };
 		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF001122334455667788AACC /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,6 +108,7 @@
 				A2001122334455667788DD06 /* CertificateInspector.swift */,
 				A3001122334455667788DD08 /* ScanCache.swift */,
 				A4001122334455667788DD0A /* OUIDatabase.swift */,
+				A5001122334455667788DD12 /* SSDPDiscovery.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				A2001122334455667788DD05 /* CertificateInspector.swift in Sources */,
 				A3001122334455667788DD07 /* ScanCache.swift in Sources */,
 				A4001122334455667788DD09 /* OUIDatabase.swift in Sources */,
+				A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */,
 				FF001122334455667788AADD /* L10n.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

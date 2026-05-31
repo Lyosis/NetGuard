@@ -101,6 +101,7 @@ enum L10n {
         static let labelMAC         = t("detail.label.mac",         "Adresse MAC")
         static let labelBonjour         = t("detail.label.bonjour",          "Bonjour")
         static let labelBonjourServices = t("detail.label.bonjour_services", "Services")
+        static let labelUPnP            = t("detail.label.upnp",             "UPnP")
         static let labelNetBIOS         = t("detail.label.netbios",          "NetBIOS")
         static let labelDNS         = t("detail.label.dns",         "DNS")
         static let labelType        = t("detail.label.type",        "Type")
@@ -209,6 +210,7 @@ enum L10n {
         static let `switch`  = t("device.type.switch",  "Switch")
         static let appletv   = t("device.type.appletv",  "Apple TV / HomePod")
         static let iot       = t("device.type.iot",      "Objet connecté")
+        static let gaming    = t("device.type.gaming",   "Console")
         static let unknown   = t("device.type.unknown",  "Inconnu")
         static let internet  = t("device.type.internet", "Internet")
     }
