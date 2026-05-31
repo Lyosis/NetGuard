@@ -13,7 +13,7 @@ final class NotificationService {
     func requestAuthorization() async {
         let settings = await center.notificationSettings()
         guard settings.authorizationStatus == .notDetermined else { return }
-        try? await center.requestAuthorization(options: [.alert, .sound])
+        _ = try? await center.requestAuthorization(options: [.alert, .sound])
     }
 
     /// Envoie une notification groupée pour les nouveaux appareils détectés.
