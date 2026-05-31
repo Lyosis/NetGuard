@@ -90,7 +90,7 @@ actor DeviceEnricher {
         }
     }
 
-    // MARK: - A12 Fingerprinting (Bonjour + vendor + banner + hostname)
+    // MARK: - A12 Fingerprinting (Bonjour + vendor + banner + hostname + UPnP)
     private struct InferSnapshot {
         let vendor: String              // lowercased
         let hostname: String            // lowercased
@@ -99,6 +99,8 @@ actor DeviceEnricher {
         let bonjourServices: Set<String>
         let httpBanner: String          // lowercased
         let httpTitle: String           // lowercased
+        let upnpText: String            // friendlyName + modelName + manufacturer + server, lowercased
+        let upnpDeviceType: String      // URN UPnP root device, lowercased
         let osGuess: OSGuess
         let isPrivateMAC: Bool
         let currentType: DeviceType
@@ -113,6 +115,10 @@ actor DeviceEnricher {
             self.bonjourServices = Set(device.bonjourServices)
             self.httpBanner      = device.httpBanner.lowercased()
             self.httpTitle       = device.httpTitle.lowercased()
+            let u = device.upnp
+            self.upnpText = [u?.friendlyName, u?.modelName, u?.manufacturer, u?.server]
+                .compactMap { $0 }.joined(separator: " ").lowercased()
+            self.upnpDeviceType = (u?.deviceType ?? "").lowercased()
             self.osGuess         = device.osGuess
             self.isPrivateMAC    = device.isPrivateMAC
             self.currentType     = device.type
@@ -134,6 +140,48 @@ actor DeviceEnricher {
         let isApple  = s.vendor.contains("apple")
         let allNames = "\(s.hostname) \(s.mdnsName) \(s.netbiosName)"
         let webText  = "\(s.httpBanner) \(s.httpTitle)"
+
+        // 1bis. Règles UPnP/SSDP — signal très fiable quand présent.
+        // L'URN root device est l'identifiant le plus précis (schemes officiels).
+        let urn = s.upnpDeviceType
+        let upnp = s.upnpText
+        if !urn.isEmpty || !upnp.isEmpty {
+            // Consoles de jeu
+            if urn.contains("xboxgaming") ||
+               upnp.contains("xbox") ||
+               (upnp.contains("microsoft") && upnp.contains("xbox")) {
+                return .gaming
+            }
+            if upnp.contains("playstation") || upnp.contains("ps4") || upnp.contains("ps5") ||
+               (upnp.contains("sony") && (upnp.contains("cuh-") || upnp.contains("cfi-"))) {
+                return .gaming
+            }
+            // Smart TVs
+            if upnp.contains("bravia") || upnp.contains("webos") ||
+               upnp.contains("samsung tv") || upnp.contains("smart tv") {
+                return .appletv
+            }
+            // Audio / domotique / caméras UPnP
+            if upnp.contains("sonos") || upnp.contains("philips hue") ||
+               upnp.contains("hue bridge") || upnp.contains("chromecast") ||
+               upnp.contains("nest") || upnp.contains("ring ") {
+                return .iot
+            }
+            // NAS UPnP MediaServer (Synology, QNAP, Plex Media Server…)
+            if urn.contains("mediaserver") &&
+               (upnp.contains("synology") || upnp.contains("qnap") ||
+                upnp.contains("diskstation") || upnp.contains("plex")) {
+                return .nas
+            }
+            // Imprimantes UPnP (rare mais existe — HP ePrint, Brother UPnP)
+            if upnp.contains("brother") || upnp.contains("epson") ||
+               upnp.contains("canon") || upnp.contains("hewlett") {
+                return .printer
+            }
+            // Routeurs UPnP IGD (Internet Gateway Device) — déjà filtré par
+            // strongTypes en général mais cas d'un IGD secondaire isolé.
+            if urn.contains("internetgatewaydevice") { return .router }
+        }
 
         // 2. Règles Bonjour (signal le plus fiable)
         if services.contains("_googlecast._tcp") { return .iot }
@@ -243,7 +291,8 @@ actor DeviceEnricher {
         // Realtek pourrait être classé IoT) mais sur un réseau home c'est
         // majoritairement vrai.
         let siliconVendors = ["texas instruments", "espressif", "realtek",
-                              "mediatek", "murata", "ralink", "atheros"]
+                              "mediatek", "murata", "ralink", "atheros",
+                              "high-flying", "hi-flying"]
         if siliconVendors.contains(where: { s.vendor.contains($0) }) && isUnixLike {
             return .iot
         }

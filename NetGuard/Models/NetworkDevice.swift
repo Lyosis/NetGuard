@@ -15,6 +15,7 @@ enum DeviceType: String, Codable, CaseIterable {
     case `switch`    = "switch"
     case appletv     = "appletv"
     case iot         = "iot"
+    case gaming      = "gaming"
     case unknown     = "unknown"
     case internet    = "internet"
 
@@ -32,6 +33,7 @@ enum DeviceType: String, Codable, CaseIterable {
         case .switch:   return L10n.DeviceType.switch
         case .appletv:  return L10n.DeviceType.appletv
         case .iot:      return L10n.DeviceType.iot
+        case .gaming:   return L10n.DeviceType.gaming
         case .unknown:  return L10n.DeviceType.unknown
         case .internet: return L10n.DeviceType.internet
         }
@@ -50,6 +52,7 @@ enum DeviceType: String, Codable, CaseIterable {
         case .switch:   return "network"
         case .appletv:  return "appletv.fill"
         case .iot:      return "homepod.mini"
+        case .gaming:   return "gamecontroller.fill"
         case .unknown:  return "questionmark.circle.fill"
         case .internet: return "globe"
         }
@@ -68,6 +71,7 @@ enum DeviceType: String, Codable, CaseIterable {
         case .switch:   return .teal
         case .appletv:  return Color(red: 0.6, green: 0.5, blue: 0.95)   // violet doux
         case .iot:      return Color(red: 1.0, green: 0.8, blue: 0.3)    // jaune ambre
+        case .gaming:   return Color(red: 0.75, green: 0.2, blue: 0.3)   // rouge bordeaux
         case .unknown:  return .gray
         case .internet: return .blue
         }
@@ -158,6 +162,20 @@ enum OSGuess: String, Codable {
     }
 }
 
+// MARK: - UPnP Info
+/// Informations collectées via SSDP/UPnP (M-SEARCH + descripteur XML).
+/// Renseigne fortement le fingerprinting des appareils silencieux côté ICMP/TCP
+/// (Xbox, smart TVs, Sonos, Chromecast, imprimantes pro, Hue Bridge, NAS UPnP…).
+struct UPnPInfo: Codable, Equatable {
+    let friendlyName: String?
+    let modelName: String?
+    let manufacturer: String?
+    /// URN du device root, ex: `urn:schemas-microsoft-com:device:XboxGamingDevice:1`
+    let deviceType: String?
+    /// Header `SERVER:` de la réponse M-SEARCH (typiquement OS + UPnP/x.x + produit)
+    let server: String?
+}
+
 // MARK: - Network Device
 class NetworkDevice: ObservableObject, Identifiable, Codable {
     let id: UUID
@@ -183,6 +201,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var userAlias: String           // nom personnalisé saisi par l'utilisateur
     @Published var userNote: String            // notes libres de l'utilisateur
     @Published var sslCertificate: CertificateInfo?  // capté lors d'un GET HTTPS (A2)
+    @Published var upnp: UPnPInfo?                   // capté via SSDP/UPnP discovery
     @Published var userOverrideType: DeviceType?     // type forcé par l'utilisateur, prime sur l'auto-détection
 
     init(
@@ -206,6 +225,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         userAlias: String = "",
         userNote: String = "",
         sslCertificate: CertificateInfo? = nil,
+        upnp: UPnPInfo? = nil,
         userOverrideType: DeviceType? = nil
     ) {
         self.id = UUID()
@@ -231,6 +251,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         self.userAlias = userAlias
         self.userNote = userNote
         self.sslCertificate = sslCertificate
+        self.upnp = upnp
         self.userOverrideType = userOverrideType
     }
 
@@ -267,7 +288,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         case id, ip, mac, hostname, mdnsName, netbiosName, vendor, type, status,
              openPorts, isCurrentDevice, responseTime, ttl, osGuess,
              httpBanner, httpTitle, firstSeen, lastSeen, parentIP, bonjourServices,
-             userAlias, userNote, sslCertificate, userOverrideType
+             userAlias, userNote, sslCertificate, upnp, userOverrideType
     }
 
     required init(from decoder: Decoder) throws {
@@ -295,6 +316,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         userAlias       = (try? c.decode(String.self,        forKey: .userAlias))       ?? ""
         userNote        = (try? c.decode(String.self,        forKey: .userNote))        ?? ""
         sslCertificate  = try? c.decode(CertificateInfo.self, forKey: .sslCertificate)
+        upnp            = try? c.decode(UPnPInfo.self,        forKey: .upnp)
         userOverrideType = try? c.decode(DeviceType.self,     forKey: .userOverrideType)
     }
 
@@ -323,6 +345,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         try c.encode(userAlias,       forKey: .userAlias)
         try c.encode(userNote,        forKey: .userNote)
         try c.encodeIfPresent(sslCertificate, forKey: .sslCertificate)
+        try c.encodeIfPresent(upnp,           forKey: .upnp)
         try c.encodeIfPresent(userOverrideType, forKey: .userOverrideType)
     }
 }

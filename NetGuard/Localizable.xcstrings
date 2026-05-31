@@ -716,6 +716,23 @@
         }
       }
     },
+    "detail.label.upnp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP"
+          }
+        }
+      }
+    },
     "detail.label.dns": {
       "extractionState": "manual",
       "localizations": {
@@ -1207,6 +1224,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Firewall"
+          }
+        }
+      }
+    },
+    "device.type.gaming": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Console"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Console"
           }
         }
       }
