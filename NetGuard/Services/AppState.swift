@@ -21,6 +21,7 @@ class AppState: ObservableObject {
     @Published var runningDeviceAction: [UUID: DeviceAction] = [:]
     /// Filtre actif sur la carte (cliquable depuis les MetricCards de la sidebar).
     @Published var deviceFilter: DeviceFilter = .all
+    @Published var snapshots: [ScanSnapshot]  = []
 
     /// Sous-ensemble de `devices` à afficher selon le filtre courant.
     var filteredDevices: [NetworkDevice] {
@@ -71,6 +72,7 @@ class AppState: ObservableObject {
         networkMonitor.start()
         migrateFromStopGapIfNeeded()
         loadPersistedDevices()
+        loadSnapshots()
         Task { await refreshNetworkInfo() }
         Task.detached(priority: .utility) {
             await OUIDatabase.shared.preload()
@@ -161,12 +163,16 @@ class AppState: ObservableObject {
 
     /// Détecte les appareils inconnus de SwiftData et génère des alertes `.intrusion`.
     /// N'est actif que si SwiftData contient déjà des données (pas au tout premier scan).
-    private func detectAndAlertNewDevices(_ discovered: [NetworkDevice]) {
+    /// Retourne le nombre de nouveaux appareils détectés (pour ScanSnapshot).
+    @discardableResult
+    private func detectAndAlertNewDevices(_ discovered: [NetworkDevice]) -> Int {
         let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
-        guard !allPersisted.isEmpty else { return }
+        guard !allPersisted.isEmpty else { return 0 }
         let knownKeys = Set(allPersisted.map(\.persistenceKey))
 
+        var newCount = 0
         for device in discovered where !knownKeys.contains(device.persistenceKey) {
+            newCount += 1
             alerts.append(NetworkAlert(
                 severity:       .high,
                 category:       .intrusion,
@@ -176,6 +182,7 @@ class AppState: ObservableObject {
                 recommendation: "Vérifiez que cet appareil est autorisé sur votre réseau."
             ))
         }
+        return newCount
     }
 
     // MARK: - Oublier un appareil
@@ -193,6 +200,52 @@ class AppState: ObservableObject {
         }
         devices.removeAll { $0.id == device.id }
         if selectedDevice?.id == device.id { selectedDevice = nil }
+    }
+
+    // MARK: - Historique des scans
+
+    private static let snapshotLimit = 30
+
+    /// Charge les snapshots au démarrage, triés du plus récent au plus ancien.
+    private func loadSnapshots() {
+        let descriptor = FetchDescriptor<ScanSnapshot>(
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        self.snapshots = (try? modelContext.fetch(descriptor)) ?? []
+    }
+
+    /// Enregistre un snapshot post-scan et élimine les entrées au-delà de la limite.
+    private func saveSnapshot(date: Date, duration: Double, deviceCount: Int,
+                               alertCount: Int, newDeviceCount: Int) {
+        let snapshot = ScanSnapshot(
+            date: date,
+            durationSeconds: duration,
+            deviceCount: deviceCount,
+            alertCount: alertCount,
+            newDeviceCount: newDeviceCount
+        )
+        modelContext.insert(snapshot)
+
+        // Nettoyage : ne garder que les N plus récents
+        let descriptor = FetchDescriptor<ScanSnapshot>(
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
+        )
+        if let all = try? modelContext.fetch(descriptor),
+           all.count > Self.snapshotLimit {
+            for old in all.dropFirst(Self.snapshotLimit) {
+                modelContext.delete(old)
+            }
+        }
+
+        try? modelContext.save()
+        loadSnapshots()
+    }
+
+    /// Supprime un snapshot depuis l'UI (context menu / swipe-to-delete).
+    func deleteSnapshot(_ snapshot: ScanSnapshot) {
+        modelContext.delete(snapshot)
+        try? modelContext.save()
+        snapshots.removeAll { $0.id == snapshot.id }
     }
 
     // MARK: - Scan status helper
@@ -280,14 +333,24 @@ class AppState: ObservableObject {
         }
 
         // Step 7 : Détection nouveaux appareils + persistance
-        detectAndAlertNewDevices(discoveredDevices)
+        let newCount = detectAndAlertNewDevices(discoveredDevices)
         upsertToStore(discoveredDevices)
+
+        let scanDate = Date()
+        let duration = scanDate.timeIntervalSince(start)
+
+        saveSnapshot(
+            date: scanDate,
+            duration: duration,
+            deviceCount: discoveredDevices.count,
+            alertCount: newAlerts.count + newCount,
+            newDeviceCount: newCount
+        )
 
         await MainActor.run {
             self.alerts       = newAlerts + self.alerts   // intrusion alerts en tête
             self.devices      = discoveredDevices
-            self.lastScanDate = Date()
-            let duration      = Date().timeIntervalSince(start)
+            self.lastScanDate = scanDate
             self.scanStatus   = .completed(duration: duration)
         }
 
@@ -318,13 +381,23 @@ class AppState: ObservableObject {
         applyPersistedAnnotations(to: discovered)
         for device in discovered { device.scanState = .active }
 
-        detectAndAlertNewDevices(discovered)
+        let newCount = detectAndAlertNewDevices(discovered)
         upsertToStore(discovered)
 
-        let duration = Date().timeIntervalSince(start)
+        let scanDate = Date()
+        let duration = scanDate.timeIntervalSince(start)
+
+        saveSnapshot(
+            date: scanDate,
+            duration: duration,
+            deviceCount: discovered.count,
+            alertCount: newCount,
+            newDeviceCount: newCount
+        )
+
         await MainActor.run {
             self.devices      = discovered
-            self.lastScanDate = Date()
+            self.lastScanDate = scanDate
             self.scanStatus   = .completed(duration: duration)
         }
 
