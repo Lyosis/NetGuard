@@ -85,6 +85,7 @@ enum L10n {
         static let legendAlert      = t("map.legend.alert",    "Alerte")
         static let emptyTitle       = t("map.empty.title",     "Aucun appareil détecté")
         static let emptySubtitle    = t("map.empty.subtitle",  "Lancez un scan pour découvrir les appareils")
+        static let diagnose         = t("map.diagnose",        "Diagnostiquer le réseau")
         static let resetView        = t("map.reset_view",      "Réinitialiser la vue")
     }
 
