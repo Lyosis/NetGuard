@@ -22,6 +22,8 @@
 		9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */; };
 		A8001122334455667788FF01 /* PersistedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8001122334455667788FF02 /* PersistedDevice.swift */; };
 		A8001122334455667788FF03 /* PersistedDevice+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */; };
+		A6001122334455667788FF05 /* ScanSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788FF06 /* ScanSnapshot.swift */; };
+		A6001122334455667788FF07 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788FF08 /* HistoryView.swift */; };
 		A2001122334455667788DD03 /* CertificateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001122334455667788DD04 /* CertificateInfo.swift */; };
 		A2001122334455667788DD05 /* CertificateInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001122334455667788DD06 /* CertificateInspector.swift */; };
 		A3001122334455667788DD07 /* ScanCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788DD08 /* ScanCache.swift */; };
@@ -54,6 +56,8 @@
 		932796120BDE4AAEAB44CE21 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
 		A8001122334455667788FF02 /* PersistedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedDevice.swift; sourceTree = "<group>"; };
 		A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistedDevice+Conversion.swift"; sourceTree = "<group>"; };
+		A6001122334455667788FF06 /* ScanSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanSnapshot.swift; sourceTree = "<group>"; };
+		A6001122334455667788FF08 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		A2001122334455667788DD04 /* CertificateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfo.swift; sourceTree = "<group>"; };
 		A2001122334455667788DD06 /* CertificateInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInspector.swift; sourceTree = "<group>"; };
 		A3001122334455667788DD08 /* ScanCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCache.swift; sourceTree = "<group>"; };
@@ -86,6 +90,7 @@
 				3C3D9108104847C6AE1B19E2 /* SidebarView.swift */,
 				1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */,
 				AA001122334455667788AABB /* DeviceDetailView.swift */,
+				A6001122334455667788FF08 /* HistoryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -125,6 +130,7 @@
 				A2001122334455667788DD04 /* CertificateInfo.swift */,
 				A8001122334455667788FF02 /* PersistedDevice.swift */,
 				A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */,
+				A6001122334455667788FF06 /* ScanSnapshot.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,6 +266,8 @@
 				A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */,
 				FF001122334455667788AADD /* L10n.swift in Sources */,
 				A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */,
+				A6001122334455667788FF05 /* ScanSnapshot.swift in Sources */,
+				A6001122334455667788FF07 /* HistoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

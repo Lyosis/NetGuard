@@ -9,13 +9,13 @@ struct NetGuardApp: App {
     init() {
         let c: ModelContainer
         do {
-            c = try ModelContainer(for: PersistedDevice.self)
+            c = try ModelContainer(for: PersistedDevice.self, ScanSnapshot.self)
         } catch {
             // Fallback mémoire si le schéma SwiftData est corrompu — données non persistées
             // mais l'app reste fonctionnelle.
             print("[NetGuard] ModelContainer init failed: \(error) — falling back to in-memory store")
             c = try! ModelContainer(
-                for: PersistedDevice.self,
+                for: PersistedDevice.self, ScanSnapshot.self,
                 configurations: ModelConfiguration(isStoredInMemoryOnly: true)
             )
         }

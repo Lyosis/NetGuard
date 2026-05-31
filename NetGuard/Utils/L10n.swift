@@ -242,6 +242,22 @@ enum L10n {
         static let info      = t("alert.severity.info",     "Info")
     }
 
+    // MARK: - Historique des scans
+    enum History {
+        static let tabNetwork    = t("history.tab.network",   "Réseau")
+        static let tabHistory    = t("history.tab.history",   "Historique")
+        static let empty         = t("history.empty",         "Aucun scan enregistré.\nLancez un scan pour commencer.")
+        static let devices       = t("history.devices",       "appareils")
+        static let alerts        = t("history.alerts",        "alertes")
+        static let newDevices    = t("history.new_devices",   "nouveaux")
+        static let delete        = t("history.delete",        "Supprimer")
+        static func duration(_ s: Double) -> String {
+            s < 60
+                ? t("history.duration.seconds", "%.0f s", s)
+                : t("history.duration.minutes", "%.1f min", s / 60)
+        }
+    }
+
     // MARK: - Moniteur réseau
     enum Monitor {
         static let connected          = t("monitor.connected",         "Réseau connecté")

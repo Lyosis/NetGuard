@@ -5,10 +5,15 @@ struct SidebarView: View {
     @EnvironmentObject var state: AppState
     @State private var showingAlerts = false
     @State private var scanType: ScanTypeSheet? = nil
+    @State private var selectedTab: SidebarTab = .network
 
     enum ScanTypeSheet: Identifiable {
         case full, quick
         var id: Int { hashValue }
+    }
+
+    enum SidebarTab {
+        case network, history
     }
 
     var body: some View {
@@ -17,32 +22,50 @@ struct SidebarView: View {
             headerSection
             Divider().overlay(Color.white.opacity(0.08))
 
-            // Bannière changement réseau (NWPathMonitor)
-            if let event = state.networkMonitor.changeEvent {
-                NetworkChangeBanner(event: event) {
-                    state.networkMonitor.dismissEvent()
-                } onRescan: {
-                    state.networkMonitor.dismissEvent()
-                    Task { await state.refreshNetworkInfo() }
-                }
-                .transition(.move(edge: .top).combined(with: .opacity))
-            }
+            // Sélecteur Réseau / Historique
+            tabPicker
 
-            ScrollView {
-                VStack(spacing: 12) {
-                    metricsGrid
-                    networkInfoSection
-                    alertsSection
+            if selectedTab == .network {
+                // Bannière changement réseau (NWPathMonitor)
+                if let event = state.networkMonitor.changeEvent {
+                    NetworkChangeBanner(event: event) {
+                        state.networkMonitor.dismissEvent()
+                    } onRescan: {
+                        state.networkMonitor.dismissEvent()
+                        Task { await state.refreshNetworkInfo() }
+                    }
+                    .transition(.move(edge: .top).combined(with: .opacity))
                 }
-                .padding(14)
-            }
 
-            Divider().overlay(Color.white.opacity(0.08))
-            scanButtons
+                ScrollView {
+                    VStack(spacing: 12) {
+                        metricsGrid
+                        networkInfoSection
+                        alertsSection
+                    }
+                    .padding(14)
+                }
+
+                Divider().overlay(Color.white.opacity(0.08))
+                scanButtons
+            } else {
+                HistoryView()
+            }
         }
         .glassPanelBackground()
         .frame(minWidth: 340, idealWidth: 380, maxWidth: 440)
         .animation(.easeInOut(duration: 0.3), value: state.networkMonitor.changeEvent?.id)
+    }
+
+    // MARK: - Tab Picker
+    private var tabPicker: some View {
+        Picker("", selection: $selectedTab) {
+            Text(L10n.History.tabNetwork).tag(SidebarTab.network)
+            Text(L10n.History.tabHistory).tag(SidebarTab.history)
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
     }
 
     // MARK: - Header
