@@ -201,6 +201,17 @@ struct NetworkMapView: View {
             Text(L10n.Map.emptySubtitle)
                 .font(.system(size: 15))
                 .foregroundColor(.white.opacity(0.15))
+            Button {
+                NSWorkspace.shared.open(
+                    URL(string: "x-apple.systempreferences:com.apple.preference.network")!
+                )
+            } label: {
+                Label(L10n.Map.diagnose, systemImage: "stethoscope")
+                    .font(.system(size: 14, weight: .medium))
+            }
+            .buttonStyle(.plain)
+            .foregroundColor(.blue.opacity(0.7))
+            .padding(.top, 4)
         }
         .position(x: size.width / 2, y: size.height / 2)
     }
