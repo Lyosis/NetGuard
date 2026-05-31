@@ -87,7 +87,7 @@ actor NetworkScanner {
         for ip in activeIPs.sorted() {
             let mac      = arpMap[ip]?.mac ?? ""
             let hostname = hostnameMap[ip] ?? ""
-            let vendor   = lookupVendor(mac: mac)
+            let vendor   = await OUIDatabase.shared.lookup(mac: mac) ?? lookupVendor(mac: mac)
             let isCurrent = ip == localIP
             let isGW      = ip == gateway
 

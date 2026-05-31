@@ -86,7 +86,7 @@ struct NetworkMapView: View {
             // Draw edges first
             ForEach(nodes, id: \.device.id) { node in
                 if let parentIP = node.device.parentIP,
-                   let parentDevice = state.devices.first(where: { $0.ip == parentIP }),
+                   let parentDevice = state.filteredDevices.first(where: { $0.ip == parentIP }),
                    let parentNode = nodeMap[parentDevice.id] {
                     EdgeLine(
                         from: parentNode.position,
@@ -127,7 +127,7 @@ struct NetworkMapView: View {
             }
 
             // Empty state
-            if state.devices.isEmpty && !state.scanStatus.isScanning {
+            if state.filteredDevices.isEmpty && !state.scanStatus.isScanning {
                 emptyStateOverlay(in: size)
             }
 
@@ -145,14 +145,14 @@ struct NetworkMapView: View {
         let routerY: CGFloat = 200
 
         // Level 1: Router/Gateway
-        let routers = state.devices.filter { $0.type == .router }
+        let routers = state.filteredDevices.filter { $0.effectiveType == .router }
         for (i, router) in routers.enumerated() {
             let x = centerX + CGFloat(i - routers.count / 2) * 120
             layouts.append(NodeLayout(device: router, position: CGPoint(x: x, y: routerY), level: 1))
         }
 
         // Level 2: Other devices
-        let otherDevices = state.devices.filter { $0.type != .router }
+        let otherDevices = state.filteredDevices.filter { $0.effectiveType != .router }
         let rowCount  = max(1, Int(ceil(Double(otherDevices.count) / 5.0)))
         let perRow    = Int(ceil(Double(otherDevices.count) / Double(rowCount)))
         let startY    = routerY + 150
@@ -180,7 +180,7 @@ struct NetworkMapView: View {
 
     /// Libellé VoiceOver d'un nœud : « iPhone de Paul, 192.168.1.5, Sûr, 2 alertes »
     private func nodeAccessibilityLabel(_ device: NetworkDevice) -> String {
-        var parts = [device.type.localizedName,
+        var parts = [device.effectiveType.localizedName,
                      device.displayName,
                      device.ip,
                      device.status.localizedName]
@@ -334,13 +334,13 @@ struct DeviceNode: View {
 
                 // Background
                 Circle()
-                    .fill(device.type.color.opacity(0.12))
+                    .fill(device.effectiveType.color.opacity(0.12))
                     .frame(width: nodeSize - 4, height: nodeSize - 4)
 
                 // Icon
-                Image(systemName: device.type.icon)
+                Image(systemName: device.effectiveType.icon)
                     .font(.system(size: nodeSize * 0.36, weight: .medium))
-                    .foregroundColor(device.type.color)
+                    .foregroundColor(device.effectiveType.color)
 
                 // Alert badge
                 if device.alertCount > 0 {

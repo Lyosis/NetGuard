@@ -82,6 +82,183 @@ actor DeviceEnricher {
             if let cert = httpInfo.certificate { device.sslCertificate = cert }
             device.lastSeen = Date()
         }
+
+        // A12 — Fingerprinting du type après que tous les signaux soient collectés
+        let snapshot = await MainActor.run { InferSnapshot(device: device) }
+        if let inferred = Self.inferType(from: snapshot), inferred != snapshot.currentType {
+            await MainActor.run { device.type = inferred }
+        }
+    }
+
+    // MARK: - A12 Fingerprinting (Bonjour + vendor + banner + hostname)
+    private struct InferSnapshot {
+        let vendor: String              // lowercased
+        let hostname: String            // lowercased
+        let mdnsName: String            // lowercased
+        let netbiosName: String         // lowercased
+        let bonjourServices: Set<String>
+        let httpBanner: String          // lowercased
+        let httpTitle: String           // lowercased
+        let osGuess: OSGuess
+        let isPrivateMAC: Bool
+        let currentType: DeviceType
+        let isCurrentDevice: Bool
+
+        @MainActor
+        init(device: NetworkDevice) {
+            self.vendor          = device.vendor.lowercased()
+            self.hostname        = device.hostname.lowercased()
+            self.mdnsName        = device.mdnsName.lowercased()
+            self.netbiosName     = device.netbiosName.lowercased()
+            self.bonjourServices = Set(device.bonjourServices)
+            self.httpBanner      = device.httpBanner.lowercased()
+            self.httpTitle       = device.httpTitle.lowercased()
+            self.osGuess         = device.osGuess
+            self.isPrivateMAC    = device.isPrivateMAC
+            self.currentType     = device.type
+            self.isCurrentDevice = device.isCurrentDevice
+        }
+    }
+
+    /// Tente d'inférer un type plus précis qu'`.unknown` en croisant tous les
+    /// signaux collectés pendant l'enrichissement.
+    /// Renvoie `nil` si aucune amélioration n'est trouvée — on garde alors le
+    /// type courant (qui peut déjà être bon, ou rester `.unknown`).
+    private nonisolated static func inferType(from s: InferSnapshot) -> DeviceType? {
+        // 1. Préserver les types déjà bien détectés à la découverte
+        let strongTypes: Set<DeviceType> = [.router, .switch, .firewall, .wifi, .internet]
+        if strongTypes.contains(s.currentType) { return nil }
+        if s.isCurrentDevice { return nil }
+
+        let services = s.bonjourServices
+        let isApple  = s.vendor.contains("apple")
+        let allNames = "\(s.hostname) \(s.mdnsName) \(s.netbiosName)"
+        let webText  = "\(s.httpBanner) \(s.httpTitle)"
+
+        // 2. Règles Bonjour (signal le plus fiable)
+        if services.contains("_googlecast._tcp") { return .iot }
+
+        let homeKitServices: Set<String> = ["_hap._tcp", "_homekit._tcp"]
+        if !services.isDisjoint(with: homeKitServices) {
+            // Si Apple + AirPlay → c'est Apple TV / HomePod
+            let airplay: Set<String> = ["_airplay._tcp", "_raop._tcp"]
+            if isApple && !services.isDisjoint(with: airplay) { return .appletv }
+            return .iot
+        }
+
+        let airplay: Set<String> = ["_airplay._tcp", "_raop._tcp"]
+        if !services.isDisjoint(with: airplay) {
+            return isApple ? .appletv : .iot   // récepteur AirPlay tiers (Sonos, JBL…)
+        }
+
+        let printerServices: Set<String> = ["_ipp._tcp", "_ipps._tcp", "_printer._tcp"]
+        if !services.isDisjoint(with: printerServices) { return .printer }
+
+        let nasServices: Set<String> = ["_smb._tcp", "_afpovertcp._tcp"]
+        if !services.isDisjoint(with: nasServices) { return .nas }
+
+        if services.contains("_companion-link._tcp") && isApple {
+            if allNames.contains("iphone") { return .iphone }
+            if allNames.contains("ipad")   { return .ipad }
+            return .mac
+        }
+
+        // 3. Bannières HTTP / titre web (signal fiable quand présent)
+        if webText.contains("synology") || webText.contains("dsm ") ||
+           webText.contains("diskstation") { return .nas }
+        if webText.contains("qnap") { return .nas }
+        if webText.contains("western digital") || webText.contains("mybook") { return .nas }
+        if webText.contains("sonos") { return .iot }
+        if webText.contains("philips hue") || webText.contains("hue bridge") { return .iot }
+        if webText.contains("unifi") || webText.contains("ubiquiti") { return .wifi }
+        if webText.contains("airport") || webText.contains("time capsule") { return .wifi }
+
+        // 4. Vendor seul (signal moyen, mais avec la base IEEE on en a souvent un)
+        // NAS / stockage
+        if s.vendor.contains("synology") || s.vendor.contains("qnap") ||
+           s.vendor.contains("western digital") || s.vendor.contains("buffalo") ||
+           s.vendor.contains("netgear") && s.vendor.contains("readyn") {
+            return .nas
+        }
+        // Imprimantes
+        if s.vendor.contains("brother") || s.vendor.contains("epson") ||
+           s.vendor.contains("canon") || s.vendor.contains("hewlett") ||
+           s.vendor.contains("lexmark") || s.vendor.contains("kyocera") ||
+           s.vendor.contains("ricoh") || s.vendor.contains("xerox") {
+            return .printer
+        }
+        // WiFi AP / réseau actif (avant IoT car certains sont catégorisés ambigus)
+        if s.vendor.contains("ubiquiti") || s.vendor.contains("aruba") ||
+           s.vendor.contains("ruckus") || s.vendor.contains("mikrotik") {
+            return .wifi
+        }
+        // IoT — domotique, smart home, caméras
+        if s.vendor.contains("philips") || s.vendor.contains("signify") ||
+           s.vendor.contains("sonos") || s.vendor.contains("ring") ||
+           s.vendor.contains("nest") || s.vendor.contains("ecobee") ||
+           s.vendor.contains("amazon") || s.vendor.contains("ezviz") ||
+           s.vendor.contains("tp-link") || s.vendor.contains("xiaomi") ||
+           s.vendor.contains("meross") || s.vendor.contains("tuya") ||
+           s.vendor.contains("eufy") || s.vendor.contains("reolink") ||
+           s.vendor.contains("arlo") || s.vendor.contains("anker") ||
+           s.vendor.contains("blink") || s.vendor.contains("honeywell") ||
+           s.vendor.contains("lutron") || s.vendor.contains("lifx") ||
+           s.vendor.contains("wemo") || s.vendor.contains("belkin") ||
+           s.vendor.contains("shelly") || s.vendor.contains("sonoff") ||
+           s.vendor.contains("ikea") || s.vendor.contains("aqara") ||
+           s.vendor.contains("withings") || s.vendor.contains("netatmo") {
+            return .iot
+        }
+        // TVs / consoles
+        if s.vendor.contains("samsung") || s.vendor.contains("lg electronics") ||
+           s.vendor.contains("sony") || s.vendor.contains("nintendo") ||
+           s.vendor.contains("microsoft") && (allNames.contains("xbox")) ||
+           s.vendor.contains("roku") || s.vendor.contains("vizio") {
+            return .iot   // catégorie large : TV connectée, console = IoT au sens « smart device »
+        }
+
+        // 5. Hostname hints (fallback)
+        if allNames.contains("iphone") { return .iphone }
+        if allNames.contains("ipad")   { return .ipad }
+        if allNames.contains("macbook") || allNames.contains("imac") ||
+           allNames.contains("mac-mini") { return .mac }
+
+        // 6. Apple sans autre signal → mac (catégorie Apple générique)
+        if isApple && s.currentType == .unknown { return .mac }
+
+        // 6a. Netgear ambigu (peut être routeur Nighthawk, Orbi mesh, switch,
+        // ReadyNAS, Arlo…). Sans aucun signal Bonjour/HTTP, sur un réseau home
+        // ~80% des cas sont des points d'accès WiFi (Orbi/Nighthawk). On code
+        // l'heuristique.
+        let webTextTrimmed = webText.trimmingCharacters(in: .whitespaces)
+        let isUnixLike = s.osGuess == .macOS || s.osGuess == .linux
+        if s.vendor.contains("netgear") && isUnixLike &&
+           webTextTrimmed.isEmpty && services.isEmpty {
+            return .wifi
+        }
+
+        // 6b. Silicon vendors (puces WiFi/BT embarquées) + TTL Unix-like (=
+        // RTOS/Linux embarqué) → quasi-certain IoT silencieux : prise smart,
+        // ampoule, capteur, robot, thermostat… Faillible (un PC avec carte
+        // Realtek pourrait être classé IoT) mais sur un réseau home c'est
+        // majoritairement vrai.
+        let siliconVendors = ["texas instruments", "espressif", "realtek",
+                              "mediatek", "murata", "ralink", "atheros"]
+        if siliconVendors.contains(where: { s.vendor.contains($0) }) && isUnixLike {
+            return .iot
+        }
+
+        // 7. MAC privée (privacy WiFi iOS/iPadOS/macOS Sonoma+/Android 10+).
+        // Le vendor est forcément vide (pas dans IEEE par construction). TTL 64
+        // = famille Unix-like → l'écrasante majorité sur réseau home = iPhone.
+        // Heuristique faillible (pourrait être iPad ou Mac) → l'UI affiche un
+        // badge « MAC privée » pour inviter l'utilisateur à vérifier.
+        if s.isPrivateMAC && (s.osGuess == .macOS || s.osGuess == .ios) {
+            return .iphone
+        }
+
+        // Aucune amélioration trouvée
+        return nil
     }
 
     // MARK: - Bonjour Discovery (NWBrowser)

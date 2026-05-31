@@ -13,6 +13,8 @@ enum DeviceType: String, Codable, CaseIterable {
     case wifi        = "wifi_ap"
     case firewall    = "firewall"
     case `switch`    = "switch"
+    case appletv     = "appletv"
+    case iot         = "iot"
     case unknown     = "unknown"
     case internet    = "internet"
 
@@ -28,6 +30,8 @@ enum DeviceType: String, Codable, CaseIterable {
         case .wifi:     return L10n.DeviceType.wifi
         case .firewall: return L10n.DeviceType.firewall
         case .switch:   return L10n.DeviceType.switch
+        case .appletv:  return L10n.DeviceType.appletv
+        case .iot:      return L10n.DeviceType.iot
         case .unknown:  return L10n.DeviceType.unknown
         case .internet: return L10n.DeviceType.internet
         }
@@ -44,6 +48,8 @@ enum DeviceType: String, Codable, CaseIterable {
         case .wifi:     return "wifi"
         case .firewall: return "shield.fill"
         case .switch:   return "network"
+        case .appletv:  return "appletv.fill"
+        case .iot:      return "homepod.mini"
         case .unknown:  return "questionmark.circle.fill"
         case .internet: return "globe"
         }
@@ -60,6 +66,8 @@ enum DeviceType: String, Codable, CaseIterable {
         case .firewall: return .purple
         case .wifi:     return .cyan
         case .switch:   return .teal
+        case .appletv:  return Color(red: 0.6, green: 0.5, blue: 0.95)   // violet doux
+        case .iot:      return Color(red: 1.0, green: 0.8, blue: 0.3)    // jaune ambre
         case .unknown:  return .gray
         case .internet: return .blue
         }
@@ -175,6 +183,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var userAlias: String           // nom personnalisé saisi par l'utilisateur
     @Published var userNote: String            // notes libres de l'utilisateur
     @Published var sslCertificate: CertificateInfo?  // capté lors d'un GET HTTPS (A2)
+    @Published var userOverrideType: DeviceType?     // type forcé par l'utilisateur, prime sur l'auto-détection
 
     init(
         ip: String,
@@ -196,7 +205,8 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         bonjourServices: [String] = [],
         userAlias: String = "",
         userNote: String = "",
-        sslCertificate: CertificateInfo? = nil
+        sslCertificate: CertificateInfo? = nil,
+        userOverrideType: DeviceType? = nil
     ) {
         self.id = UUID()
         self.ip = ip
@@ -221,6 +231,20 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         self.userAlias = userAlias
         self.userNote = userNote
         self.sslCertificate = sslCertificate
+        self.userOverrideType = userOverrideType
+    }
+
+    /// Type effectif utilisé pour l'affichage : l'override utilisateur si défini,
+    /// sinon le type auto-détecté (`type`).
+    var effectiveType: DeviceType { userOverrideType ?? type }
+
+    /// Vrai si la MAC est administrée localement (bit U/L du 1er octet à 1).
+    /// Indique typiquement une privacy MAC iOS/iPadOS/macOS Sonoma+/Android 10+
+    /// (ou un VM/container). Reconnaissable au 2e digit hexa pair (2, 6, A, E).
+    var isPrivateMAC: Bool {
+        guard let firstByte = mac.split(separator: ":").first,
+              let value = UInt8(firstByte, radix: 16) else { return false }
+        return (value & 0x02) != 0
     }
 
     var displayName: String {
@@ -243,7 +267,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         case id, ip, mac, hostname, mdnsName, netbiosName, vendor, type, status,
              openPorts, isCurrentDevice, responseTime, ttl, osGuess,
              httpBanner, httpTitle, firstSeen, lastSeen, parentIP, bonjourServices,
-             userAlias, userNote, sslCertificate
+             userAlias, userNote, sslCertificate, userOverrideType
     }
 
     required init(from decoder: Decoder) throws {
@@ -271,6 +295,7 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         userAlias       = (try? c.decode(String.self,        forKey: .userAlias))       ?? ""
         userNote        = (try? c.decode(String.self,        forKey: .userNote))        ?? ""
         sslCertificate  = try? c.decode(CertificateInfo.self, forKey: .sslCertificate)
+        userOverrideType = try? c.decode(DeviceType.self,     forKey: .userOverrideType)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -298,5 +323,6 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         try c.encode(userAlias,       forKey: .userAlias)
         try c.encode(userNote,        forKey: .userNote)
         try c.encodeIfPresent(sslCertificate, forKey: .sslCertificate)
+        try c.encodeIfPresent(userOverrideType, forKey: .userOverrideType)
     }
 }
