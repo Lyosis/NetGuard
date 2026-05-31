@@ -40,7 +40,7 @@ struct SidebarView: View {
             Divider().overlay(Color.white.opacity(0.08))
             scanButtons
         }
-        .background(Color(red: 0.08, green: 0.09, blue: 0.11))
+        .glassPanelBackground()
         .frame(minWidth: 340, idealWidth: 380, maxWidth: 440)
         .animation(.easeInOut(duration: 0.3), value: state.networkMonitor.changeEvent?.id)
     }
@@ -133,8 +133,7 @@ struct SidebarView: View {
             }
         }
         .padding(10)
-        .background(cardBackground)
-        .cornerRadius(8)
+        .glassCard(cornerRadius: 8)
     }
 
     // MARK: - Alerts
@@ -175,8 +174,7 @@ struct SidebarView: View {
             }
         }
         .padding(10)
-        .background(cardBackground)
-        .cornerRadius(8)
+        .glassCard(cornerRadius: 8)
         .sheet(isPresented: $showingAlerts) { AllAlertsSheet() }
     }
 
@@ -223,9 +221,6 @@ struct SidebarView: View {
         }
     }
 
-    private var cardBackground: some ShapeStyle {
-        Color(red: 0.12, green: 0.13, blue: 0.16)
-    }
 }
 
 // MARK: - Sub-components
@@ -432,7 +427,7 @@ struct AllAlertsSheet: View {
                 .padding()
             }
         }
-        .background(Color(red: 0.08, green: 0.09, blue: 0.11))
+        .glassPanelBackground()
         .frame(minWidth: 500, minHeight: 400)
     }
 }
