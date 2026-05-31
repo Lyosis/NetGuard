@@ -46,6 +46,7 @@ class AppState: ObservableObject {
 
     // MARK: - Persistance
     private let modelContext: ModelContext
+    private let notificationService = NotificationService()
 
     // MARK: - Computed
     var totalAlerts: Int     { alerts.filter { !$0.isRead }.count }
@@ -73,6 +74,7 @@ class AppState: ObservableObject {
         migrateFromStopGapIfNeeded()
         loadPersistedDevices()
         loadSnapshots()
+        Task { await notificationService.requestAuthorization() }
         Task { await refreshNetworkInfo() }
         Task.detached(priority: .utility) {
             await OUIDatabase.shared.preload()
@@ -170,9 +172,9 @@ class AppState: ObservableObject {
         guard !allPersisted.isEmpty else { return 0 }
         let knownKeys = Set(allPersisted.map(\.persistenceKey))
 
-        var newCount = 0
+        var newDevices: [NetworkDevice] = []
         for device in discovered where !knownKeys.contains(device.persistenceKey) {
-            newCount += 1
+            newDevices.append(device)
             alerts.append(NetworkAlert(
                 severity:       .high,
                 category:       .intrusion,
@@ -182,7 +184,12 @@ class AppState: ObservableObject {
                 recommendation: "Vérifiez que cet appareil est autorisé sur votre réseau."
             ))
         }
-        return newCount
+
+        if !newDevices.isEmpty {
+            Task { await notificationService.notifyNewDevices(newDevices) }
+        }
+
+        return newDevices.count
     }
 
     // MARK: - Oublier un appareil
