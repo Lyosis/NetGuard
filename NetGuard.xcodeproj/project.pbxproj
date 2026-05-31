@@ -20,19 +20,20 @@
 		8B1A2C3D4E5F6A7B8C9D0E1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */; };
 		991FEE69892C44339DAD3FB2 /* VulnerabilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */; };
 		9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */; };
-		BB001122334455667788AABB /* DeviceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA001122334455667788AABB /* DeviceDetailView.swift */; };
-		CC001122334455667788AABB /* DeviceEnricher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD001122334455667788AABB /* DeviceEnricher.swift */; };
-		EE001122334455667788AACC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE001122334455667788AABB /* NetworkMonitor.swift */; };
-		A1001122334455667788DD01 /* UserAnnotationsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1001122334455667788DD02 /* UserAnnotationsStore.swift */; };
+		A8001122334455667788FF01 /* PersistedDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8001122334455667788FF02 /* PersistedDevice.swift */; };
+		A8001122334455667788FF03 /* PersistedDevice+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */; };
 		A2001122334455667788DD03 /* CertificateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001122334455667788DD04 /* CertificateInfo.swift */; };
 		A2001122334455667788DD05 /* CertificateInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2001122334455667788DD06 /* CertificateInspector.swift */; };
 		A3001122334455667788DD07 /* ScanCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788DD08 /* ScanCache.swift */; };
 		A4001122334455667788DD09 /* OUIDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4001122334455667788DD0A /* OUIDatabase.swift */; };
-		A4001122334455667788DD0B /* manuf.txt in Resources */ = {isa = PBXBuildFile; fileRef = A4001122334455667788DD0C /* manuf.txt */; };
+		A4001122334455667788DD0B /* Resources/manuf.txt in Resources */ = {isa = PBXBuildFile; fileRef = A4001122334455667788DD0C /* Resources/manuf.txt */; };
 		A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5001122334455667788DD12 /* SSDPDiscovery.swift */; };
+		A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788EE02 /* ViewModifiers+Glass.swift */; };
+		BB001122334455667788AABB /* DeviceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA001122334455667788AABB /* DeviceDetailView.swift */; };
+		CC001122334455667788AABB /* DeviceEnricher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD001122334455667788AABB /* DeviceEnricher.swift */; };
+		EE001122334455667788AACC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE001122334455667788AABB /* NetworkMonitor.swift */; };
 		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
 		FF001122334455667788AADD /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AACC /* L10n.swift */; };
-		A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788EE02 /* ViewModifiers+Glass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,20 +52,21 @@
 		790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
 		8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		932796120BDE4AAEAB44CE21 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
-		A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulnerabilityChecker.swift; sourceTree = "<group>"; };
-		AA001122334455667788AABB /* DeviceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailView.swift; sourceTree = "<group>"; };
-		DD001122334455667788AABB /* DeviceEnricher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEnricher.swift; sourceTree = "<group>"; };
-		EE001122334455667788AABB /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
-		A1001122334455667788DD02 /* UserAnnotationsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAnnotationsStore.swift; sourceTree = "<group>"; };
+		A8001122334455667788FF02 /* PersistedDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedDevice.swift; sourceTree = "<group>"; };
+		A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PersistedDevice+Conversion.swift"; sourceTree = "<group>"; };
 		A2001122334455667788DD04 /* CertificateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInfo.swift; sourceTree = "<group>"; };
 		A2001122334455667788DD06 /* CertificateInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateInspector.swift; sourceTree = "<group>"; };
 		A3001122334455667788DD08 /* ScanCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCache.swift; sourceTree = "<group>"; };
 		A4001122334455667788DD0A /* OUIDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUIDatabase.swift; sourceTree = "<group>"; };
-		A4001122334455667788DD0C /* manuf.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Resources/manuf.txt; sourceTree = "<group>"; };
+		A4001122334455667788DD0C /* Resources/manuf.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Resources/manuf.txt; sourceTree = "<group>"; };
 		A5001122334455667788DD12 /* SSDPDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSDPDiscovery.swift; sourceTree = "<group>"; };
+		A6001122334455667788EE02 /* ViewModifiers+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModifiers+Glass.swift"; sourceTree = "<group>"; };
+		A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulnerabilityChecker.swift; sourceTree = "<group>"; };
+		AA001122334455667788AABB /* DeviceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDetailView.swift; sourceTree = "<group>"; };
+		DD001122334455667788AABB /* DeviceEnricher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceEnricher.swift; sourceTree = "<group>"; };
+		EE001122334455667788AABB /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF001122334455667788AACC /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
-		A6001122334455667788EE02 /* ViewModifiers+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModifiers+Glass.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +108,6 @@
 				A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */,
 				DD001122334455667788AABB /* DeviceEnricher.swift */,
 				EE001122334455667788AABB /* NetworkMonitor.swift */,
-				A1001122334455667788DD02 /* UserAnnotationsStore.swift */,
 				A2001122334455667788DD06 /* CertificateInspector.swift */,
 				A3001122334455667788DD08 /* ScanCache.swift */,
 				A4001122334455667788DD0A /* OUIDatabase.swift */,
@@ -122,6 +123,8 @@
 				2A285B74DFAE43DC9BB73CC1 /* NetworkAlert.swift */,
 				14010F8673654982872A6C20 /* ScanResult.swift */,
 				A2001122334455667788DD04 /* CertificateInfo.swift */,
+				A8001122334455667788FF02 /* PersistedDevice.swift */,
+				A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -137,7 +140,7 @@
 				FF001122334455667788AABB /* Utils */,
 				78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */,
 				0A819D17455B4AAFB4FC5783 /* Assets.xcassets */,
-				A4001122334455667788DD0C /* manuf.txt */,
+				A4001122334455667788DD0C /* Resources/manuf.txt */,
 				510C720947E44C558C259046 /* Info.plist */,
 				7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */,
 			);
@@ -222,7 +225,7 @@
 			files = (
 				6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */,
 				78ACA65C2FC8E03400D6687A /* Localizable.xcstrings in Resources */,
-				A4001122334455667788DD0B /* manuf.txt in Resources */,
+				A4001122334455667788DD0B /* Resources/manuf.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,7 +251,8 @@
 				BB001122334455667788AABB /* DeviceDetailView.swift in Sources */,
 				CC001122334455667788AABB /* DeviceEnricher.swift in Sources */,
 				EE001122334455667788AACC /* NetworkMonitor.swift in Sources */,
-				A1001122334455667788DD01 /* UserAnnotationsStore.swift in Sources */,
+				A8001122334455667788FF01 /* PersistedDevice.swift in Sources */,
+				A8001122334455667788FF03 /* PersistedDevice+Conversion.swift in Sources */,
 				A2001122334455667788DD03 /* CertificateInfo.swift in Sources */,
 				A2001122334455667788DD05 /* CertificateInspector.swift in Sources */,
 				A3001122334455667788DD07 /* ScanCache.swift in Sources */,
@@ -272,16 +276,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PJ96RTQF74;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = NetGuard/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.netguard.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wilfrid.B.netguard.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -299,16 +304,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = PJ96RTQF74;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = NetGuard/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.netguard.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.wilfrid.B.netguard.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

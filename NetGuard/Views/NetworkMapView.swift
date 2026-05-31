@@ -113,6 +113,7 @@ struct NetworkMapView: View {
                     isSelected: selectedNode?.id == node.device.id,
                     isHovered: hoveredNode?.id == node.device.id
                 )
+                .opacity(node.device.scanState == .cached ? 0.55 : 1.0)
                 .onTapGesture { toggleSelection(node.device) }
                 .onHover { isHover in
                     hoveredNode = isHover ? node.device : nil

@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import SwiftData
 import Combine
 import Accessibility
 
@@ -22,7 +23,6 @@ class AppState: ObservableObject {
     @Published var deviceFilter: DeviceFilter = .all
 
     /// Sous-ensemble de `devices` à afficher selon le filtre courant.
-    /// `.all` → tout, `.known` → tout sauf `.unknown`, `.unknown` → uniquement `.unknown`.
     var filteredDevices: [NetworkDevice] {
         switch deviceFilter {
         case .all:     return devices
@@ -31,7 +31,6 @@ class AppState: ObservableObject {
         }
     }
 
-    /// Bascule entre le filtre demandé et `.all` (re-clic = désactivation).
     func toggleFilter(_ target: DeviceFilter) {
         deviceFilter = (deviceFilter == target) ? .all : target
     }
@@ -43,6 +42,9 @@ class AppState: ObservableObject {
     private let vulnChecker          = VulnerabilityChecker()
     private let enricher             = DeviceEnricher.shared
     let networkMonitor               = NetworkMonitor()
+
+    // MARK: - Persistance
+    private let modelContext: ModelContext
 
     // MARK: - Computed
     var totalAlerts: Int     { alerts.filter { !$0.isRead }.count }
@@ -64,39 +66,136 @@ class AppState: ObservableObject {
     }
 
     // MARK: - Init
-    init() {
+    init(modelContext: ModelContext) {
+        self.modelContext = modelContext
         networkMonitor.start()
-        loadCachedScan()
+        migrateFromStopGapIfNeeded()
+        loadPersistedDevices()
         Task { await refreshNetworkInfo() }
-        // Précharge la base OUI IEEE (~3 MB) en background pour ne pas
-        // ralentir le premier scan complet.
         Task.detached(priority: .utility) {
             await OUIDatabase.shared.preload()
         }
-    }
-
-    // MARK: - Cache du dernier scan (stop-gap avant SwiftData A5)
-    private func loadCachedScan() {
-        guard let snap = ScanCache.shared.load() else { return }
-        self.devices      = snap.devices
-        self.alerts       = snap.alerts
-        self.lastScanDate = snap.date
-        // Réapplique les annotations utilisateur (MAC déjà connue dans le cache)
-        applyUserAnnotations(to: snap.devices)
-    }
-
-    private func saveCachedScan() {
-        let label = "\(primaryNetwork.interfaceName) — \(primaryNetwork.subnetCIDR)"
-        ScanCache.shared.save(devices: devices, alerts: alerts, networkLabel: label)
     }
 
     deinit {
         networkMonitor.stop()
     }
 
+    // MARK: - Persistance SwiftData
+
+    /// Migration unique depuis les stop-gaps (ScanCache JSON + UserAnnotations UserDefaults).
+    /// Ne s'exécute que si SwiftData est vide — idempotente.
+    private func migrateFromStopGapIfNeeded() {
+        let count = (try? modelContext.fetchCount(FetchDescriptor<PersistedDevice>())) ?? 0
+        guard count == 0 else { return }
+
+        guard let snap = ScanCache.shared.load() else { return }
+
+        // Lire les annotations depuis UserDefaults (ancienne clé UserAnnotationsStore)
+        struct LegacyAnnotation: Codable { var alias: String; var note: String; var overrideType: DeviceType? }
+        let annotationsKey = "netguard.user_annotations.v1"
+        let legacyAnnotations: [String: LegacyAnnotation]
+        if let data = UserDefaults.standard.data(forKey: annotationsKey),
+           let decoded = try? JSONDecoder().decode([String: LegacyAnnotation].self, from: data) {
+            legacyAnnotations = decoded
+        } else {
+            legacyAnnotations = [:]
+        }
+
+        for device in snap.devices {
+            let macKey = device.mac
+                .lowercased()
+                .replacingOccurrences(of: ":", with: "")
+                .replacingOccurrences(of: "-", with: "")
+            if let annotation = legacyAnnotations[macKey] {
+                device.userAlias        = annotation.alias
+                device.userNote         = annotation.note
+                device.userOverrideType = annotation.overrideType
+            }
+            modelContext.insert(PersistedDevice.make(from: device))
+        }
+
+        try? modelContext.save()
+        ScanCache.shared.clear()
+        UserDefaults.standard.removeObject(forKey: annotationsKey)
+        print("[NetGuard] Migration stop-gap → SwiftData : \(snap.devices.count) appareils migrés.")
+    }
+
+    /// Charge les appareils persistés au démarrage — affichage immédiat carte pré-remplie (grisée).
+    private func loadPersistedDevices() {
+        let descriptor = FetchDescriptor<PersistedDevice>(
+            sortBy: [SortDescriptor(\.lastSeen, order: .reverse)]
+        )
+        guard let persisted = try? modelContext.fetch(descriptor), !persisted.isEmpty else { return }
+        self.devices      = persisted.map { $0.toNetworkDevice() }
+        self.lastScanDate = persisted.first?.lastSeen
+    }
+
+    /// Upsert des appareils dans SwiftData après un scan. Fetch unique → pas de N+1.
+    private func upsertToStore(_ scanned: [NetworkDevice]) {
+        let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        let byKey = Dictionary(uniqueKeysWithValues: allPersisted.map { ($0.persistenceKey, $0) })
+
+        for device in scanned {
+            if let existing = byKey[device.persistenceKey] {
+                existing.update(from: device)
+            } else {
+                modelContext.insert(PersistedDevice.make(from: device))
+            }
+        }
+        try? modelContext.save()
+    }
+
+    /// Applique les annotations (alias, note, override) depuis SwiftData aux devices fraîchement scannés.
+    /// Fetch unique — O(n) total.
+    private func applyPersistedAnnotations(to list: [NetworkDevice]) {
+        let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        let byKey = Dictionary(uniqueKeysWithValues: allPersisted.map { ($0.persistenceKey, $0) })
+        for device in list {
+            guard let persisted = byKey[device.persistenceKey] else { continue }
+            device.userAlias        = persisted.userAlias
+            device.userNote         = persisted.userNote
+            device.userOverrideType = persisted.userOverrideTypeRaw.flatMap { DeviceType(rawValue: $0) }
+        }
+    }
+
+    /// Détecte les appareils inconnus de SwiftData et génère des alertes `.intrusion`.
+    /// N'est actif que si SwiftData contient déjà des données (pas au tout premier scan).
+    private func detectAndAlertNewDevices(_ discovered: [NetworkDevice]) {
+        let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        guard !allPersisted.isEmpty else { return }
+        let knownKeys = Set(allPersisted.map(\.persistenceKey))
+
+        for device in discovered where !knownKeys.contains(device.persistenceKey) {
+            alerts.append(NetworkAlert(
+                severity:       .high,
+                category:       .intrusion,
+                title:          "Nouvel appareil détecté",
+                description:    "\(device.displayName) (\(device.ip)) apparaît pour la première fois sur ce réseau.",
+                deviceIP:       device.ip,
+                recommendation: "Vérifiez que cet appareil est autorisé sur votre réseau."
+            ))
+        }
+    }
+
+    // MARK: - Oublier un appareil
+
+    /// Supprime définitivement un appareil de SwiftData et de la liste courante.
+    func forgetDevice(_ device: NetworkDevice) {
+        let key = device.persistenceKey
+        var descriptor = FetchDescriptor<PersistedDevice>(
+            predicate: #Predicate { $0.persistenceKey == key }
+        )
+        descriptor.fetchLimit = 1
+        if let persisted = try? modelContext.fetch(descriptor).first {
+            modelContext.delete(persisted)
+            try? modelContext.save()
+        }
+        devices.removeAll { $0.id == device.id }
+        if selectedDevice?.id == device.id { selectedDevice = nil }
+    }
+
     // MARK: - Scan status helper
-    /// Met à jour `scanStatus` sur le MainActor depuis les handlers de progression `@Sendable`.
-    /// Évite la closure imbriquée `MainActor.run { self?... }` qui capture `self` dans du code concurrent (interdit en Swift 6).
     private func setScanStatus(_ status: ScanStatus) {
         self.scanStatus = status
     }
@@ -113,10 +212,10 @@ class AppState: ObservableObject {
         guard !scanStatus.isScanning else { return }
 
         let start = Date()
-        alerts = []
+        alerts  = []
         devices = []
 
-        // Step 1: Network info
+        // Step 1 : Network info
         scanStatus = .scanning(progress: 0.01, message: "Récupération des informations réseau…")
         await refreshNetworkInfo()
 
@@ -129,7 +228,7 @@ class AppState: ObservableObject {
         let localIP = primaryNetwork.localIP
         let gateway = primaryNetwork.gateway
 
-        // Step 2: Host discovery
+        // Step 2 : Host discovery
         let discoveredDevices = await networkScanner.discoverHosts(
             subnet: subnet,
             localIP: localIP,
@@ -138,29 +237,29 @@ class AppState: ObservableObject {
             await self?.setScanStatus(.scanning(progress: 0.05 + progress * 0.35, message: msg))
         }
 
-        applyUserAnnotations(to: discoveredDevices)
+        applyPersistedAnnotations(to: discoveredDevices)
         await MainActor.run { self.devices = discoveredDevices }
 
-        // Step 3: Port scan
+        // Step 3 : Port scan
         await portScanner.scanMultipleHosts(devices: discoveredDevices) { [weak self] progress, msg in
             await self?.setScanStatus(.scanning(progress: 0.40 + progress * 0.25, message: msg))
         }
 
         await MainActor.run { self.devices = discoveredDevices }
 
-        // Step 3b: Bonjour discovery (NWBrowser — tous les services en ~3s, en parallèle)
+        // Step 3b : Bonjour discovery
         scanStatus = .scanning(progress: 0.65, message: "Découverte des services Bonjour…")
         await enricher.discoverBonjourServices()
         scanStatus = .scanning(progress: 0.70, message: "Services Bonjour découverts")
 
-        // Step 4: Enrich devices (OS, Bonjour, NetBIOS, HTTP banners, latency)
+        // Step 4 : Enrich devices
         await enricher.enrichAll(devices: discoveredDevices) { [weak self] progress, msg in
             await self?.setScanStatus(.scanning(progress: 0.70 + progress * 0.10, message: msg))
         }
 
         await MainActor.run { self.devices = discoveredDevices }
 
-        // Step 5: Vulnerability check
+        // Step 5 : Vulnerability check
         let wifiInfo = networkInfos.first(where: { $0.interfaceType == "WiFi" })?.wifiInfo
         let newAlerts = await vulnChecker.checkAll(
             devices: discoveredDevices,
@@ -169,7 +268,7 @@ class AppState: ObservableObject {
             await self?.setScanStatus(.scanning(progress: 0.80 + progress * 0.18, message: msg))
         }
 
-        // Step 6: Update device statuses
+        // Step 6 : Update device statuses
         for device in discoveredDevices {
             let deviceAlerts = newAlerts.filter { $0.deviceIP == device.ip }
             if deviceAlerts.contains(where: { $0.severity >= .high }) {
@@ -177,20 +276,21 @@ class AppState: ObservableObject {
             } else if device.type != .unknown {
                 device.status = .safe
             }
+            device.scanState = .active
         }
+
+        // Step 7 : Détection nouveaux appareils + persistance
+        detectAndAlertNewDevices(discoveredDevices)
+        upsertToStore(discoveredDevices)
 
         await MainActor.run {
-            self.alerts     = newAlerts
-            self.devices    = discoveredDevices
+            self.alerts       = newAlerts + self.alerts   // intrusion alerts en tête
+            self.devices      = discoveredDevices
             self.lastScanDate = Date()
-            let duration    = Date().timeIntervalSince(start)
-            self.scanStatus = .completed(duration: duration)
+            let duration      = Date().timeIntervalSince(start)
+            self.scanStatus   = .completed(duration: duration)
         }
 
-        // Cache disque (stop-gap avant SwiftData A5)
-        saveCachedScan()
-
-        // Annonce VoiceOver de fin de scan
         AccessibilityNotification.Announcement(
             L10n.A11y.scanDone(devices: discoveredDevices.count, alerts: newAlerts.count)
         ).post()
@@ -215,18 +315,19 @@ class AppState: ObservableObject {
             await self?.setScanStatus(.scanning(progress: p * 0.95, message: msg))
         }
 
-        applyUserAnnotations(to: discovered)
+        applyPersistedAnnotations(to: discovered)
+        for device in discovered { device.scanState = .active }
+
+        detectAndAlertNewDevices(discovered)
+        upsertToStore(discovered)
+
         let duration = Date().timeIntervalSince(start)
         await MainActor.run {
-            self.devices    = discovered
+            self.devices      = discovered
             self.lastScanDate = Date()
             self.scanStatus   = .completed(duration: duration)
         }
 
-        // Cache disque (stop-gap avant SwiftData A5)
-        saveCachedScan()
-
-        // Annonce VoiceOver de fin de scan rapide
         AccessibilityNotification.Announcement(
             L10n.A11y.scanQuickDone(devices: discovered.count)
         ).post()
@@ -236,52 +337,37 @@ class AppState: ObservableObject {
     func markAlertRead(_ alert: NetworkAlert) {
         if let idx = alerts.firstIndex(where: { $0.id == alert.id }) {
             alerts[idx].isRead = true
-            saveCachedScan()
         }
     }
 
     func markAllAlertsRead() {
         for i in alerts.indices { alerts[i].isRead = true }
-        saveCachedScan()
     }
 
-    // MARK: - Annotations utilisateur (nom + notes, persistées par MAC)
+    // MARK: - Annotations utilisateur
 
-    /// Charge l'alias + note pour chaque device depuis `UserAnnotationsStore`.
-    /// Appelée après chaque scan une fois les MAC connues.
-    private func applyUserAnnotations(to list: [NetworkDevice]) {
-        let store = UserAnnotationsStore.shared
-        for device in list {
-            let a = store.annotation(for: device.mac)
-            device.userAlias = a.alias
-            device.userNote  = a.note
-            device.userOverrideType = a.overrideType
-        }
-    }
-
-    /// Sauvegarde l'annotation courante d'un device (appelée à chaque édition
-    /// du champ alias, des notes, ou du type forcé dans `DeviceDetailView`).
+    /// Persiste l'alias, la note et le type overridé d'un appareil dans SwiftData.
     func persistAnnotation(for device: NetworkDevice) {
-        UserAnnotationsStore.shared.save(
-            mac:          device.mac,
-            alias:        device.userAlias,
-            note:         device.userNote,
-            overrideType: device.userOverrideType
+        let key = device.persistenceKey
+        var descriptor = FetchDescriptor<PersistedDevice>(
+            predicate: #Predicate { $0.persistenceKey == key }
         )
+        descriptor.fetchLimit = 1
+        guard let persisted = try? modelContext.fetch(descriptor).first else { return }
+        persisted.userAlias         = device.userAlias
+        persisted.userNote          = device.userNote
+        persisted.userOverrideTypeRaw = device.userOverrideType?.rawValue
+        try? modelContext.save()
     }
 
     /// Force ou efface le type d'un appareil. `nil` revient à l'auto-détection.
-    /// Met à jour `runningDeviceAction[device.id]`, persiste l'annotation, et
-    /// resauvegarde le cache pour que la valeur survive au quit.
     func setOverrideType(for device: NetworkDevice, to type: DeviceType?) {
         device.userOverrideType = type
         persistAnnotation(for: device)
-        saveCachedScan()
     }
 
     // MARK: - Actions à la demande sur un appareil (panneau détail)
 
-    /// Scanne les ports d'un seul appareil. Met à jour `device.openPorts`.
     func scanPortsFor(_ device: NetworkDevice) async {
         guard runningDeviceAction[device.id] == nil else { return }
         runningDeviceAction[device.id] = .ports
@@ -291,16 +377,13 @@ class AppState: ObservableObject {
             host: device.ip,
             ports: CommonPort.all.map(\.number),
             timeout: 1.0
-        ) { _, _ in }   // pas de progression UI pour cette action ponctuelle
+        ) { _, _ in }
 
         device.openPorts = ports
         device.lastSeen  = Date()
-        saveCachedScan()
+        upsertToStore([device])
     }
 
-    /// Enrichit un seul appareil : ping/TTL, NetBIOS, HTTP, OS guess, Bonjour.
-    /// Lance d'abord la découverte Bonjour globale (3 s) pour que la table soit
-    /// à jour avant l'enrichissement.
     func enrichDeviceManually(_ device: NetworkDevice) async {
         guard runningDeviceAction[device.id] == nil else { return }
         runningDeviceAction[device.id] = .enrich
@@ -308,11 +391,9 @@ class AppState: ObservableObject {
 
         await enricher.discoverBonjourServices()
         await enricher.enrichDevice(device)
-        saveCachedScan()
+        upsertToStore([device])
     }
 
-    /// Vérifie les vulnérabilités d'un seul appareil. Remplace ses alertes
-    /// dans `self.alerts` et met à jour son statut (safe / alert).
     func checkVulnerabilitiesFor(_ device: NetworkDevice) async {
         guard runningDeviceAction[device.id] == nil else { return }
         runningDeviceAction[device.id] = .vulnerabilities
@@ -320,24 +401,21 @@ class AppState: ObservableObject {
 
         let newAlerts = await vulnChecker.checkDevice(device)
 
-        // Remplacer les alertes existantes de ce device par les nouvelles
         alerts.removeAll { $0.deviceIP == device.ip }
         alerts.append(contentsOf: newAlerts)
         alerts.sort { $0.severity > $1.severity }
 
-        // Mettre à jour le statut visuel
         if newAlerts.contains(where: { $0.severity >= .high }) {
             device.status = .alert
         } else if device.type != .unknown {
             device.status = .safe
         }
 
-        saveCachedScan()
+        upsertToStore([device])
     }
 }
 
 // MARK: - DeviceAction
-/// Action ponctuelle en cours sur un appareil (affichage du spinner du bouton).
 enum DeviceAction {
     case ports
     case enrich
@@ -345,9 +423,8 @@ enum DeviceAction {
 }
 
 // MARK: - DeviceFilter
-/// Filtre de la carte réseau, contrôlé depuis les MetricCards de la sidebar.
 enum DeviceFilter {
     case all
-    case known      // tous sauf .unknown
+    case known
     case unknown
 }
