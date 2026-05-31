@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @EnvironmentObject var state: AppState
@@ -49,6 +50,8 @@ struct DeviceDetailPlaceholder: View {
 }
 
 #Preview {
+    let container = try! ModelContainer(for: PersistedDevice.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     ContentView()
-        .environmentObject(AppState())
+        .environmentObject(AppState(modelContext: container.mainContext))
+        .modelContainer(container)
 }

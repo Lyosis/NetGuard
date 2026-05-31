@@ -1,6 +1,13 @@
 import Foundation
 import SwiftUI
 
+// MARK: - Scan State
+/// Indique si un appareil provient du dernier scan actif ou du cache SwiftData (démarrage).
+enum ScanState {
+    case active   // présent dans le scan en cours
+    case cached   // chargé depuis SwiftData au démarrage, pas encore re-scanné
+}
+
 // MARK: - Device Type
 enum DeviceType: String, Codable, CaseIterable {
     // rawValues = identifiants stables pour Codable (ne pas changer)
@@ -203,6 +210,10 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var sslCertificate: CertificateInfo?  // capté lors d'un GET HTTPS (A2)
     @Published var upnp: UPnPInfo?                   // capté via SSDP/UPnP discovery
     @Published var userOverrideType: DeviceType?     // type forcé par l'utilisateur, prime sur l'auto-détection
+    /// État du cycle de vie : `.cached` au démarrage (chargé depuis SwiftData),
+    /// `.active` après le premier scan qui confirme la présence de l'appareil.
+    /// Non persisté — toujours recalculé à l'exécution.
+    var scanState: ScanState = .active
 
     init(
         ip: String,
