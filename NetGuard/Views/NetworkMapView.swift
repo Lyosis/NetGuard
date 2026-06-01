@@ -74,6 +74,13 @@ struct NetworkMapView: View {
                         DragGesture()
                             .onChanged { value in offset = value.translation }
                     )
+                    .overlay(
+                        ScrollWheelZoomView { delta in
+                            withAnimation(.easeInOut(duration: 0.08)) {
+                                scale = max(0.5, min(3.0, scale + delta))
+                            }
+                        }
+                    )
 
                 // Title bar — fixe, séparé des gestes de la carte
                 VStack(spacing: 0) {
@@ -615,6 +622,45 @@ struct DeviceNode: View {
         .position(position)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         .animation(.easeInOut(duration: 0.15), value: isHovered)
+    }
+}
+
+// MARK: - ScrollWheelZoomView
+/// NSViewRepresentable transparent qui capture les événements molette/trackpad
+/// et les convertit en delta de zoom pour la carte.
+private struct ScrollWheelZoomView: NSViewRepresentable {
+    let onZoom: (CGFloat) -> Void
+
+    func makeNSView(context: Context) -> ScrollWheelNSView {
+        let view = ScrollWheelNSView()
+        view.onZoom = onZoom
+        return view
+    }
+
+    func updateNSView(_ nsView: ScrollWheelNSView, context: Context) {
+        nsView.onZoom = onZoom
+    }
+}
+
+@MainActor
+final class ScrollWheelNSView: NSView {
+    var onZoom: ((CGFloat) -> Void)?
+
+    override func scrollWheel(with event: NSEvent) {
+        // Ignore les phases momentum (inertie trackpad après le geste)
+        guard event.momentumPhase == [] else { return }
+
+        let delta: CGFloat
+        if event.hasPreciseScrollingDeltas {
+            // Trackpad : valeurs fractionnaires — zoom doux
+            delta = event.scrollingDeltaY * 0.004
+        } else {
+            // Souris physique : deltaY ~ 3 par cran → ~0.24 par clic
+            delta = event.deltaY * 0.08
+        }
+
+        guard abs(delta) > 0.001 else { return }
+        onZoom?(delta)
     }
 }
 
