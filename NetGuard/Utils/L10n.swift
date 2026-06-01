@@ -83,10 +83,13 @@ enum L10n {
         static let legendSafe       = t("map.legend.safe",     "Sûr")
         static let legendUnknown    = t("map.legend.unknown",  "Inconnu")
         static let legendAlert      = t("map.legend.alert",    "Alerte")
-        static let emptyTitle       = t("map.empty.title",     "Aucun appareil détecté")
-        static let emptySubtitle    = t("map.empty.subtitle",  "Lancez un scan pour découvrir les appareils")
-        static let diagnose         = t("map.diagnose",        "Diagnostiquer le réseau")
-        static let resetView        = t("map.reset_view",      "Réinitialiser la vue")
+        static let emptyTitle        = t("map.empty.title",       "Aucun appareil détecté")
+        static let emptySubtitle     = t("map.empty.subtitle",    "Lancez un scan pour découvrir les appareils")
+        static let diagnose          = t("map.diagnose",           "Diagnostiquer le réseau")
+        static let resetView         = t("map.reset_view",         "Réinitialiser la vue")
+        static let searchPlaceholder = t("map.search.placeholder", "Rechercher…")
+        static let filterNoResults   = t("map.filter.no_results",  "Aucun appareil ne correspond")
+        static let filterClear       = t("map.filter.clear",       "Effacer les filtres")
     }
 
     // MARK: - Détail appareil

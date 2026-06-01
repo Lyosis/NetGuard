@@ -15,6 +15,36 @@ struct NetworkMapView: View {
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @GestureState private var magnifyBy: CGFloat = 1.0
+    @State private var searchText: String = ""
+    @State private var selectedType: DeviceType? = nil
+
+    // MARK: - Filtres locaux
+
+    /// Types présents dans la liste filtrée sidebar, triés par nombre décroissant.
+    /// Calculé sur state.filteredDevices pour que les chips restent stables quand un filtre est actif.
+    private var presentTypes: [DeviceType] {
+        let counts = Dictionary(grouping: state.filteredDevices, by: \.effectiveType)
+            .mapValues(\.count)
+        return counts.keys.sorted { counts[$0, default: 0] > counts[$1, default: 0] }
+    }
+
+    /// Devices à afficher sur la carte = filtre sidebar + recherche texte + filtre type.
+    private var displayedDevices: [NetworkDevice] {
+        state.filteredDevices.filter { device in
+            if let type = selectedType, device.effectiveType != type { return false }
+            guard !searchText.isEmpty else { return true }
+            let q = searchText.lowercased()
+            return device.displayName.lowercased().contains(q)
+                || device.ip.contains(q)
+                || device.mac.lowercased().contains(q)
+                || device.hostname.lowercased().contains(q)
+                || device.vendor.lowercased().contains(q)
+        }
+    }
+
+    private var hasActiveFilter: Bool { !searchText.isEmpty || selectedType != nil }
+
+    private func clearFilters() { searchText = ""; selectedType = nil }
 
     var body: some View {
         GeometryReader { geo in
@@ -44,8 +74,8 @@ struct NetworkMapView: View {
                             .onChanged { value in offset = value.translation }
                     )
 
-                // Title bar
-                VStack {
+                // Title bar + filter bar
+                VStack(spacing: 0) {
                     HStack {
                         Text(L10n.Map.title)
                             .font(.system(size: 16, weight: .semibold))
@@ -68,12 +98,98 @@ struct NetworkMapView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
-                    .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
+
+                    filterBar
+
+                    Divider().opacity(0.12)
                     Spacer()
                 }
+                .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
             }
         }
         .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
+    }
+
+    // MARK: - Filter Bar
+    private var filterBar: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                // Search field
+                HStack(spacing: 6) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.4))
+                    TextField(L10n.Map.searchPlaceholder, text: $searchText)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 13))
+                        .foregroundColor(.white)
+                        .frame(width: 140)
+                    if !searchText.isEmpty {
+                        Button { searchText = "" } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 12))
+                                .foregroundColor(.white.opacity(0.4))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 5)
+                .background(
+                    RoundedRectangle(cornerRadius: 7)
+                        .fill(Color.white.opacity(0.07))
+                )
+
+                // Type chips — uniquement les types présents
+                if !presentTypes.isEmpty {
+                    Divider()
+                        .frame(height: 16)
+                        .opacity(0.2)
+
+                    ForEach(presentTypes, id: \.self) { type in
+                        let active = selectedType == type
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                selectedType = active ? nil : type
+                            }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: type.icon)
+                                    .font(.system(size: 11))
+                                Text(type.localizedName)
+                                    .font(.system(size: 12, weight: .medium))
+                            }
+                            .foregroundColor(active ? .white : .white.opacity(0.55))
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 5)
+                            .background(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .fill(active ? type.color.opacity(0.3) : Color.white.opacity(0.07))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(active ? type.color.opacity(0.6) : Color.clear, lineWidth: 1)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+
+                // Bouton effacer si filtre actif
+                if hasActiveFilter {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
+                    } label: {
+                        Text(L10n.Map.filterClear)
+                            .font(.system(size: 12))
+                            .foregroundColor(.blue.opacity(0.8))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+        }
     }
 
     // MARK: - Map Content
@@ -86,7 +202,7 @@ struct NetworkMapView: View {
             // Draw edges first
             ForEach(nodes, id: \.device.id) { node in
                 if let parentIP = node.device.parentIP,
-                   let parentDevice = state.filteredDevices.first(where: { $0.ip == parentIP }),
+                   let parentDevice = displayedDevices.first(where: { $0.ip == parentIP }),
                    let parentNode = nodeMap[parentDevice.id] {
                     EdgeLine(
                         from: parentNode.position,
@@ -128,8 +244,8 @@ struct NetworkMapView: View {
             }
 
             // Empty state
-            if state.filteredDevices.isEmpty && !state.scanStatus.isScanning {
-                emptyStateOverlay(in: size)
+            if displayedDevices.isEmpty && !state.scanStatus.isScanning {
+                emptyStateOverlay(in: size, filterActive: hasActiveFilter)
             }
 
             // Scanning overlay
@@ -146,14 +262,14 @@ struct NetworkMapView: View {
         let routerY: CGFloat = 200
 
         // Level 1: Router/Gateway
-        let routers = state.filteredDevices.filter { $0.effectiveType == .router }
+        let routers = displayedDevices.filter { $0.effectiveType == .router }
         for (i, router) in routers.enumerated() {
             let x = centerX + CGFloat(i - routers.count / 2) * 120
             layouts.append(NodeLayout(device: router, position: CGPoint(x: x, y: routerY), level: 1))
         }
 
         // Level 2: Other devices
-        let otherDevices = state.filteredDevices.filter { $0.effectiveType != .router }
+        let otherDevices = displayedDevices.filter { $0.effectiveType != .router }
         let rowCount  = max(1, Int(ceil(Double(otherDevices.count) / 5.0)))
         let perRow    = Int(ceil(Double(otherDevices.count) / Double(rowCount)))
         let startY    = routerY + 150
@@ -190,28 +306,47 @@ struct NetworkMapView: View {
     }
 
     // MARK: - Empty state
-    private func emptyStateOverlay(in size: CGSize) -> some View {
+    private func emptyStateOverlay(in size: CGSize, filterActive: Bool) -> some View {
         VStack(spacing: 12) {
-            Image(systemName: "network.slash")
-                .font(.system(size: 48))
-                .foregroundColor(.white.opacity(0.15))
-            Text(L10n.Map.emptyTitle)
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(.white.opacity(0.25))
-            Text(L10n.Map.emptySubtitle)
-                .font(.system(size: 15))
-                .foregroundColor(.white.opacity(0.15))
-            Button {
-                NSWorkspace.shared.open(
-                    URL(string: "x-apple.systempreferences:com.apple.preference.network")!
-                )
-            } label: {
-                Label(L10n.Map.diagnose, systemImage: "stethoscope")
-                    .font(.system(size: 14, weight: .medium))
+            if filterActive {
+                // Filtre actif mais aucun résultat
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 40))
+                    .foregroundColor(.white.opacity(0.15))
+                Text(L10n.Map.filterNoResults)
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundColor(.white.opacity(0.25))
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
+                } label: {
+                    Text(L10n.Map.filterClear)
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.blue.opacity(0.7))
+            } else {
+                // Aucun appareil — pas encore scanné
+                Image(systemName: "network.slash")
+                    .font(.system(size: 48))
+                    .foregroundColor(.white.opacity(0.15))
+                Text(L10n.Map.emptyTitle)
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(.white.opacity(0.25))
+                Text(L10n.Map.emptySubtitle)
+                    .font(.system(size: 15))
+                    .foregroundColor(.white.opacity(0.15))
+                Button {
+                    NSWorkspace.shared.open(
+                        URL(string: "x-apple.systempreferences:com.apple.preference.network")!
+                    )
+                } label: {
+                    Label(L10n.Map.diagnose, systemImage: "stethoscope")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.blue.opacity(0.7))
+                .padding(.top, 4)
             }
-            .buttonStyle(.plain)
-            .foregroundColor(.blue.opacity(0.7))
-            .padding(.top, 4)
         }
         .position(x: size.width / 2, y: size.height / 2)
     }
