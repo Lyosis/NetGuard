@@ -186,6 +186,20 @@ enum L10n {
                                         "Ajouter une note…")
     }
 
+    // MARK: - Audit de sécurité
+    enum Audit {
+        static let sectionTitle   = t("audit.section",          "AUDIT DE SÉCURITÉ")
+        static let launch         = t("audit.launch",           "Lancer l'audit")
+        static let running        = t("audit.running",          "Audit en cours…")
+        static let scoreLabel     = t("audit.score",            "Score")
+        static let safe           = t("audit.level.safe",       "Sûr")
+        static let moderate       = t("audit.level.moderate",   "Modéré")
+        static let risky          = t("audit.level.risky",      "Risqué")
+        static let critical       = t("audit.level.critical",   "Critique")
+        static let credsTested    = t("audit.creds.tested",     "Identifiants par défaut testés")
+        static let credsNotTested = t("audit.creds.not_tested", "Aucun port web — identifiants non testés")
+    }
+
     // MARK: - Actions sur le panneau détail
     enum DetailActions {
         static let sectionTitle  = t("detail.actions.section",        "ACTIONS")

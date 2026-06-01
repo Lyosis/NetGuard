@@ -13,9 +13,10 @@ struct ContentView: View {
             NetworkMapView()
                 .frame(minWidth: 460)
 
-            // Colonne 3 — Détail appareil (visible si sélectionné)
+            // Colonne 3 — Détail appareil (largeur fixe, non réductible)
             if let device = state.selectedDevice {
                 DeviceDetailView(device: device)
+                    .frame(minWidth: 380, idealWidth: 400, maxWidth: 400)
                     .transition(.move(edge: .trailing).combined(with: .opacity))
             } else {
                 DeviceDetailPlaceholder()
@@ -45,7 +46,7 @@ struct DeviceDetailPlaceholder: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(red: 0.08, green: 0.09, blue: 0.11))
-        .frame(minWidth: 300, idealWidth: 340, maxWidth: 400)
+        .frame(minWidth: 380, idealWidth: 400, maxWidth: 400)
     }
 }
 

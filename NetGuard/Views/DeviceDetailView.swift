@@ -15,6 +15,7 @@ struct DeviceDetailView: View {
             VStack(spacing: 14) {
                 deviceHeader
                 actionsSection
+                auditSection
                 if hasAnyQuickAccess { quickAccessSection }
                 identitySection
                 networkSection
@@ -27,7 +28,7 @@ struct DeviceDetailView: View {
             .padding(16)
         }
         .glassPanelBackground()
-        .frame(minWidth: 300, idealWidth: 340, maxWidth: 400)
+        .frame(minWidth: 380, idealWidth: 400, maxWidth: 400)
     }
 
     // MARK: - Accès rapide (navigateur + lanceurs de protocoles)
@@ -305,6 +306,95 @@ struct DeviceDetailView: View {
                 state.persistAnnotation(for: device)
             }
         )
+    }
+
+    // MARK: - Audit de sécurité
+    private var auditSection: some View {
+        let running  = state.runningDeviceAction[device.id] == .audit
+        let result   = state.auditResults[device.id]
+        return DetailSection(title: L10n.Audit.sectionTitle) {
+            if running {
+                HStack(spacing: 10) {
+                    ProgressView().controlSize(.small).tint(.white)
+                    Text(L10n.Audit.running)
+                        .font(.system(size: 13))
+                        .foregroundColor(.white.opacity(0.5))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 4)
+            } else if let r = result {
+                // Score gauge
+                AuditScoreGauge(score: r.score)
+                    .padding(.vertical, 6)
+
+                // Info credentials testés
+                HStack(spacing: 6) {
+                    Image(systemName: r.credentialsTested ? "checkmark.circle" : "minus.circle")
+                        .font(.system(size: 11))
+                        .foregroundColor(r.credentialsTested ? .green.opacity(0.7) : .white.opacity(0.3))
+                    Text(r.credentialsTested ? L10n.Audit.credsTested : L10n.Audit.credsNotTested)
+                        .font(.system(size: 11))
+                        .foregroundColor(.white.opacity(0.4))
+                }
+                .padding(.bottom, 4)
+
+                // Findings
+                ForEach(r.findings) { finding in
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: finding.severity.icon)
+                            .font(.system(size: 12))
+                            .foregroundColor(finding.severity.color)
+                            .frame(width: 16)
+                            .padding(.top, 1)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(finding.title)
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.white.opacity(0.85))
+                            Text(finding.detail)
+                                .font(.system(size: 11))
+                                .foregroundColor(.white.opacity(0.4))
+                                .lineLimit(3)
+                        }
+                    }
+                    .padding(.vertical, 3)
+                    if finding.id != r.findings.last?.id {
+                        Divider().opacity(0.08)
+                    }
+                }
+
+                // Relancer
+                Button {
+                    Task { await state.runSecurityAudit(for: device) }
+                } label: {
+                    Text(L10n.Audit.launch)
+                        .font(.system(size: 12))
+                        .foregroundColor(.blue.opacity(0.7))
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 4)
+            } else {
+                // État initial
+                Button {
+                    Task { await state.runSecurityAudit(for: device) }
+                } label: {
+                    Label(L10n.Audit.launch, systemImage: "shield.lefthalf.filled.trianglebadge.exclamationmark")
+                        .font(.system(size: 13, weight: .medium))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.orange.opacity(0.15))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.orange.opacity(0.3), lineWidth: 0.5)
+                        )
+                        .foregroundColor(.orange.opacity(0.9))
+                }
+                .buttonStyle(.plain)
+                .disabled(state.runningDeviceAction[device.id] != nil)
+            }
+        }
     }
 
     // MARK: - Actions section
@@ -723,6 +813,60 @@ struct QuickAccessButton: View {
         .help(hint)
         .accessibilityLabel(label)
         .accessibilityHint(hint)
+    }
+}
+
+// MARK: - AuditScoreGauge
+struct AuditScoreGauge: View {
+    let score: Int
+
+    private var color: Color {
+        switch score {
+        case 71...100: return Color(red: 0.2, green: 0.8, blue: 0.4)
+        case 41...70:  return .orange
+        case 11...40:  return Color(red: 0.9, green: 0.4, blue: 0.1)
+        default:       return Color(red: 0.9, green: 0.2, blue: 0.2)
+        }
+    }
+
+    private var label: String {
+        switch score {
+        case 71...100: return L10n.Audit.safe
+        case 41...70:  return L10n.Audit.moderate
+        case 11...40:  return L10n.Audit.risky
+        default:       return L10n.Audit.critical
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 6) {
+            HStack {
+                Text(L10n.Audit.scoreLabel)
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.4))
+                Spacer()
+                Text("\(score)/100")
+                    .font(.system(size: 13, weight: .bold, design: .rounded))
+                    .foregroundColor(color)
+                Text("·")
+                    .foregroundColor(.white.opacity(0.2))
+                Text(label)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(color)
+            }
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.white.opacity(0.07))
+                        .frame(height: 6)
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(color)
+                        .frame(width: geo.size.width * CGFloat(score) / 100, height: 6)
+                        .animation(.easeOut(duration: 0.6), value: score)
+                }
+            }
+            .frame(height: 6)
+        }
     }
 }
 
