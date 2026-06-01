@@ -126,6 +126,42 @@ struct NetworkMapView: View {
             .help(L10n.Map.filterToggle)
 
             Divider().frame(height: 16).opacity(0.3)
+
+            // Zoom −
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    scale = max(0.5, scale - 0.25)
+                }
+            } label: {
+                Image(systemName: "minus.magnifyingglass")
+                    .font(.system(size: 13))
+                    .foregroundColor(scale <= 0.5 ? .white.opacity(0.2) : .white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .disabled(scale <= 0.5)
+            .help("Zoom arrière")
+
+            // Niveau de zoom
+            Text("\(Int(scale * 100))%")
+                .font(.system(size: 11, design: .monospaced))
+                .foregroundColor(.white.opacity(0.3))
+                .frame(width: 36)
+
+            // Zoom +
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    scale = min(3.0, scale + 0.25)
+                }
+            } label: {
+                Image(systemName: "plus.magnifyingglass")
+                    .font(.system(size: 13))
+                    .foregroundColor(scale >= 3.0 ? .white.opacity(0.2) : .white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .disabled(scale >= 3.0)
+            .help("Zoom avant")
+
+            Divider().frame(height: 16).opacity(0.3)
             Button {
                 withAnimation(.easeInOut(duration: 0.3)) {
                     scale = 1.0; offset = .zero
