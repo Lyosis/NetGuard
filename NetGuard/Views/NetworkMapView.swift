@@ -17,6 +17,7 @@ struct NetworkMapView: View {
     @GestureState private var magnifyBy: CGFloat = 1.0
     @State private var searchText: String = ""
     @State private var selectedType: DeviceType? = nil
+    @State private var showFilters: Bool = false
 
     // MARK: - Filtres locaux
 
@@ -74,36 +75,64 @@ struct NetworkMapView: View {
                             .onChanged { value in offset = value.translation }
                     )
 
-                // Title bar + filter bar (fond limité au header, pas au Spacer)
+                // Title bar — fond limité au header uniquement
                 VStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        HStack {
-                            Text(L10n.Map.title)
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
-                            Spacer()
-                            legendView
-                            Divider().frame(height: 16).opacity(0.3)
-                            Button {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    scale = 1.0; offset = .zero
-                                }
-                            } label: {
-                                Image(systemName: "arrow.counterclockwise")
-                                    .font(.system(size: 13))
-                                    .foregroundColor(.white.opacity(0.5))
+                    HStack {
+                        Text(L10n.Map.title)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+                        Spacer()
+                        legendView
+                        Divider().frame(height: 16).opacity(0.3)
+                        // Bouton filtre avec badge si actif
+                        Button {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+                                showFilters.toggle()
                             }
-                            .buttonStyle(.plain)
-                            .help(L10n.Map.resetView)
-                            .accessibilityLabel(L10n.Map.resetView)
+                        } label: {
+                            ZStack(alignment: .topTrailing) {
+                                Image(systemName: showFilters
+                                      ? "line.3.horizontal.decrease.circle.fill"
+                                      : "line.3.horizontal.decrease.circle")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(hasActiveFilter ? .blue : .white.opacity(0.5))
+                                if hasActiveFilter {
+                                    Circle()
+                                        .fill(Color.blue)
+                                        .frame(width: 6, height: 6)
+                                        .offset(x: 2, y: -2)
+                                }
+                            }
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
+                        .buttonStyle(.plain)
+                        .help(L10n.Map.filterToggle)
 
-                        filterBar
-                        Divider().opacity(0.12)
+                        Divider().frame(height: 16).opacity(0.3)
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                scale = 1.0; offset = .zero
+                            }
+                        } label: {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 13))
+                                .foregroundColor(.white.opacity(0.5))
+                        }
+                        .buttonStyle(.plain)
+                        .help(L10n.Map.resetView)
+                        .accessibilityLabel(L10n.Map.resetView)
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
                     .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
+
+                    // Panel filtre flottant — s'ouvre sous le titre, collé à gauche
+                    if showFilters {
+                        filterPanel
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .padding(.leading, 16)
+                            .padding(.top, 6)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
 
                     Spacer()
                 }
@@ -112,42 +141,37 @@ struct NetworkMapView: View {
         .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
     }
 
-    // MARK: - Filter Bar
-    private var filterBar: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                // Search field
-                HStack(spacing: 6) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 12))
-                        .foregroundColor(.white.opacity(0.4))
-                    TextField(L10n.Map.searchPlaceholder, text: $searchText)
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 13))
-                        .foregroundColor(.white)
-                        .frame(width: 140)
-                    if !searchText.isEmpty {
-                        Button { searchText = "" } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 12))
-                                .foregroundColor(.white.opacity(0.4))
-                        }
-                        .buttonStyle(.plain)
+    // MARK: - Filter Panel (flottant)
+    private var filterPanel: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Search field
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.4))
+                TextField(L10n.Map.searchPlaceholder, text: $searchText)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 13))
+                    .foregroundColor(.white)
+                if !searchText.isEmpty {
+                    Button { searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.4))
                     }
+                    .buttonStyle(.plain)
                 }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 5)
-                .background(
-                    RoundedRectangle(cornerRadius: 7)
-                        .fill(Color.white.opacity(0.07))
-                )
+            }
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .background(RoundedRectangle(cornerRadius: 7).fill(Color.white.opacity(0.08)))
 
-                // Type chips — uniquement les types présents
-                if !presentTypes.isEmpty {
-                    Divider()
-                        .frame(height: 16)
-                        .opacity(0.2)
-
+            // Chips de type — grille adaptive, wrapping automatique
+            if !presentTypes.isEmpty {
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 80, maximum: 160), spacing: 6)],
+                    spacing: 6
+                ) {
                     ForEach(presentTypes, id: \.self) { type in
                         let active = selectedType == type
                         Button {
@@ -156,14 +180,15 @@ struct NetworkMapView: View {
                             }
                         } label: {
                             HStack(spacing: 4) {
-                                Image(systemName: type.icon)
-                                    .font(.system(size: 11))
+                                Image(systemName: type.icon).font(.system(size: 11))
                                 Text(type.localizedName)
                                     .font(.system(size: 12, weight: .medium))
+                                    .lineLimit(1)
                             }
-                            .foregroundColor(active ? .white : .white.opacity(0.55))
+                            .foregroundColor(active ? .white : .white.opacity(0.6))
                             .padding(.horizontal, 9)
                             .padding(.vertical, 5)
+                            .frame(maxWidth: .infinity)
                             .background(
                                 RoundedRectangle(cornerRadius: 7)
                                     .fill(active ? type.color.opacity(0.3) : Color.white.opacity(0.07))
@@ -176,22 +201,31 @@ struct NetworkMapView: View {
                         .buttonStyle(.plain)
                     }
                 }
-
-                // Bouton effacer si filtre actif
-                if hasActiveFilter {
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
-                    } label: {
-                        Text(L10n.Map.filterClear)
-                            .font(.system(size: 12))
-                            .foregroundColor(.blue.opacity(0.8))
-                    }
-                    .buttonStyle(.plain)
-                }
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 8)
+
+            // Effacer si filtre actif
+            if hasActiveFilter {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
+                } label: {
+                    Label(L10n.Map.filterClear, systemImage: "xmark.circle")
+                        .font(.system(size: 12))
+                        .foregroundColor(.blue.opacity(0.8))
+                }
+                .buttonStyle(.plain)
+            }
         }
+        .padding(12)
+        .frame(width: 260)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(red: 0.08, green: 0.09, blue: 0.13).opacity(0.96))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.4), radius: 12, y: 4)
     }
 
     // MARK: - Map Content
@@ -544,4 +578,5 @@ struct DeviceNode: View {
         .animation(.easeInOut(duration: 0.15), value: isHovered)
     }
 }
+
 

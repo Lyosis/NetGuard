@@ -90,6 +90,7 @@ enum L10n {
         static let searchPlaceholder = t("map.search.placeholder", "Rechercher…")
         static let filterNoResults   = t("map.filter.no_results",  "Aucun appareil ne correspond")
         static let filterClear       = t("map.filter.clear",       "Effacer les filtres")
+        static let filterToggle      = t("map.filter.toggle",      "Filtres")
     }
 
     // MARK: - Détail appareil
