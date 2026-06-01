@@ -74,6 +74,13 @@ struct NetworkMapView: View {
                         DragGesture()
                             .onChanged { value in offset = value.translation }
                     )
+                    .overlay(
+                        ScrollWheelZoomView { delta in
+                            withAnimation(.easeInOut(duration: 0.08)) {
+                                scale = max(0.5, min(3.0, scale + delta))
+                            }
+                        }
+                    )
 
                 // Title bar — fixe, séparé des gestes de la carte
                 VStack(spacing: 0) {
@@ -124,6 +131,42 @@ struct NetworkMapView: View {
             }
             .buttonStyle(.plain)
             .help(L10n.Map.filterToggle)
+
+            Divider().frame(height: 16).opacity(0.3)
+
+            // Zoom −
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    scale = max(0.5, scale - 0.25)
+                }
+            } label: {
+                Image(systemName: "minus.magnifyingglass")
+                    .font(.system(size: 13))
+                    .foregroundColor(scale <= 0.5 ? .white.opacity(0.2) : .white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .disabled(scale <= 0.5)
+            .help("Zoom arrière")
+
+            // Niveau de zoom
+            Text("\(Int(scale * 100))%")
+                .font(.system(size: 11, design: .monospaced))
+                .foregroundColor(.white.opacity(0.3))
+                .frame(width: 36)
+
+            // Zoom +
+            Button {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    scale = min(3.0, scale + 0.25)
+                }
+            } label: {
+                Image(systemName: "plus.magnifyingglass")
+                    .font(.system(size: 13))
+                    .foregroundColor(scale >= 3.0 ? .white.opacity(0.2) : .white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .disabled(scale >= 3.0)
+            .help("Zoom avant")
 
             Divider().frame(height: 16).opacity(0.3)
             Button {
@@ -579,6 +622,72 @@ struct DeviceNode: View {
         .position(position)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
         .animation(.easeInOut(duration: 0.15), value: isHovered)
+    }
+}
+
+// MARK: - ScrollWheelZoomView
+/// NSViewRepresentable transparent aux clics (hitTest → nil) qui capte
+/// uniquement les événements molette/trackpad via un moniteur fenêtre local.
+private struct ScrollWheelZoomView: NSViewRepresentable {
+    let onZoom: (CGFloat) -> Void
+
+    func makeNSView(context: Context) -> ScrollWheelNSView {
+        let view = ScrollWheelNSView()
+        view.onZoom = onZoom
+        return view
+    }
+
+    func updateNSView(_ nsView: ScrollWheelNSView, context: Context) {
+        nsView.onZoom = onZoom
+    }
+}
+
+@MainActor
+final class ScrollWheelNSView: NSView {
+    var onZoom: ((CGFloat) -> Void)?
+    private var monitor: Any?
+
+    // Transparent aux clics — SwiftUI reçoit normalement les tap/drag
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if window != nil {
+            addMonitor()
+        } else {
+            removeMonitor()
+        }
+    }
+
+    deinit {
+        if let m = monitor { NSEvent.removeMonitor(m) }
+    }
+
+    private func addMonitor() {
+        guard monitor == nil else { return }
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+            // Extraire les valeurs avant tout saut d'acteur
+            let precise   = event.hasPreciseScrollingDeltas
+            let deltaY    = event.scrollingDeltaY
+            let rawDeltaY = event.deltaY
+            let phase     = event.momentumPhase
+            let location  = event.locationInWindow
+
+            if let self, phase == [] {
+                MainActor.assumeIsolated {
+                    let pt = self.convert(location, from: nil)
+                    guard self.bounds.contains(pt) else { return }
+                    let delta: CGFloat = precise ? deltaY * 0.004 : rawDeltaY * 0.08
+                    guard abs(delta) > 0.001 else { return }
+                    self.onZoom?(delta)
+                }
+            }
+            return event // ne pas consommer — autres vues non affectées
+        }
+    }
+
+    private func removeMonitor() {
+        if let m = monitor { NSEvent.removeMonitor(m); monitor = nil }
     }
 }
 
