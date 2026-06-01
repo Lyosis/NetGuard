@@ -15,6 +15,37 @@ struct NetworkMapView: View {
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
     @GestureState private var magnifyBy: CGFloat = 1.0
+    @State private var searchText: String = ""
+    @State private var selectedType: DeviceType? = nil
+    @State private var showFilters: Bool = false
+
+    // MARK: - Filtres locaux
+
+    /// Types présents dans la liste filtrée sidebar, triés par nombre décroissant.
+    /// Calculé sur state.filteredDevices pour que les chips restent stables quand un filtre est actif.
+    private var presentTypes: [DeviceType] {
+        let counts = Dictionary(grouping: state.filteredDevices, by: \.effectiveType)
+            .mapValues(\.count)
+        return counts.keys.sorted { counts[$0, default: 0] > counts[$1, default: 0] }
+    }
+
+    /// Devices à afficher sur la carte = filtre sidebar + recherche texte + filtre type.
+    private var displayedDevices: [NetworkDevice] {
+        state.filteredDevices.filter { device in
+            if let type = selectedType, device.effectiveType != type { return false }
+            guard !searchText.isEmpty else { return true }
+            let q = searchText.lowercased()
+            return device.displayName.lowercased().contains(q)
+                || device.ip.contains(q)
+                || device.mac.lowercased().contains(q)
+                || device.hostname.lowercased().contains(q)
+                || device.vendor.lowercased().contains(q)
+        }
+    }
+
+    private var hasActiveFilter: Bool { !searchText.isEmpty || selectedType != nil }
+
+    private func clearFilters() { searchText = ""; selectedType = nil }
 
     var body: some View {
         GeometryReader { geo in
@@ -44,36 +75,160 @@ struct NetworkMapView: View {
                             .onChanged { value in offset = value.translation }
                     )
 
-                // Title bar
-                VStack {
-                    HStack {
-                        Text(L10n.Map.title)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Spacer()
-                        legendView
-                        Divider().frame(height: 16).opacity(0.3)
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                scale = 1.0; offset = .zero
-                            }
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 13))
-                                .foregroundColor(.white.opacity(0.5))
-                        }
-                        .buttonStyle(.plain)
-                        .help(L10n.Map.resetView)
-                        .accessibilityLabel(L10n.Map.resetView)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
+                // Title bar — fixe, séparé des gestes de la carte
+                VStack(spacing: 0) {
+                    titleBar
                     Spacer()
                 }
             }
+            // Filter panel en overlay indépendant — hors du ZStack géré par les gestes
+            .overlay(alignment: .topLeading) {
+                if showFilters {
+                    filterPanel
+                        .padding(.top, 50) // compense la hauteur du titre
+                        .padding(.leading, 16)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+            .animation(.spring(response: 0.3, dampingFraction: 0.75), value: showFilters)
         }
         .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
+    }
+
+    // MARK: - Title bar
+    private var titleBar: some View {
+        HStack {
+            Text(L10n.Map.title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
+            Spacer()
+            legendView
+            Divider().frame(height: 16).opacity(0.3)
+            // Bouton filtre avec badge si actif
+            Button {
+                showFilters.toggle()
+            } label: {
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: showFilters
+                          ? "line.3.horizontal.decrease.circle.fill"
+                          : "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 15))
+                        .foregroundColor(hasActiveFilter ? .blue : .white.opacity(0.5))
+                    if hasActiveFilter {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 6, height: 6)
+                            .offset(x: 2, y: -2)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .help(L10n.Map.filterToggle)
+
+            Divider().frame(height: 16).opacity(0.3)
+            Button {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    scale = 1.0; offset = .zero
+                }
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .help(L10n.Map.resetView)
+            .accessibilityLabel(L10n.Map.resetView)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
+    }
+
+    // MARK: - Filter Panel (flottant)
+    private var filterPanel: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            // Search field
+            HStack(spacing: 6) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.4))
+                TextField(L10n.Map.searchPlaceholder, text: $searchText)
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 13))
+                    .foregroundColor(.white)
+                if !searchText.isEmpty {
+                    Button { searchText = "" } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.4))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 9)
+            .padding(.vertical, 6)
+            .background(RoundedRectangle(cornerRadius: 7).fill(Color.white.opacity(0.08)))
+
+            // Chips de type — grille adaptive, wrapping automatique
+            if !presentTypes.isEmpty {
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 80, maximum: 160), spacing: 6)],
+                    spacing: 6
+                ) {
+                    ForEach(presentTypes, id: \.self) { type in
+                        let active = selectedType == type
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                selectedType = active ? nil : type
+                            }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Image(systemName: type.icon).font(.system(size: 11))
+                                Text(type.localizedName)
+                                    .font(.system(size: 12, weight: .medium))
+                                    .lineLimit(1)
+                            }
+                            .foregroundColor(active ? .white : .white.opacity(0.6))
+                            .padding(.horizontal, 9)
+                            .padding(.vertical, 5)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .fill(active ? type.color.opacity(0.3) : Color.white.opacity(0.07))
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(active ? type.color.opacity(0.6) : Color.clear, lineWidth: 1)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+
+            // Effacer si filtre actif
+            if hasActiveFilter {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
+                } label: {
+                    Label(L10n.Map.filterClear, systemImage: "xmark.circle")
+                        .font(.system(size: 12))
+                        .foregroundColor(.blue.opacity(0.8))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(12)
+        .frame(width: 260)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(red: 0.08, green: 0.09, blue: 0.13).opacity(0.96))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.4), radius: 12, y: 4)
     }
 
     // MARK: - Map Content
@@ -86,7 +241,7 @@ struct NetworkMapView: View {
             // Draw edges first
             ForEach(nodes, id: \.device.id) { node in
                 if let parentIP = node.device.parentIP,
-                   let parentDevice = state.filteredDevices.first(where: { $0.ip == parentIP }),
+                   let parentDevice = displayedDevices.first(where: { $0.ip == parentIP }),
                    let parentNode = nodeMap[parentDevice.id] {
                     EdgeLine(
                         from: parentNode.position,
@@ -128,8 +283,8 @@ struct NetworkMapView: View {
             }
 
             // Empty state
-            if state.filteredDevices.isEmpty && !state.scanStatus.isScanning {
-                emptyStateOverlay(in: size)
+            if displayedDevices.isEmpty && !state.scanStatus.isScanning {
+                emptyStateOverlay(in: size, filterActive: hasActiveFilter)
             }
 
             // Scanning overlay
@@ -146,14 +301,14 @@ struct NetworkMapView: View {
         let routerY: CGFloat = 200
 
         // Level 1: Router/Gateway
-        let routers = state.filteredDevices.filter { $0.effectiveType == .router }
+        let routers = displayedDevices.filter { $0.effectiveType == .router }
         for (i, router) in routers.enumerated() {
             let x = centerX + CGFloat(i - routers.count / 2) * 120
             layouts.append(NodeLayout(device: router, position: CGPoint(x: x, y: routerY), level: 1))
         }
 
         // Level 2: Other devices
-        let otherDevices = state.filteredDevices.filter { $0.effectiveType != .router }
+        let otherDevices = displayedDevices.filter { $0.effectiveType != .router }
         let rowCount  = max(1, Int(ceil(Double(otherDevices.count) / 5.0)))
         let perRow    = Int(ceil(Double(otherDevices.count) / Double(rowCount)))
         let startY    = routerY + 150
@@ -190,28 +345,47 @@ struct NetworkMapView: View {
     }
 
     // MARK: - Empty state
-    private func emptyStateOverlay(in size: CGSize) -> some View {
+    private func emptyStateOverlay(in size: CGSize, filterActive: Bool) -> some View {
         VStack(spacing: 12) {
-            Image(systemName: "network.slash")
-                .font(.system(size: 48))
-                .foregroundColor(.white.opacity(0.15))
-            Text(L10n.Map.emptyTitle)
-                .font(.system(size: 18, weight: .medium))
-                .foregroundColor(.white.opacity(0.25))
-            Text(L10n.Map.emptySubtitle)
-                .font(.system(size: 15))
-                .foregroundColor(.white.opacity(0.15))
-            Button {
-                NSWorkspace.shared.open(
-                    URL(string: "x-apple.systempreferences:com.apple.preference.network")!
-                )
-            } label: {
-                Label(L10n.Map.diagnose, systemImage: "stethoscope")
-                    .font(.system(size: 14, weight: .medium))
+            if filterActive {
+                // Filtre actif mais aucun résultat
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 40))
+                    .foregroundColor(.white.opacity(0.15))
+                Text(L10n.Map.filterNoResults)
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundColor(.white.opacity(0.25))
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) { clearFilters() }
+                } label: {
+                    Text(L10n.Map.filterClear)
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.blue.opacity(0.7))
+            } else {
+                // Aucun appareil — pas encore scanné
+                Image(systemName: "network.slash")
+                    .font(.system(size: 48))
+                    .foregroundColor(.white.opacity(0.15))
+                Text(L10n.Map.emptyTitle)
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(.white.opacity(0.25))
+                Text(L10n.Map.emptySubtitle)
+                    .font(.system(size: 15))
+                    .foregroundColor(.white.opacity(0.15))
+                Button {
+                    NSWorkspace.shared.open(
+                        URL(string: "x-apple.systempreferences:com.apple.preference.network")!
+                    )
+                } label: {
+                    Label(L10n.Map.diagnose, systemImage: "stethoscope")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.blue.opacity(0.7))
+                .padding(.top, 4)
             }
-            .buttonStyle(.plain)
-            .foregroundColor(.blue.opacity(0.7))
-            .padding(.top, 4)
         }
         .position(x: size.width / 2, y: size.height / 2)
     }
@@ -407,4 +581,5 @@ struct DeviceNode: View {
         .animation(.easeInOut(duration: 0.15), value: isHovered)
     }
 }
+
 
