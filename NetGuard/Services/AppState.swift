@@ -22,6 +22,7 @@ class AppState: ObservableObject {
     /// Filtre actif sur la carte (cliquable depuis les MetricCards de la sidebar).
     @Published var deviceFilter: DeviceFilter = .all
     @Published var snapshots: [ScanSnapshot]  = []
+    @Published var auditResults: [UUID: SecurityAuditor.AuditResult] = [:]
 
     /// Sous-ensemble de `devices` à afficher selon le filtre courant.
     var filteredDevices: [NetworkDevice] {
@@ -474,6 +475,14 @@ class AppState: ObservableObject {
         upsertToStore([device])
     }
 
+    func runSecurityAudit(for device: NetworkDevice) async {
+        guard runningDeviceAction[device.id] == nil else { return }
+        runningDeviceAction[device.id] = .audit
+        defer { runningDeviceAction[device.id] = nil }
+        let result = await SecurityAuditor.shared.audit(device: device)
+        auditResults[device.id] = result
+    }
+
     func checkVulnerabilitiesFor(_ device: NetworkDevice) async {
         guard runningDeviceAction[device.id] == nil else { return }
         runningDeviceAction[device.id] = .vulnerabilities
@@ -500,6 +509,7 @@ enum DeviceAction {
     case ports
     case enrich
     case vulnerabilities
+    case audit
 }
 
 // MARK: - DeviceFilter
