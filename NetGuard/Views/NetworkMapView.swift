@@ -74,37 +74,39 @@ struct NetworkMapView: View {
                             .onChanged { value in offset = value.translation }
                     )
 
-                // Title bar + filter bar
+                // Title bar + filter bar (fond limité au header, pas au Spacer)
                 VStack(spacing: 0) {
-                    HStack {
-                        Text(L10n.Map.title)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Spacer()
-                        legendView
-                        Divider().frame(height: 16).opacity(0.3)
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                scale = 1.0; offset = .zero
+                    VStack(spacing: 0) {
+                        HStack {
+                            Text(L10n.Map.title)
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                            Spacer()
+                            legendView
+                            Divider().frame(height: 16).opacity(0.3)
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    scale = 1.0; offset = .zero
+                                }
+                            } label: {
+                                Image(systemName: "arrow.counterclockwise")
+                                    .font(.system(size: 13))
+                                    .foregroundColor(.white.opacity(0.5))
                             }
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 13))
-                                .foregroundColor(.white.opacity(0.5))
+                            .buttonStyle(.plain)
+                            .help(L10n.Map.resetView)
+                            .accessibilityLabel(L10n.Map.resetView)
                         }
-                        .buttonStyle(.plain)
-                        .help(L10n.Map.resetView)
-                        .accessibilityLabel(L10n.Map.resetView)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+
+                        filterBar
+                        Divider().opacity(0.12)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
 
-                    filterBar
-
-                    Divider().opacity(0.12)
                     Spacer()
                 }
-                .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
             }
         }
         .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
