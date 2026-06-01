@@ -626,8 +626,8 @@ struct DeviceNode: View {
 }
 
 // MARK: - ScrollWheelZoomView
-/// NSViewRepresentable transparent qui capture les événements molette/trackpad
-/// et les convertit en delta de zoom pour la carte.
+/// NSViewRepresentable transparent aux clics (hitTest → nil) qui capte
+/// uniquement les événements molette/trackpad via un moniteur fenêtre local.
 private struct ScrollWheelZoomView: NSViewRepresentable {
     let onZoom: (CGFloat) -> Void
 
@@ -645,22 +645,49 @@ private struct ScrollWheelZoomView: NSViewRepresentable {
 @MainActor
 final class ScrollWheelNSView: NSView {
     var onZoom: ((CGFloat) -> Void)?
+    private var monitor: Any?
 
-    override func scrollWheel(with event: NSEvent) {
-        // Ignore les phases momentum (inertie trackpad après le geste)
-        guard event.momentumPhase == [] else { return }
+    // Transparent aux clics — SwiftUI reçoit normalement les tap/drag
+    override func hitTest(_ point: NSPoint) -> NSView? { nil }
 
-        let delta: CGFloat
-        if event.hasPreciseScrollingDeltas {
-            // Trackpad : valeurs fractionnaires — zoom doux
-            delta = event.scrollingDeltaY * 0.004
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if window != nil {
+            addMonitor()
         } else {
-            // Souris physique : deltaY ~ 3 par cran → ~0.24 par clic
-            delta = event.deltaY * 0.08
+            removeMonitor()
         }
+    }
 
-        guard abs(delta) > 0.001 else { return }
-        onZoom?(delta)
+    deinit {
+        if let m = monitor { NSEvent.removeMonitor(m) }
+    }
+
+    private func addMonitor() {
+        guard monitor == nil else { return }
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+            // Extraire les valeurs avant tout saut d'acteur
+            let precise   = event.hasPreciseScrollingDeltas
+            let deltaY    = event.scrollingDeltaY
+            let rawDeltaY = event.deltaY
+            let phase     = event.momentumPhase
+            let location  = event.locationInWindow
+
+            if let self, phase == [] {
+                MainActor.assumeIsolated {
+                    let pt = self.convert(location, from: nil)
+                    guard self.bounds.contains(pt) else { return }
+                    let delta: CGFloat = precise ? deltaY * 0.004 : rawDeltaY * 0.08
+                    guard abs(delta) > 0.001 else { return }
+                    self.onZoom?(delta)
+                }
+            }
+            return event // ne pas consommer — autres vues non affectées
+        }
+    }
+
+    private func removeMonitor() {
+        if let m = monitor { NSEvent.removeMonitor(m); monitor = nil }
     }
 }
 
