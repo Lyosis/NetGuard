@@ -36,9 +36,10 @@ struct DeviceDetailView: View {
         Set(device.openPorts.map(\.port))
     }
     private var hasAnyQuickAccess: Bool {
-        let webPorts: Set<Int> = [80, 8080, 8888, 443, 8443]
+        let hasWeb = firstOpenPort(among: [443, 8443, 80, 8080, 8888]) != nil
+                     && (!device.httpBanner.isEmpty || !device.httpTitle.isEmpty)
         let protoPorts: Set<Int> = [22, 445, 548, 5900, 21]
-        return !openPortNumbers.isDisjoint(with: webPorts.union(protoPorts))
+        return hasWeb || !openPortNumbers.isDisjoint(with: protoPorts)
     }
 
     @ViewBuilder
@@ -49,8 +50,9 @@ struct DeviceDetailView: View {
                 alignment: .leading,
                 spacing: 8
             ) {
-                // Navigateur — HTTPS prioritaire si dispo, sinon HTTP
-                if let webPort = firstOpenPort(among: [443, 8443, 80, 8080, 8888]) {
+                // Navigateur — seulement si une page HTTP a été détectée (banner ou titre non vide)
+                if let webPort = firstOpenPort(among: [443, 8443, 80, 8080, 8888]),
+                   !device.httpBanner.isEmpty || !device.httpTitle.isEmpty {
                     let scheme = (webPort == 443 || webPort == 8443) ? "https" : "http"
                     QuickAccessButton(icon: "globe",
                                       label: L10n.QuickAccess.browser,
