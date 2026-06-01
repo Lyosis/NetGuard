@@ -75,70 +75,73 @@ struct NetworkMapView: View {
                             .onChanged { value in offset = value.translation }
                     )
 
-                // Title bar — fond limité au header uniquement
+                // Title bar — fixe, séparé des gestes de la carte
                 VStack(spacing: 0) {
-                    HStack {
-                        Text(L10n.Map.title)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Spacer()
-                        legendView
-                        Divider().frame(height: 16).opacity(0.3)
-                        // Bouton filtre avec badge si actif
-                        Button {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
-                                showFilters.toggle()
-                            }
-                        } label: {
-                            ZStack(alignment: .topTrailing) {
-                                Image(systemName: showFilters
-                                      ? "line.3.horizontal.decrease.circle.fill"
-                                      : "line.3.horizontal.decrease.circle")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(hasActiveFilter ? .blue : .white.opacity(0.5))
-                                if hasActiveFilter {
-                                    Circle()
-                                        .fill(Color.blue)
-                                        .frame(width: 6, height: 6)
-                                        .offset(x: 2, y: -2)
-                                }
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .help(L10n.Map.filterToggle)
-
-                        Divider().frame(height: 16).opacity(0.3)
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                scale = 1.0; offset = .zero
-                            }
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 13))
-                                .foregroundColor(.white.opacity(0.5))
-                        }
-                        .buttonStyle(.plain)
-                        .help(L10n.Map.resetView)
-                        .accessibilityLabel(L10n.Map.resetView)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
-
-                    // Panel filtre flottant — s'ouvre sous le titre, collé à gauche
-                    if showFilters {
-                        filterPanel
-                            .transition(.opacity.combined(with: .move(edge: .top)))
-                            .padding(.leading, 16)
-                            .padding(.top, 6)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-
+                    titleBar
                     Spacer()
                 }
             }
+            // Filter panel en overlay indépendant — hors du ZStack géré par les gestes
+            .overlay(alignment: .topLeading) {
+                if showFilters {
+                    filterPanel
+                        .padding(.top, 50) // compense la hauteur du titre
+                        .padding(.leading, 16)
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+            }
+            .animation(.spring(response: 0.3, dampingFraction: 0.75), value: showFilters)
         }
         .onChange(of: state.selectedDevice?.id) { _, _ in selectedNode = state.selectedDevice }
+    }
+
+    // MARK: - Title bar
+    private var titleBar: some View {
+        HStack {
+            Text(L10n.Map.title)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
+            Spacer()
+            legendView
+            Divider().frame(height: 16).opacity(0.3)
+            // Bouton filtre avec badge si actif
+            Button {
+                showFilters.toggle()
+            } label: {
+                ZStack(alignment: .topTrailing) {
+                    Image(systemName: showFilters
+                          ? "line.3.horizontal.decrease.circle.fill"
+                          : "line.3.horizontal.decrease.circle")
+                        .font(.system(size: 15))
+                        .foregroundColor(hasActiveFilter ? .blue : .white.opacity(0.5))
+                    if hasActiveFilter {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 6, height: 6)
+                            .offset(x: 2, y: -2)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+            .help(L10n.Map.filterToggle)
+
+            Divider().frame(height: 16).opacity(0.3)
+            Button {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    scale = 1.0; offset = .zero
+                }
+            } label: {
+                Image(systemName: "arrow.counterclockwise")
+                    .font(.system(size: 13))
+                    .foregroundColor(.white.opacity(0.5))
+            }
+            .buttonStyle(.plain)
+            .help(L10n.Map.resetView)
+            .accessibilityLabel(L10n.Map.resetView)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(Color(red: 0.08, green: 0.09, blue: 0.11).opacity(0.9))
     }
 
     // MARK: - Filter Panel (flottant)
