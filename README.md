@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="NetGuard/Assets.xcassets/AppIcon.appiconset/AppIcon-512.png" width="120" alt="NetGuard icon" />
+  <img src="NetGuard/Assets.xcassets/AppIcon.appiconset/Icon-512.png" width="120" alt="NetGuard icon" />
 </p>
 
 <h1 align="center">NetGuard</h1>
@@ -14,6 +14,7 @@
   <img src="https://img.shields.io/badge/SwiftUI-5-0071E3?style=flat" />
   <img src="https://img.shields.io/badge/SwiftData-✓-34C759?style=flat" />
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat" />
+  <img src="https://img.shields.io/badge/UI-Français-blue?style=flat" />
 </p>
 
 ---
@@ -160,8 +161,17 @@ No other entitlements are requested. NetGuard never connects to the internet.
 
 ---
 
+## Localization
+
+The UI is currently in **French**. English localization is in progress — contributions welcome.
+
+If you'd like to help translate, open the `NetGuard/Localizable.xcstrings` file in Xcode and add the missing English strings. Feel free to open a PR.
+
+---
+
 ## Roadmap
 
+- [ ] English localization (UI currently in French)
 - [ ] `NWBrowser` — replace `dns-sd` subprocess for Bonjour discovery
 - [ ] `SFCertificatePanel` — native macOS "View Certificate" button
 - [ ] Advanced device fingerprinting (Bonjour services × HTTP banner × OUI)
