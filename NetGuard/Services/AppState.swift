@@ -502,6 +502,41 @@ class AppState: ObservableObject {
 
         upsertToStore([device])
     }
+
+    // MARK: - Demo Mode
+
+    /// Remplace l'état courant par un réseau fictif pour les screenshots / démos.
+    func loadDemoData() {
+        // Devices
+        devices = DemoData.devices
+        selectedDevice = nil
+
+        // Network info
+        primaryNetwork = DemoData.networkInfo
+        networkInfos = [DemoData.networkInfo]
+
+        // Alerts
+        alerts = DemoData.alerts
+
+        // Audit results
+        auditResults = [:]
+        for device in devices {
+            if let raw = DemoData.auditResults[device.ip] {
+                let findings = raw.findings.map { f in
+                    SecurityAuditor.AuditFinding(severity: f.severity, title: f.title, detail: f.detail)
+                }
+                auditResults[device.id] = SecurityAuditor.AuditResult(
+                    score: raw.score,
+                    findings: findings,
+                    credentialsTested: true
+                )
+            }
+        }
+
+        // Scan status
+        scanStatus = .completed(duration: 8.4)
+        lastScanDate = Date()
+    }
 }
 
 // MARK: - DeviceAction

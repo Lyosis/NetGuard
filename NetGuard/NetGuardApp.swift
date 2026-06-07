@@ -53,6 +53,22 @@ struct NetGuardApp: App {
                 }
                 .keyboardShortcut("k", modifiers: [.command])
             }
+
+            // MARK: Menu Debug (screenshots / démo)
+            CommandMenu("Debug") {
+                Button("Charger le réseau démo") {
+                    appState.loadDemoData()
+                }
+                .keyboardShortcut("d", modifiers: [.command, .option])
+
+                Button("Réinitialiser") {
+                    appState.devices = []
+                    appState.alerts  = []
+                    appState.auditResults = [:]
+                    appState.scanStatus = .idle
+                }
+                .keyboardShortcut("d", modifiers: [.command, .option, .shift])
+            }
         }
     }
 }

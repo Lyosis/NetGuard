@@ -38,6 +38,7 @@
 		EE001122334455667788AACC /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE001122334455667788AABB /* NetworkMonitor.swift */; };
 		F1F39980E8E749EB88AF4926 /* NetGuardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */; };
 		FF001122334455667788AADD /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF001122334455667788AACC /* L10n.swift */; };
+		DEMO0011223344556677AABB /* DemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEMO0011223344556677AACC /* DemoData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		EE001122334455667788AABB /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		FE9D5719B85D4158A25ED1B0 /* NetGuard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetGuard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF001122334455667788AACC /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		DEMO0011223344556677AACC /* DemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +174,7 @@
 			children = (
 				FF001122334455667788AACC /* L10n.swift */,
 				A6001122334455667788EE02 /* ViewModifiers+Glass.swift */,
+				DEMO0011223344556677AACC /* DemoData.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */,
 				FF001122334455667788AADD /* L10n.swift in Sources */,
 				A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */,
+				DEMO0011223344556677AABB /* DemoData.swift in Sources */,
 				A6001122334455667788FF05 /* ScanSnapshot.swift in Sources */,
 				A6001122334455667788FF07 /* HistoryView.swift in Sources */,
 				A7001122334455667788DD13 /* NotificationService.swift in Sources */,
