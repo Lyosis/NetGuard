@@ -142,12 +142,31 @@ actor SSDPDiscovery {
 
     // MARK: - 3. UPnP descriptor fetch + parse
 
+    /// Vérifie que l'URL pointe vers une adresse LAN privée (RFC 1918 / RFC 4193)
+    /// et utilise un schéma http/https — évite le SSRF vers localhost, cloud metadata, etc.
+    private nonisolated static func isLANURL(_ url: URL) -> Bool {
+        guard let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else { return false }
+        guard let host = url.host else { return false }
+        // Bloquer loopback et link-local
+        if host == "localhost" || host.hasPrefix("127.") || host.hasPrefix("169.254.") { return false }
+        // N'autoriser que les plages RFC 1918 : 10.x, 172.16-31.x, 192.168.x
+        if host.hasPrefix("10.") { return true }
+        if host.hasPrefix("192.168.") { return true }
+        if host.hasPrefix("172.") {
+            let parts = host.split(separator: ".").compactMap { Int($0) }
+            if parts.count >= 2, parts[1] >= 16, parts[1] <= 31 { return true }
+        }
+        return false
+    }
+
     private nonisolated static func buildInfo(headers: [String: String]) async -> UPnPInfo {
         let server = headers["server"]
         let st     = headers["st"]
         let location = headers["location"]
 
-        guard let urlString = location, let url = URL(string: urlString) else {
+        guard let urlString = location,
+              let url = URL(string: urlString),
+              isLANURL(url) else {          // ← garde SSRF : LAN uniquement
             return UPnPInfo(friendlyName: nil, modelName: nil,
                             manufacturer: nil, deviceType: st, server: server)
         }
@@ -199,6 +218,7 @@ private final class ResponseStorage: @unchecked Sendable {
 
     func append(ip: String, headers: [String: String]) {
         lock.lock(); defer { lock.unlock() }
+        guard byIP.count < 512 else { return }   // cap anti-amplification SSDP
         if var existing = byIP[ip] {
             for (k, v) in headers where existing[k] == nil { existing[k] = v }
             byIP[ip] = existing

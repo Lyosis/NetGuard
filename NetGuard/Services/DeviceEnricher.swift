@@ -645,7 +645,7 @@ actor DeviceEnricher {
                     .value(forHTTPHeaderField: "Server") ?? ""
 
                 var title = ""
-                if let d = data, let html = String(data: d, encoding: .utf8) ?? String(data: d, encoding: .isoLatin1) {
+                if let d = data, let html = String(data: d.prefix(512_000), encoding: .utf8) ?? String(data: d.prefix(512_000), encoding: .isoLatin1) {
                     if let r = html.range(of: #"<title[^>]*>([^<]+)</title>"#,
                                           options: [.regularExpression, .caseInsensitive]) {
                         title = String(html[r])
