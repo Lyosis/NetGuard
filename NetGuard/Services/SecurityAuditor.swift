@@ -110,7 +110,7 @@ actor SecurityAuditor {
                 score -= 40
                 findings.append(.init(severity: .critical,
                                       title: "Identifiants par défaut actifs",
-                                      detail: "Login « \(found.user) » / « \(found.pass) » accepté — changer immédiatement."))
+                                      detail: "Login « \(found.user) » accepté avec un mot de passe par défaut. Changez les identifiants immédiatement."))
             }
         }
 
@@ -190,7 +190,14 @@ actor SecurityAuditor {
             guard let http = response as? HTTPURLResponse, http.statusCode == 200 else { return false }
             // Vérifier que la réponse est bien une page HTML (pas juste un ping API)
             let preview = String(data: data.prefix(512), encoding: .utf8) ?? ""
-            return preview.contains("<") // présence de balises HTML
+            let lower = preview.lowercased()
+            // Vérifier une structure HTML réelle (balise ouvrante + contenu)
+            let hasHTML = lower.contains("<html") || lower.contains("<body") || lower.contains("<title")
+            // Exclure les pages de login (l'auth aurait dû aboutir à une vraie page)
+            let isLoginPage = lower.contains("login") || lower.contains("password")
+                           || lower.contains("incorrect") || lower.contains("invalid")
+                           || lower.contains("denied") || lower.contains("unauthorized")
+            return hasHTML && !isLoginPage
         } catch {
             return false
         }
