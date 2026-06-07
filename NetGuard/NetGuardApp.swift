@@ -60,7 +60,6 @@ struct NetGuardApp: App {
                 Button("Charger le réseau démo") {
                     appState.loadDemoData()
                 }
-                .keyboardShortcut("d", modifiers: [.command, .option])
 
                 Button("Réinitialiser") {
                     appState.devices = []
@@ -68,7 +67,6 @@ struct NetGuardApp: App {
                     appState.auditResults = [:]
                     appState.scanStatus = .idle
                 }
-                .keyboardShortcut("d", modifiers: [.command, .option, .shift])
             }
             #endif
         }
