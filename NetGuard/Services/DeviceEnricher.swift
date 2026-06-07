@@ -487,7 +487,12 @@ actor DeviceEnricher {
                                  encoding: .utf8) ?? ""
                 continuation.resume(returning: Self.parsePing(out))
             }
-            try? process.run()
+            do {
+                try process.run()
+            } catch {
+                // /sbin/ping absent ou non exécutable — résume immédiatement pour éviter le hang
+                continuation.resume(returning: PingResult(ms: 0, ttl: 0))
+            }
         }
     }
 
