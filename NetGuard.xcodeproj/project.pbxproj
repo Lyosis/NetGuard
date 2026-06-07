@@ -256,17 +256,16 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/NetGuard/Resources/manuf.txt",
 			);
 			name = "Strip xattrs Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/manuf-xattr-stripped.stamp",
+				"$(DERIVED_FILE_DIR)/xattr-stripped.stamp",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Supprime com.apple.provenance qui bloque la copie dans le bundle\nxattr -d com.apple.provenance \"${SRCROOT}/NetGuard/Resources/manuf.txt\" 2>/dev/null || true\ntouch \"${DERIVED_FILE_DIR}/manuf-xattr-stripped.stamp\"\n";
+			shellScript = "# Supprime com.apple.provenance sur tous les fichiers du projet\n# (evite que les assets colles depuis l exterieur bloquent builtin-copy)\nfind \"${SRCROOT}/NetGuard\" -type f \\( -name '*.png' -o -name '*.txt' -o -name '*.xcassets' \\) -exec xattr -d com.apple.provenance {} \\; 2>/dev/null || true\nfind \"${SRCROOT}/NetGuard/Assets.xcassets\" -type f -exec xattr -d com.apple.provenance {} \\; 2>/dev/null || true\nfind \"${SRCROOT}/NetGuard/Resources\" -type f -exec xattr -d com.apple.provenance {} \\; 2>/dev/null || true\ntouch \"${DERIVED_FILE_DIR}/xattr-stripped.stamp\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
