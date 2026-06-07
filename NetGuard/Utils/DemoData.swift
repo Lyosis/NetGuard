@@ -1,8 +1,10 @@
+#if DEBUG
 import Foundation
 
 // MARK: - DemoData
 /// Réseau fictif pour screenshots / démos — aucune donnée réelle.
 /// Activé via le menu Debug → "Charger le réseau démo".
+/// Compilé en build DEBUG uniquement.
 enum DemoData {
 
     // MARK: - NetworkInfo
@@ -630,3 +632,4 @@ enum DemoData {
         ]
     }
 }
+#endif

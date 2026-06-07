@@ -505,7 +505,9 @@ class AppState: ObservableObject {
 
     // MARK: - Demo Mode
 
+    #if DEBUG
     /// Remplace l'état courant par un réseau fictif pour les screenshots / démos.
+    /// Disponible en build DEBUG uniquement.
     func loadDemoData() {
         // Devices
         devices = DemoData.devices
@@ -537,6 +539,7 @@ class AppState: ObservableObject {
         scanStatus = .completed(duration: 8.4)
         lastScanDate = Date()
     }
+    #endif
 }
 
 // MARK: - DeviceAction
