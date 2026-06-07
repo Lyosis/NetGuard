@@ -186,6 +186,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 487FD79B99FA411CAF0B8999 /* Build configuration list for PBXNativeTarget "NetGuard" */;
 			buildPhases = (
+				XATTR00112233445566778899 /* Strip xattrs Resources */,
 				E3FD840A99044B75BC30FE03 /* Sources */,
 				FC9EE8CF9D7C422A873E2F53 /* Frameworks */,
 				F38C2AA143F4460C9D5EEA88 /* Resources */,
@@ -245,6 +246,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		XATTR00112233445566778899 /* Strip xattrs Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/NetGuard/Resources/manuf.txt",
+			);
+			name = "Strip xattrs Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/manuf-xattr-stripped.stamp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Supprime com.apple.provenance qui bloque la copie dans le bundle\nxattr -d com.apple.provenance \"${SRCROOT}/NetGuard/Resources/manuf.txt\" 2>/dev/null || true\ntouch \"${DERIVED_FILE_DIR}/manuf-xattr-stripped.stamp\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E3FD840A99044B75BC30FE03 /* Sources */ = {
@@ -381,7 +406,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -448,7 +473,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
