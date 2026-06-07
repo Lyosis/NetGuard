@@ -14,6 +14,7 @@ struct NetworkMapView: View {
     @State private var hoveredNode: NetworkDevice? = nil
     @State private var scale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
+    @State private var dragBase: CGSize = .zero   // offset accumulé avant le drag courant
     @GestureState private var magnifyBy: CGFloat = 1.0
     @State private var searchText: String = ""
     @State private var selectedType: DeviceType? = nil
@@ -72,7 +73,18 @@ struct NetworkMapView: View {
                     )
                     .gesture(
                         DragGesture()
-                            .onChanged { value in offset = value.translation }
+                            .onChanged { value in
+                                offset = CGSize(
+                                    width:  dragBase.width  + value.translation.width,
+                                    height: dragBase.height + value.translation.height
+                                )
+                            }
+                            .onEnded { value in
+                                dragBase = CGSize(
+                                    width:  dragBase.width  + value.translation.width,
+                                    height: dragBase.height + value.translation.height
+                                )
+                            }
                     )
                     .overlay(
                         ScrollWheelZoomView { delta in
@@ -171,7 +183,7 @@ struct NetworkMapView: View {
             Divider().frame(height: 16).opacity(0.3)
             Button {
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    scale = 1.0; offset = .zero
+                    scale = 1.0; offset = .zero; dragBase = .zero
                 }
             } label: {
                 Image(systemName: "arrow.counterclockwise")
@@ -278,7 +290,8 @@ struct NetworkMapView: View {
     @ViewBuilder
     private func mapContent(in size: CGSize) -> some View {
         let nodes = computeLayout(in: size)
-        let nodeMap = Dictionary(uniqueKeysWithValues: nodes.map { ($0.device.id, $0) })
+        // uniquingKeysWith: first → évite le crash si deux devices partagent le même id (doublon transitoire)
+        let nodeMap = Dictionary(nodes.map { ($0.device.id, $0) }, uniquingKeysWith: { first, _ in first })
 
         ZStack {
             // Draw edges first
