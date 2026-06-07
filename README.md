@@ -29,7 +29,13 @@ No telemetry. No cloud. No subscription.
 
 ## Screenshots
 
-> _Screenshots coming soon — contributions welcome._
+| Network Map | Device Detail |
+|:-----------:|:-------------:|
+| ![Network map with 18 devices on a demo network](docs/screenshots/01-map-overview.png) | ![Router detail panel — NETGEAR-Orbi](docs/screenshots/02-device-detail.png) |
+
+| Alerts Panel | Filter by Device Type |
+|:------------:|:--------------------:|
+| ![All alerts modal — 6 security findings](docs/screenshots/03-alerts.png) | ![Filter menu open on the network map](docs/screenshots/04-filter.png) |
 
 ---
 
