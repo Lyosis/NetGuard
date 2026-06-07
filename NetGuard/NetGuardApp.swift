@@ -54,7 +54,8 @@ struct NetGuardApp: App {
                 .keyboardShortcut("k", modifiers: [.command])
             }
 
-            // MARK: Menu Debug (screenshots / démo)
+            #if DEBUG
+            // MARK: Menu Debug (screenshots / démo — build DEBUG uniquement)
             CommandMenu("Debug") {
                 Button("Charger le réseau démo") {
                     appState.loadDemoData()
@@ -69,6 +70,7 @@ struct NetGuardApp: App {
                 }
                 .keyboardShortcut("d", modifiers: [.command, .option, .shift])
             }
+            #endif
         }
     }
 }
