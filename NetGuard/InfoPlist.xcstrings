@@ -1,0 +1,23 @@
+{
+  "sourceLanguage" : "fr",
+  "strings" : {
+    "NSLocalNetworkUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NetGuard needs access to your local network to scan and analyze connected devices."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NetGuard a besoin d'accéder au réseau local pour scanner et analyser les appareils connectés."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
