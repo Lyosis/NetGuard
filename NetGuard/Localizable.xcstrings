@@ -1,7 +1,6 @@
 {
   "sourceLanguage": "fr",
   "strings": {
-    "": {},
     "%@ (%@)": {
       "localizations": {
         "fr": {
@@ -57,6 +56,7 @@
       }
     },
     "a11y.filter.active": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -73,6 +73,7 @@
       }
     },
     "a11y.filter.hint": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -157,6 +158,7 @@
       }
     },
     "a11y.zoom_in": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -173,6 +175,7 @@
       }
     },
     "a11y.zoom_out": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -189,6 +192,7 @@
       }
     },
     "af.cert.expired.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -205,6 +209,7 @@
       }
     },
     "af.cert.expired.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -221,6 +226,7 @@
       }
     },
     "af.cert.self.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -237,6 +243,7 @@
       }
     },
     "af.cert.self.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -253,6 +260,7 @@
       }
     },
     "af.creds.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -269,6 +277,7 @@
       }
     },
     "af.creds.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -285,6 +294,7 @@
       }
     },
     "af.ftp.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -301,6 +311,7 @@
       }
     },
     "af.ftp.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -317,6 +328,7 @@
       }
     },
     "af.http.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -333,6 +345,7 @@
       }
     },
     "af.http.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -349,6 +362,7 @@
       }
     },
     "af.many_ports.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -365,6 +379,7 @@
       }
     },
     "af.many_ports.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -381,6 +396,7 @@
       }
     },
     "af.none.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -397,6 +413,7 @@
       }
     },
     "af.none.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -413,6 +430,7 @@
       }
     },
     "af.telnet.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -429,6 +447,7 @@
       }
     },
     "af.telnet.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -445,6 +464,7 @@
       }
     },
     "af.unknown.detail": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -461,6 +481,7 @@
       }
     },
     "af.unknown.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -649,6 +670,7 @@
       }
     },
     "audit.creds.not_tested": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -665,6 +687,7 @@
       }
     },
     "audit.creds.tested": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -681,6 +704,7 @@
       }
     },
     "audit.launch": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -697,6 +721,7 @@
       }
     },
     "audit.level.critical": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -713,6 +738,7 @@
       }
     },
     "audit.level.moderate": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -729,6 +755,7 @@
       }
     },
     "audit.level.risky": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -745,6 +772,7 @@
       }
     },
     "audit.level.safe": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -761,6 +789,7 @@
       }
     },
     "audit.running": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -777,6 +806,7 @@
       }
     },
     "audit.score": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -793,6 +823,7 @@
       }
     },
     "audit.section": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1951,6 +1982,7 @@
       }
     },
     "history.alerts": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1967,6 +1999,7 @@
       }
     },
     "history.delete": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1983,6 +2016,7 @@
       }
     },
     "history.devices": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -1999,6 +2033,7 @@
       }
     },
     "history.duration.minutes": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2015,6 +2050,7 @@
       }
     },
     "history.duration.seconds": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2031,6 +2067,7 @@
       }
     },
     "history.empty": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2047,6 +2084,7 @@
       }
     },
     "history.new_devices": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2063,6 +2101,7 @@
       }
     },
     "history.tab.history": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2079,6 +2118,7 @@
       }
     },
     "history.tab.network": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2095,6 +2135,7 @@
       }
     },
     "intrusion.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2111,6 +2152,7 @@
       }
     },
     "intrusion.notif.multiple": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2127,6 +2169,7 @@
       }
     },
     "intrusion.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2143,6 +2186,7 @@
       }
     },
     "intrusion.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2159,6 +2203,7 @@
       }
     },
     "map.diagnose": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2209,6 +2254,7 @@
       }
     },
     "map.filter.clear": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2225,6 +2271,7 @@
       }
     },
     "map.filter.no_results": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2241,6 +2288,7 @@
       }
     },
     "map.filter.toggle": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2342,6 +2390,7 @@
       }
     },
     "map.search.placeholder": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2718,6 +2767,7 @@
       }
     },
     "port.risk.db_exposed": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2734,6 +2784,7 @@
       }
     },
     "port.risk.db_exposed_noauth": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2750,6 +2801,7 @@
       }
     },
     "port.risk.ftp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2766,6 +2818,7 @@
       }
     },
     "port.risk.http": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2782,6 +2835,7 @@
       }
     },
     "port.risk.http_alt": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2798,6 +2852,7 @@
       }
     },
     "port.risk.http_proxy": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2814,6 +2869,7 @@
       }
     },
     "port.risk.msrpc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2830,6 +2886,7 @@
       }
     },
     "port.risk.netbios": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2846,6 +2903,7 @@
       }
     },
     "port.risk.nfs": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2862,6 +2920,7 @@
       }
     },
     "port.risk.pop3": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2878,6 +2937,7 @@
       }
     },
     "port.risk.pptp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2894,6 +2954,7 @@
       }
     },
     "port.risk.rdp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2910,6 +2971,7 @@
       }
     },
     "port.risk.rtsp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2926,6 +2988,7 @@
       }
     },
     "port.risk.smb": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2942,6 +3005,7 @@
       }
     },
     "port.risk.snmp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2958,6 +3022,7 @@
       }
     },
     "port.risk.telnet": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2974,6 +3039,7 @@
       }
     },
     "port.risk.upnp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -2990,6 +3056,7 @@
       }
     },
     "port.risk.vnc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3006,6 +3073,7 @@
       }
     },
     "port.risk.winrm": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3277,6 +3345,7 @@
       }
     },
     "scan.no_interface": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3293,6 +3362,7 @@
       }
     },
     "scan.progress.analysis_done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3309,6 +3379,7 @@
       }
     },
     "scan.progress.arp_read": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3325,6 +3396,7 @@
       }
     },
     "scan.progress.arp_update": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3341,6 +3413,7 @@
       }
     },
     "scan.progress.bonjour": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3357,6 +3430,7 @@
       }
     },
     "scan.progress.bonjour_done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3373,6 +3447,7 @@
       }
     },
     "scan.progress.build_map": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3389,6 +3464,7 @@
       }
     },
     "scan.progress.discovery_done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3405,6 +3481,7 @@
       }
     },
     "scan.progress.net_info": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3421,6 +3498,7 @@
       }
     },
     "scan.progress.ping_sweep": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3437,6 +3515,7 @@
       }
     },
     "scan.progress.ports_done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3453,6 +3532,7 @@
       }
     },
     "scan.progress.ports_host": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3469,6 +3549,7 @@
       }
     },
     "scan.progress.ports_sweep": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3485,6 +3566,7 @@
       }
     },
     "scan.progress.quick": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3501,6 +3583,7 @@
       }
     },
     "scan.progress.resolve_hostnames": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3517,6 +3600,7 @@
       }
     },
     "scan.progress.resolve_names": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3533,6 +3617,7 @@
       }
     },
     "scan.progress.ssdp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3549,6 +3634,7 @@
       }
     },
     "scan.status.done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3565,6 +3651,7 @@
       }
     },
     "scan.status.error": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3581,6 +3668,7 @@
       }
     },
     "scan.status.ready": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3597,6 +3685,7 @@
       }
     },
     "scope.network": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -3613,6 +3702,7 @@
       }
     },
     "scope.wifi": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4038,6 +4128,7 @@
       }
     },
     "vuln.cert.expired.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4054,6 +4145,7 @@
       }
     },
     "vuln.cert.expired.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4070,6 +4162,7 @@
       }
     },
     "vuln.cert.expired.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4086,6 +4179,7 @@
       }
     },
     "vuln.cert.invalid.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4102,6 +4196,7 @@
       }
     },
     "vuln.cert.invalid.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4118,6 +4213,7 @@
       }
     },
     "vuln.cert.invalid.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4134,6 +4230,7 @@
       }
     },
     "vuln.cert.near.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4150,6 +4247,7 @@
       }
     },
     "vuln.cert.near.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4166,6 +4264,7 @@
       }
     },
     "vuln.cert.near.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4182,6 +4281,7 @@
       }
     },
     "vuln.cert.reason_unknown": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4198,6 +4298,7 @@
       }
     },
     "vuln.cert.self.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4214,6 +4315,7 @@
       }
     },
     "vuln.cert.self.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4230,6 +4332,7 @@
       }
     },
     "vuln.cert.self.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4246,6 +4349,7 @@
       }
     },
     "vuln.config.many_devices.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4262,6 +4366,7 @@
       }
     },
     "vuln.config.many_devices.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4278,6 +4383,7 @@
       }
     },
     "vuln.config.many_devices.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4294,6 +4400,7 @@
       }
     },
     "vuln.config.many_risky.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4310,6 +4417,7 @@
       }
     },
     "vuln.config.many_risky.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4326,6 +4434,7 @@
       }
     },
     "vuln.config.many_risky.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4342,6 +4451,7 @@
       }
     },
     "vuln.db.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4358,6 +4468,7 @@
       }
     },
     "vuln.db.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4374,6 +4485,7 @@
       }
     },
     "vuln.db.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4390,6 +4502,7 @@
       }
     },
     "vuln.on_device": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4406,6 +4519,7 @@
       }
     },
     "vuln.port.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4422,6 +4536,7 @@
       }
     },
     "vuln.progress.analyzing": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4438,6 +4553,7 @@
       }
     },
     "vuln.progress.checking": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4454,6 +4570,7 @@
       }
     },
     "vuln.progress.config": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4470,6 +4587,7 @@
       }
     },
     "vuln.progress.done": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4486,6 +4604,7 @@
       }
     },
     "vuln.progress.unknown": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4502,6 +4621,7 @@
       }
     },
     "vuln.progress.wifi": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4518,6 +4638,7 @@
       }
     },
     "vuln.reco.default": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4534,6 +4655,7 @@
       }
     },
     "vuln.reco.elastic": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4550,6 +4672,7 @@
       }
     },
     "vuln.reco.ftp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4566,6 +4689,7 @@
       }
     },
     "vuln.reco.http": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4582,6 +4706,7 @@
       }
     },
     "vuln.reco.mongo": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4598,6 +4723,7 @@
       }
     },
     "vuln.reco.mysql": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4614,6 +4740,7 @@
       }
     },
     "vuln.reco.pptp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4630,6 +4757,7 @@
       }
     },
     "vuln.reco.rdp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4646,6 +4774,7 @@
       }
     },
     "vuln.reco.smb": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4662,6 +4791,7 @@
       }
     },
     "vuln.reco.snmp": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4678,6 +4808,7 @@
       }
     },
     "vuln.reco.telnet": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4694,6 +4825,7 @@
       }
     },
     "vuln.reco.vnc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4710,6 +4842,7 @@
       }
     },
     "vuln.telnet.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4726,6 +4859,7 @@
       }
     },
     "vuln.telnet.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4742,6 +4876,7 @@
       }
     },
     "vuln.telnet.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4758,6 +4893,7 @@
       }
     },
     "vuln.unknown.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4774,6 +4910,7 @@
       }
     },
     "vuln.unknown.mac": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4790,6 +4927,7 @@
       }
     },
     "vuln.unknown.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4806,6 +4944,7 @@
       }
     },
     "vuln.unknown.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4822,6 +4961,7 @@
       }
     },
     "vuln.vnc.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4838,6 +4978,7 @@
       }
     },
     "vuln.vnc.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4854,6 +4995,7 @@
       }
     },
     "vuln.vnc.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4870,6 +5012,7 @@
       }
     },
     "vuln.wifi.open.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4886,6 +5029,7 @@
       }
     },
     "vuln.wifi.open.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4902,6 +5046,7 @@
       }
     },
     "vuln.wifi.open.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4918,6 +5063,7 @@
       }
     },
     "vuln.wifi.weak.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4934,6 +5080,7 @@
       }
     },
     "vuln.wifi.weak.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4950,6 +5097,7 @@
       }
     },
     "vuln.wifi.weak.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4966,6 +5114,7 @@
       }
     },
     "vuln.wifi.wep.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4982,6 +5131,7 @@
       }
     },
     "vuln.wifi.wep.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -4998,6 +5148,7 @@
       }
     },
     "vuln.wifi.wep.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5014,6 +5165,7 @@
       }
     },
     "vuln.wifi.wpa1.desc": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5030,6 +5182,7 @@
       }
     },
     "vuln.wifi.wpa1.reco": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5046,6 +5199,7 @@
       }
     },
     "vuln.wifi.wpa1.title": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5062,6 +5216,7 @@
       }
     },
     "wifi.sec.open": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5078,6 +5233,7 @@
       }
     },
     "wifi.sec.unknown": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
@@ -5094,6 +5250,7 @@
       }
     },
     "wifi.sec.wep": {
+      "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
