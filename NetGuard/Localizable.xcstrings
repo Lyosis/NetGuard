@@ -3052,6 +3052,54 @@
         }
       }
     },
+    "scan.progress.ports_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port scan complete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan des ports terminé"
+          }
+        }
+      }
+    },
+    "scan.progress.ports_host": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning ports: %@…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports : %@…"
+          }
+        }
+      }
+    },
+    "scan.progress.ports_sweep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning ports %1$d–%2$d…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports %1$d–%2$d…"
+          }
+        }
+      }
+    },
     "scan.progress.quick": {
       "localizations": {
         "en": {

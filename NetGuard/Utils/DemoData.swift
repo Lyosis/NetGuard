@@ -64,9 +64,9 @@ enum DemoData {
             type: .router,
             status: .safe,
             openPorts: [
-                OpenPort(port: 80,  service: "HTTP",  notes: "Interface d'admin"),
-                OpenPort(port: 443, service: "HTTPS", notes: "Interface d'admin (SSL)"),
-                OpenPort(port: 53,  service: "DNS",   notes: "Résolveur local")
+                OpenPort(port: 80,  service: "HTTP",  notes: "Admin interface"),
+                OpenPort(port: 443, service: "HTTPS", notes: "Admin interface (SSL)"),
+                OpenPort(port: 53,  service: "DNS",   notes: "Local resolver")
             ],
             isCurrentDevice: false,
             responseTime: 1.2,
@@ -93,13 +93,13 @@ enum DemoData {
             ip: "192.168.1.10",
             mac: "A4:CF:99:1B:3E:52",
             hostname: "MacBook-Pro-de-Thomas.local",
-            mdnsName: "MacBook Pro de Thomas",
+            mdnsName: "Thomas's MacBook Pro",
             vendor: "Apple Inc.",
             type: .mac,
             status: .safe,
             openPorts: [
-                OpenPort(port: 22,   service: "SSH",        notes: "Partage à distance actif"),
-                OpenPort(port: 5000, service: "AirPlay",    notes: "Réception AirPlay")
+                OpenPort(port: 22,   service: "SSH",        notes: "Remote sharing enabled"),
+                OpenPort(port: 5000, service: "AirPlay",    notes: "AirPlay receiver")
             ],
             isCurrentDevice: true,
             responseTime: 0.4,
@@ -117,12 +117,12 @@ enum DemoData {
             ip: "192.168.1.14",
             mac: "F8:FF:C2:44:A1:09",
             hostname: "MacBook-Air-de-Sophie.local",
-            mdnsName: "MacBook Air de Sophie",
+            mdnsName: "Sophie's MacBook Air",
             vendor: "Apple Inc.",
             type: .mac,
             status: .safe,
             openPorts: [
-                OpenPort(port: 5000, service: "AirPlay", notes: "Réception AirPlay")
+                OpenPort(port: 5000, service: "AirPlay", notes: "AirPlay receiver")
             ],
             isCurrentDevice: false,
             responseTime: 2.1,
@@ -140,7 +140,7 @@ enum DemoData {
             ip: "192.168.1.11",
             mac: "BE:D4:12:7A:33:F1",
             hostname: "iPhone-de-Thomas.local",
-            mdnsName: "iPhone 15 Pro de Thomas",
+            mdnsName: "Thomas's iPhone 15 Pro",
             vendor: "Apple Inc.",
             type: .iphone,
             status: .safe,
@@ -151,7 +151,7 @@ enum DemoData {
             osGuess: .ios,
             bonjourServices: ["_companion-link._tcp.", "_homekit._tcp."]
         )
-        d.userNote = "iPhone principal"
+        d.userNote = "Primary iPhone"
         return d
     }()
 
@@ -162,7 +162,7 @@ enum DemoData {
             ip: "192.168.1.12",
             mac: "DA:F3:88:0C:21:44",
             hostname: "iPhone-de-Sophie.local",
-            mdnsName: "iPhone SE de Sophie",
+            mdnsName: "Sophie's iPhone SE",
             vendor: "Apple Inc.",
             type: .iphone,
             status: .safe,
@@ -209,8 +209,8 @@ enum DemoData {
             type: .appletv,
             status: .safe,
             openPorts: [
-                OpenPort(port: 7000, service: "AirPlay",   notes: "Réception AirPlay"),
-                OpenPort(port: 49152, service: "HomeKit",  notes: "Pont HomeKit")
+                OpenPort(port: 7000, service: "AirPlay",   notes: "AirPlay receiver"),
+                OpenPort(port: 49152, service: "HomeKit",  notes: "HomeKit bridge")
             ],
             isCurrentDevice: false,
             responseTime: 2.7,
@@ -228,12 +228,12 @@ enum DemoData {
             ip: "192.168.1.21",
             mac: "3C:06:30:FF:AA:11",
             hostname: "HomePod-mini.local",
-            mdnsName: "HomePod mini — Salon",
+            mdnsName: "HomePod mini — Living Room",
             vendor: "Apple Inc.",
             type: .iot,
             status: .safe,
             openPorts: [
-                OpenPort(port: 7000, service: "AirPlay", notes: "Réception AirPlay audio")
+                OpenPort(port: 7000, service: "AirPlay", notes: "AirPlay audio receiver")
             ],
             isCurrentDevice: false,
             responseTime: 1.9,
@@ -241,7 +241,7 @@ enum DemoData {
             osGuess: .ios,
             bonjourServices: ["_airplay._tcp.", "_raop._tcp.", "_homekit._tcp."]
         )
-        d.userNote = "Salon — musique"
+        d.userNote = "Living room — music"
         return d
     }()
 
@@ -256,7 +256,7 @@ enum DemoData {
             isSelfSigned: true,
             isExpired: false,
             isTrusted: false,
-            trustErrorDescription: "Le certificat est auto-signé et n'est pas approuvé par une autorité de certification reconnue."
+            trustErrorDescription: "The certificate is self-signed and is not trusted by a recognized certificate authority."
         )
         let d = NetworkDevice(
             ip: "192.168.1.30",
@@ -267,13 +267,13 @@ enum DemoData {
             type: .nas,
             status: .alert,
             openPorts: [
-                OpenPort(port: 22,   service: "SSH",   notes: "Administration SSH"),
-                OpenPort(port: 80,   service: "HTTP",  notes: "DSM (redirection vers 5001)"),
-                OpenPort(port: 443,  service: "HTTPS", notes: "DSM sécurisé"),
+                OpenPort(port: 22,   service: "SSH",   notes: "SSH administration"),
+                OpenPort(port: 80,   service: "HTTP",  notes: "DSM (redirects to 5001)"),
+                OpenPort(port: 443,  service: "HTTPS", notes: "DSM (secure)"),
                 OpenPort(port: 5000, service: "DSM",   notes: "DiskStation Manager"),
                 OpenPort(port: 5001, service: "DSM",   notes: "DiskStation Manager (HTTPS)"),
-                OpenPort(port: 139,  service: "SMB",   notes: "Partage de fichiers"),
-                OpenPort(port: 445,  service: "SMB",   notes: "Partage de fichiers"),
+                OpenPort(port: 139,  service: "SMB",   notes: "File sharing"),
+                OpenPort(port: 445,  service: "SMB",   notes: "File sharing"),
             ],
             isCurrentDevice: false,
             responseTime: 1.1,
@@ -291,7 +291,7 @@ enum DemoData {
                 server: "Linux/5.10 UPnP/1.0 Synology/1.0"
             )
         )
-        d.userNote = "Stockage photos + backups Time Machine"
+        d.userNote = "Photo storage + Time Machine backups"
         return d
     }()
 
@@ -307,10 +307,10 @@ enum DemoData {
             type: .printer,
             status: .alert,
             openPorts: [
-                OpenPort(port: 21,   service: "FTP",       isVulnerable: true,  notes: "FTP activé — non recommandé"),
-                OpenPort(port: 80,   service: "HTTP",      notes: "Interface web imprimante"),
-                OpenPort(port: 443,  service: "HTTPS",     notes: "Interface web sécurisée"),
-                OpenPort(port: 9100, service: "RAW Print", notes: "Impression réseau directe")
+                OpenPort(port: 21,   service: "FTP",       isVulnerable: true,  notes: "FTP enabled — not recommended"),
+                OpenPort(port: 80,   service: "HTTP",      notes: "Printer web interface"),
+                OpenPort(port: 443,  service: "HTTPS",     notes: "Secure web interface"),
+                OpenPort(port: 9100, service: "RAW Print", notes: "Direct network printing")
             ],
             isCurrentDevice: false,
             responseTime: 3.3,
@@ -335,8 +335,8 @@ enum DemoData {
             type: .iot,
             status: .unknown,
             openPorts: [
-                OpenPort(port: 8080, service: "HTTP Alt",   notes: "API SmartTV"),
-                OpenPort(port: 8443, service: "HTTPS Alt",  notes: "API SmartTV sécurisée"),
+                OpenPort(port: 8080, service: "HTTP Alt",   notes: "SmartTV API"),
+                OpenPort(port: 8443, service: "HTTPS Alt",  notes: "SmartTV API (secure)"),
                 OpenPort(port: 7676, service: "Samsung",    notes: "AllShare / DLNA")
             ],
             isCurrentDevice: false,
@@ -361,7 +361,7 @@ enum DemoData {
             ip: "192.168.1.60",
             mac: "BC:60:A7:91:44:2B",
             hostname: "PS5.local",
-            mdnsName: "PS5-de-Thomas",
+            mdnsName: "Thomas's PS5",
             vendor: "Sony Interactive Entertainment",
             type: .gaming,
             status: .safe,
@@ -375,7 +375,7 @@ enum DemoData {
             ttl: 128,
             osGuess: .unknown,
             upnp: UPnPInfo(
-                friendlyName: "PS5-de-Thomas",
+                friendlyName: "Thomas's PS5",
                 modelName: "PlayStation 5",
                 manufacturer: "Sony Interactive Entertainment",
                 deviceType: "urn:schemas-sony-com:device:SonyInteractiveEntertainment:1",
@@ -397,8 +397,8 @@ enum DemoData {
             type: .iot,
             status: .safe,
             openPorts: [
-                OpenPort(port: 80,  service: "HTTP",  notes: "API locale Hue (CLIP)"),
-                OpenPort(port: 443, service: "HTTPS", notes: "API locale Hue (CLIP v2)")
+                OpenPort(port: 80,  service: "HTTP",  notes: "Local Hue API (CLIP)"),
+                OpenPort(port: 443, service: "HTTPS", notes: "Local Hue API (CLIP v2)")
             ],
             isCurrentDevice: false,
             responseTime: 1.6,
@@ -424,14 +424,14 @@ enum DemoData {
             status: .safe,
             openPorts: [
                 OpenPort(port: 4070, service: "Spotify",    notes: "Spotify Connect"),
-                OpenPort(port: 55443, service: "Alexa",     notes: "Service Alexa")
+                OpenPort(port: 55443, service: "Alexa",     notes: "Alexa service")
             ],
             isCurrentDevice: false,
             responseTime: 7.1,
             ttl: 64,
             osGuess: .linux
         )
-        d.userNote = "Cuisine"
+        d.userNote = "Kitchen"
         return d
     }()
 
@@ -442,7 +442,7 @@ enum DemoData {
             ip: "192.168.1.72",
             mac: "54:60:09:C1:33:EE",
             hostname: "Chromecast.local",
-            mdnsName: "Chromecast — Chambre",
+            mdnsName: "Chromecast — Bedroom",
             vendor: "Google LLC",
             type: .iot,
             status: .safe,
@@ -473,9 +473,9 @@ enum DemoData {
             status: .alert,
             openPorts: [
                 OpenPort(port: 135,  service: "RPC",      notes: "Remote Procedure Call"),
-                OpenPort(port: 139,  service: "NetBIOS",  notes: "Partage réseau"),
-                OpenPort(port: 445,  service: "SMB",      notes: "Partage de fichiers"),
-                OpenPort(port: 3389, service: "RDP",      isVulnerable: true, notes: "Bureau à distance exposé"),
+                OpenPort(port: 139,  service: "NetBIOS",  notes: "Network sharing"),
+                OpenPort(port: 445,  service: "SMB",      notes: "File sharing"),
+                OpenPort(port: 3389, service: "RDP",      isVulnerable: true, notes: "Remote desktop exposed"),
                 OpenPort(port: 10243, service: "WMP",     notes: "Windows Media Player")
             ],
             isCurrentDevice: false,
@@ -498,9 +498,9 @@ enum DemoData {
             type: .iot,
             status: .alert,
             openPorts: [
-                OpenPort(port: 23,  service: "Telnet", isVulnerable: true,  notes: "Accès Telnet non sécurisé"),
-                OpenPort(port: 80,  service: "HTTP",   notes: "Interface de configuration"),
-                OpenPort(port: 1883, service: "MQTT",  notes: "Broker MQTT")
+                OpenPort(port: 23,  service: "Telnet", isVulnerable: true,  notes: "Insecure Telnet access"),
+                OpenPort(port: 80,  service: "HTTP",   notes: "Configuration interface"),
+                OpenPort(port: 1883, service: "MQTT",  notes: "MQTT broker")
             ],
             isCurrentDevice: false,
             responseTime: 8.2,
@@ -524,9 +524,9 @@ enum DemoData {
             type: .iot,
             status: .safe,
             openPorts: [
-                OpenPort(port: 22,  service: "SSH",   notes: "Administration SSH"),
-                OpenPort(port: 53,  service: "DNS",   notes: "Pi-hole — filtrage DNS"),
-                OpenPort(port: 80,  service: "HTTP",  notes: "Interface Pi-hole"),
+                OpenPort(port: 22,  service: "SSH",   notes: "SSH administration"),
+                OpenPort(port: 53,  service: "DNS",   notes: "Pi-hole — DNS filtering"),
+                OpenPort(port: 80,  service: "HTTP",  notes: "Pi-hole interface"),
                 OpenPort(port: 4711, service: "FTL",  notes: "Faster Than Light — Pi-hole API")
             ],
             isCurrentDevice: false,
@@ -536,7 +536,7 @@ enum DemoData {
             httpBanner: "lighttpd/1.4.69",
             httpTitle: "Pi-hole — Admin"
         )
-        d.userNote = "Pi-hole — bloqueur de pubs"
+        d.userNote = "Pi-hole — ad blocker"
         return d
     }()
 
@@ -547,50 +547,50 @@ enum DemoData {
             NetworkAlert(
                 severity: .critical,
                 category: .openPort,
-                title: "Telnet ouvert — 192.168.1.90",
-                description: "Le port 23 (Telnet) est ouvert sur l'appareil Espressif esp32-sensor-01. Telnet transmet les données en clair, y compris les mots de passe.",
+                title: "Telnet open — 192.168.1.90",
+                description: "Port 23 (Telnet) is open on the Espressif device esp32-sensor-01. Telnet transmits data in cleartext, including passwords.",
                 deviceIP: "192.168.1.90",
-                recommendation: "Désactivez Telnet et utilisez SSH à la place. Sur un firmware ESP-IDF, désactivez le composant console_telnet."
+                recommendation: "Disable Telnet and use SSH instead. On ESP-IDF firmware, disable the console_telnet component."
             ),
             NetworkAlert(
                 severity: .high,
                 category: .openPort,
-                title: "RDP exposé — 192.168.1.80",
-                description: "Le port 3389 (Remote Desktop Protocol) est ouvert sur DESKTOP-GAMING. RDP est une cible fréquente d'attaques par force brute sur les réseaux locaux.",
+                title: "RDP exposed — 192.168.1.80",
+                description: "Port 3389 (Remote Desktop Protocol) is open on DESKTOP-GAMING. RDP is a frequent target of brute-force attacks on local networks.",
                 deviceIP: "192.168.1.80",
-                recommendation: "Désactivez RDP si inutilisé (Paramètres → Système → Bureau à distance). Sinon, activez l'authentification NLA et limitez l'accès par pare-feu."
+                recommendation: "Disable RDP if unused (Settings → System → Remote Desktop). Otherwise, enable NLA authentication and restrict access with a firewall."
             ),
             NetworkAlert(
                 severity: .high,
                 category: .openPort,
-                title: "FTP ouvert — 192.168.1.40",
-                description: "Le port 21 (FTP) est ouvert sur l'imprimante HP LaserJet Pro M404dn. FTP transmet les fichiers sans chiffrement.",
+                title: "FTP open — 192.168.1.40",
+                description: "Port 21 (FTP) is open on the HP LaserJet Pro M404dn printer. FTP transmits files without encryption.",
                 deviceIP: "192.168.1.40",
-                recommendation: "Désactivez FTP dans l'interface web de l'imprimante. Préférez l'impression via IPP/IPPS (port 631)."
+                recommendation: "Disable FTP in the printer's web interface. Prefer printing via IPP/IPPS (port 631)."
             ),
             NetworkAlert(
                 severity: .medium,
                 category: .certificate,
-                title: "Certificat auto-signé — 192.168.1.30",
-                description: "Le NAS Synology DS923+ utilise un certificat SSL auto-signé pour HTTPS. La connexion est chiffrée mais l'identité du serveur ne peut pas être vérifiée.",
+                title: "Self-signed certificate — 192.168.1.30",
+                description: "The Synology DS923+ NAS uses a self-signed SSL certificate for HTTPS. The connection is encrypted, but the server's identity cannot be verified.",
                 deviceIP: "192.168.1.30",
-                recommendation: "Dans DSM → Panneau de configuration → Sécurité → Certificat, demandez un certificat Let's Encrypt gratuit si le NAS est accessible depuis l'extérieur."
+                recommendation: "In DSM → Control Panel → Security → Certificate, request a free Let's Encrypt certificate if the NAS is reachable from outside."
             ),
             NetworkAlert(
                 severity: .low,
                 category: .unknownDevice,
-                title: "Appareil non identifié — 192.168.1.90",
-                description: "Un appareil Espressif (firmware ESP32/ESP8266) est connecté au réseau mais n'a pas de nom d'hôte configuré. Son rôle est inconnu.",
+                title: "Unidentified device — 192.168.1.90",
+                description: "An Espressif device (ESP32/ESP8266 firmware) is connected to the network but has no hostname configured. Its role is unknown.",
                 deviceIP: "192.168.1.90",
-                recommendation: "Identifiez cet appareil en accédant à son interface web (http://192.168.1.90). Si non reconnu, bloquez-le depuis l'interface de votre routeur."
+                recommendation: "Identify this device by visiting its web interface (http://192.168.1.90). If unrecognized, block it from your router's interface."
             ),
             NetworkAlert(
                 severity: .info,
                 category: .configuration,
-                title: "NAS — 7 ports ouverts",
-                description: "Le Synology DS923+ expose 7 ports (SSH, HTTP, HTTPS, DSM, SMB×2). Chaque port ouvert augmente la surface d'attaque potentielle.",
+                title: "NAS — 7 open ports",
+                description: "The Synology DS923+ exposes 7 ports (SSH, HTTP, HTTPS, DSM, SMB×2). Each open port increases the potential attack surface.",
                 deviceIP: "192.168.1.30",
-                recommendation: "Désactivez les services inutilisés dans DSM → Panneau de configuration → Services de fichiers."
+                recommendation: "Disable unused services in DSM → Control Panel → File Services."
             )
         ]
     }
@@ -602,31 +602,31 @@ enum DemoData {
             "192.168.1.90": (
                 score: 35,
                 findings: [
-                    (.critical, "Telnet actif (port 23)", "Telnet transmet les données en clair. Un attaquant sur le réseau local peut capturer le trafic, y compris les identifiants."),
-                    (.medium,   "HTTP sans HTTPS (port 80)", "L'interface de configuration est accessible en HTTP non chiffré. Les paramètres envoyés peuvent être interceptés."),
-                    (.low,      "Type d'appareil inconnu", "L'appareil n'a pas de type clairement identifié, ce qui rend l'évaluation des risques plus difficile.")
+                    (.critical, "Telnet active (port 23)", "Telnet transmits data in cleartext. An attacker on the local network can capture the traffic, including credentials."),
+                    (.medium,   "HTTP without HTTPS (port 80)", "The configuration interface is reachable over unencrypted HTTP. Submitted settings can be intercepted."),
+                    (.low,      "Unknown device type", "The device has no clearly identified type, making risk assessment harder.")
                 ]
             ),
             "192.168.1.80": (
                 score: 55,
                 findings: [
-                    (.high,   "RDP exposé (port 3389)", "Le bureau à distance Windows est activé et exposé sur le réseau local. Cible classique des attaques par force brute."),
-                    (.medium, "SMB version ancienne détectée", "Les ports 139 et 445 sont ouverts. SMBv1 présente des vulnérabilités connues (EternalBlue / WannaCry)."),
-                    (.low,    "Plusieurs ports Windows exposés", "NetBIOS (139), SMB (445), RPC (135) augmentent la surface d'attaque de ce poste.")
+                    (.high,   "RDP exposed (port 3389)", "Windows Remote Desktop is enabled and exposed on the local network. A classic target for brute-force attacks."),
+                    (.medium, "Outdated SMB version detected", "Ports 139 and 445 are open. SMBv1 has known vulnerabilities (EternalBlue / WannaCry)."),
+                    (.low,    "Several Windows ports exposed", "NetBIOS (139), SMB (445), and RPC (135) increase this machine's attack surface.")
                 ]
             ),
             "192.168.1.40": (
                 score: 70,
                 findings: [
-                    (.high,   "FTP activé (port 21)", "Le protocole FTP transmet les fichiers et les identifiants en clair sur le réseau."),
-                    (.low,    "HTTP sans redirection HTTPS", "L'interface web de l'imprimante est accessible en HTTP non chiffré.")
+                    (.high,   "FTP enabled (port 21)", "The FTP protocol transmits files and credentials in cleartext over the network."),
+                    (.low,    "HTTP with no HTTPS redirect", "The printer's web interface is reachable over unencrypted HTTP.")
                 ]
             ),
             "192.168.1.30": (
                 score: 78,
                 findings: [
-                    (.medium, "Certificat SSL auto-signé", "Le certificat HTTPS est auto-signé. La connexion est chiffrée mais l'identité du serveur n'est pas vérifiable par un tiers de confiance."),
-                    (.low,    "7 ports ouverts", "Le nombre de ports exposés (22, 80, 443, 5000, 5001, 139, 445) augmente la surface d'attaque du NAS.")
+                    (.medium, "Self-signed SSL certificate", "The HTTPS certificate is self-signed. The connection is encrypted, but the server's identity cannot be verified by a trusted third party."),
+                    (.low,    "7 open ports", "The number of exposed ports (22, 80, 443, 5000, 5001, 139, 445) increases the NAS's attack surface.")
                 ]
             )
         ]

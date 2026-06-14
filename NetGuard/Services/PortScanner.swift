@@ -62,7 +62,7 @@ actor PortScanner {
 
         for (idx, chunk) in ports.chunked(into: chunkSize).enumerated() {
             let progress = Double(idx * chunkSize) / Double(ports.count)
-            await progressHandler(progress, "Scan ports \(idx * chunkSize + 1)–\(min((idx + 1) * chunkSize, ports.count))…")
+            await progressHandler(progress, L10n.Scan.portsSweep(idx * chunkSize + 1, min((idx + 1) * chunkSize, ports.count)))
 
             let results = await withTaskGroup(of: (Int, Bool).self) { group in
                 for port in chunk {
@@ -97,7 +97,7 @@ actor PortScanner {
         let total = devices.count
         for (idx, device) in devices.enumerated() {
             let progress = Double(idx) / Double(max(total, 1))
-            await progressHandler(progress, "Scan ports: \(device.ip)…")
+            await progressHandler(progress, L10n.Scan.portsHost(device.ip))
             let ports = await scanPorts(host: device.ip) { _, _ in }
             // Compute status on the actor before switching to MainActor
             let newStatus = computeStatus(ports: ports)
@@ -106,7 +106,7 @@ actor PortScanner {
                 device.status = newStatus
             }
         }
-        await progressHandler(1.0, "Scan des ports terminé")
+        await progressHandler(1.0, L10n.Scan.portsDone)
     }
 
     // MARK: - TCP connect check

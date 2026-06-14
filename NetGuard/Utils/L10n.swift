@@ -441,6 +441,10 @@ enum L10n {
         static let resolveHostnames = t("scan.progress.resolve_hostnames", "Résolution hostnames…")
         static let buildMap         = t("scan.progress.build_map",         "Construction de la carte réseau…")
         static let discoveryDone    = t("scan.progress.discovery_done",    "Découverte terminée")
+        // PortScanner
+        static func portsSweep(_ from: Int, _ to: Int) -> String { t("scan.progress.ports_sweep", "Scan ports %1$d–%2$d…", from, to) }
+        static func portsHost(_ ip: String) -> String { t("scan.progress.ports_host", "Scan ports : %@…", ip) }
+        static let portsDone = t("scan.progress.ports_done", "Scan des ports terminé")
     }
 
     // MARK: - Détection d'intrusion (nouveaux appareils — alerte + notification)
