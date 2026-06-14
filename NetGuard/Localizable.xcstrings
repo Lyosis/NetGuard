@@ -1,2608 +1,4732 @@
 {
-  "sourceLanguage" : "fr",
-  "strings" : {
-    "" : {
-
+  "sourceLanguage": "fr",
+  "strings": {
+    "": {},
+    "%@ (%@)": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%@, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "%@, %@, %@": {
+      "localizations": {
+        "fr": {
+          "stringUnit": {
+            "state": "new",
+            "value": "%1$@, %2$@, %3$@"
+          }
+        }
+      }
+    },
+    "%lld": {},
+    "%lld%%": {},
+    "%lld/100": {},
+    "Filtre actif. Touchez pour désactiver.": {},
+    "Touchez pour filtrer la carte sur cette catégorie.": {},
+    "Zoom arrière": {},
+    "Zoom avant": {},
+    "a11y.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d alerts"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d alertes"
+          }
+        }
+      }
+    },
+    "a11y.filter.active": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter active. Tap to turn off."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtre actif. Touchez pour désactiver."
+          }
+        }
+      }
+    },
+    "a11y.filter.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to filter the map by this category."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez pour filtrer la carte sur cette catégorie."
+          }
+        }
+      }
+    },
+    "a11y.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet, gateway to the outside"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet, passerelle vers l'extérieur"
+          }
+        }
+      }
+    },
+    "a11y.node.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double-tap to see details."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez deux fois pour voir les détails."
+          }
+        }
+      }
+    },
+    "a11y.scan.done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complete. %1$d devices, %2$d alerts."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan terminé. %1$d appareils, %2$d alertes."
+          }
+        }
+      }
+    },
+    "a11y.scan.quick_done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan complete. %d devices."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide terminé. %d appareils."
+          }
+        }
+      }
+    },
+    "a11y.zoom_in": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom in"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom avant"
+          }
+        }
+      }
+    },
+    "a11y.zoom_out": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom out"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom arrière"
+          }
+        }
+      }
+    },
+    "af.cert.expired.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTPS connections are no longer secure."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les connexions HTTPS ne sont plus sécurisées."
+          }
+        }
+      }
+    },
+    "af.cert.expired.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSL certificate expired"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat SSL expiré"
+          }
+        }
+      }
+    },
+    "af.cert.self.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to verify the server's authenticity."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de vérifier l'authenticité du serveur."
+          }
+        }
+      }
+    },
+    "af.cert.self.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Self-signed certificate"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat auto-signé"
+          }
+        }
+      }
+    },
+    "af.creds.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login “%@” accepted with a default password. Change the credentials immediately."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Login « %@ » accepté avec un mot de passe par défaut. Changez les identifiants immédiatement."
+          }
+        }
+      }
+    },
+    "af.creds.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default credentials active"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Identifiants par défaut actifs"
+          }
+        }
+      }
+    },
+    "af.ftp.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefer SFTP on port 22."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Préférer SFTP sur le port 22."
+          }
+        }
+      }
+    },
+    "af.ftp.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted FTP (port 21)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FTP non chiffré (port 21)"
+          }
+        }
+      }
+    },
+    "af.http.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Credentials and data travel in cleartext."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les identifiants et données transitent en clair."
+          }
+        }
+      }
+    },
+    "af.http.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted web interface (port 80)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface web non chiffrée (port 80)"
+          }
+        }
+      }
+    },
+    "af.many_ports.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reduce the attack surface by closing unused services."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réduire la surface d'attaque en fermant les services inutilisés."
+          }
+        }
+      }
+    },
+    "af.many_ports.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d open ports"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d ports ouverts"
+          }
+        }
+      }
+    },
+    "af.none.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The device appears to be correctly configured."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'appareil semble correctement configuré."
+          }
+        }
+      }
+    },
+    "af.none.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No vulnerabilities detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune vulnérabilité détectée"
+          }
+        }
+      }
+    },
+    "af.telnet.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted protocol — all communications travel in cleartext."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocole non chiffré — toutes les communications transitent en clair."
+          }
+        }
+      }
+    },
+    "af.telnet.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telnet detected (port 23)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telnet détecté (port 23)"
+          }
+        }
+      }
+    },
+    "af.unknown.detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manually verify the origin of this device."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifier manuellement l'origine de cet appareil."
+          }
+        }
+      }
+    },
+    "af.unknown.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidentified device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appareil non identifié"
+          }
+        }
+      }
+    },
+    "alert.severity.critical": {
+      "comment": "── Sévérité alertes ───────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critical"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Critique"
+          }
+        }
+      }
+    },
+    "alert.severity.high": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Élevé"
+          }
+        }
+      }
+    },
+    "alert.severity.info": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Info"
+          }
+        }
+      }
+    },
+    "alert.severity.low": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Low"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faible"
+          }
+        }
+      }
+    },
+    "alert.severity.medium": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Medium"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moyen"
+          }
+        }
+      }
+    },
+    "app.last_scan.hours": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d h ago"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d h"
+          }
+        }
+      }
+    },
+    "app.last_scan.minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d min ago"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d min"
+          }
+        }
+      }
+    },
+    "app.last_scan.never": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never scanned"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jamais scanné"
+          }
+        }
+      }
+    },
+    "app.last_scan.seconds": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last scan %d s ago"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernier scan il y a %d s"
+          }
+        }
+      }
+    },
+    "app.name": {
+      "comment": "── App ───────────────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetGuard"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetGuard"
+          }
+        }
+      }
+    },
+    "cert.badge.expired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expired"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expiré"
+          }
+        }
+      }
+    },
+    "cert.badge.near_expiry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expiring soon"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bientôt expiré"
+          }
+        }
+      }
+    },
+    "cert.badge.self_signed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Self-signed"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-signé"
+          }
+        }
+      }
+    },
+    "cert.badge.trusted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trusted"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Approuvé"
+          }
+        }
+      }
+    },
+    "cert.badge.untrusted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untrusted"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non approuvé"
+          }
+        }
+      }
+    },
+    "cert.days_left": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d day(s) left"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d jour(s) restant(s)"
+          }
+        }
+      }
+    },
+    "cert.fetch_failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't fetch the certificate (device offline?)."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de récupérer le certificat (appareil hors ligne ?)."
+          }
+        }
+      }
+    },
+    "cert.label.issuer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Issuer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Émetteur"
+          }
+        }
+      }
+    },
+    "cert.label.subject": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subject"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sujet"
+          }
+        }
+      }
+    },
+    "cert.label.valid_from": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valid since"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valide depuis"
+          }
+        }
+      }
+    },
+    "cert.label.valid_to": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expires"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expire le"
+          }
+        }
+      }
+    },
+    "cert.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSL CERTIFICATE"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CERTIFICAT SSL"
+          }
+        }
+      }
+    },
+    "cert.view_button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View certificate"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir le certificat"
+          }
+        }
+      }
+    },
+    "cert.view_button.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the macOS system panel with full SSL certificate details."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre le panneau système macOS avec tous les détails du certificat SSL."
+          }
+        }
+      }
+    },
+    "detail.actions.check_vuln": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vulnerabilities"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vulnérabilités"
+          }
+        }
+      }
+    },
+    "detail.actions.check_vuln.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyses vulnerabilities from already-scanned ports."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse les vulnérabilités à partir des ports déjà scannés."
+          }
+        }
+      }
+    },
+    "detail.actions.enrich": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enrich"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enrichir"
+          }
+        }
+      }
+    },
+    "detail.actions.enrich.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetches OS, Bonjour name, NetBIOS, HTTP banner and latency."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupère OS, nom Bonjour, NetBIOS, bannière HTTP et latence."
+          }
+        }
+      }
+    },
+    "detail.actions.running": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Running…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En cours…"
+          }
+        }
+      }
+    },
+    "detail.actions.scan_ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanner les ports"
+          }
+        }
+      }
+    },
+    "detail.actions.scan_ports.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scans all common ports of this device."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanne tous les ports communs de cet appareil."
+          }
+        }
+      }
+    },
+    "detail.actions.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACTIONS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACTIONS"
+          }
+        }
+      }
+    },
+    "detail.current_device": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac (current device)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce Mac (appareil courant)"
+          }
+        }
+      }
+    },
+    "detail.label.bonjour": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour"
+          }
+        }
+      }
+    },
+    "detail.label.bonjour_services": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        }
+      }
+    },
+    "detail.label.dns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
+          }
+        }
+      }
+    },
+    "detail.label.first_seen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "First seen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vu pour la 1ère fois"
+          }
+        }
+      }
+    },
+    "detail.label.http_server": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "HTTP Server"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Serveur HTTP"
+          }
+        }
+      }
+    },
+    "detail.label.last_seen": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last seen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière activité"
+          }
+        }
+      }
+    },
+    "detail.label.latency": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latency"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latence"
+          }
+        }
+      }
+    },
+    "detail.label.mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAC address"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse MAC"
+          }
+        }
+      }
+    },
+    "detail.label.netbios": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetBIOS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NetBIOS"
+          }
+        }
+      }
+    },
+    "detail.label.os": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Système"
+          }
+        }
+      }
+    },
+    "detail.label.privacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confidentialité"
+          }
+        }
+      }
+    },
+    "detail.label.role": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Role"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rôle"
+          }
+        }
+      }
+    },
+    "detail.label.ttl": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TTL"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TTL"
+          }
+        }
+      }
+    },
+    "detail.label.type": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type"
+          }
+        }
+      }
+    },
+    "detail.label.upnp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP"
+          }
+        }
+      }
+    },
+    "detail.label.vendor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vendor"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fabricant"
+          }
+        }
+      }
+    },
+    "detail.label.web_page": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Web page"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Page web"
+          }
+        }
+      }
+    },
+    "detail.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionne un appareil"
+          }
+        }
+      }
+    },
+    "detail.placeholder.sub": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click a node on the map\nto see its details"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clique sur un nœud de la carte\npour voir ses détails"
+          }
+        }
+      }
+    },
+    "detail.privacy.mac_private": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Private MAC — verify on the device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MAC privée — à vérifier sur l'appareil"
+          }
+        }
+      }
+    },
+    "detail.privacy.mac_private.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device uses a private MAC address (private Wi-Fi option on iOS/iPadOS/macOS Sonoma+/Android 10+). Type is inferred heuristically — confirm from the device itself."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet appareil utilise une adresse MAC privée (option WiFi privé d'iOS/iPadOS/macOS Sonoma+/Android 10+). Le type est déduit par heuristique — confirme depuis l'appareil lui-même."
+          }
+        }
+      }
+    },
+    "detail.section.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTS (%ld)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTES (%ld)"
+          }
+        }
+      }
+    },
+    "detail.section.identity": {
+      "comment": "── Détail appareil ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IDENTITY"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IDENTITÉ"
+          }
+        }
+      }
+    },
+    "detail.section.network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NETWORK"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RÉSEAU"
+          }
+        }
+      }
+    },
+    "detail.section.ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OPEN PORTS (%ld)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PORTS OUVERTS (%ld)"
+          }
+        }
+      }
+    },
+    "detail.ttl_value": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld hops"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld sauts"
+          }
+        }
+      }
+    },
+    "device.status.alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte"
+          }
+        }
+      }
+    },
+    "device.status.offline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Offline"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hors ligne"
+          }
+        }
+      }
+    },
+    "device.status.safe": {
+      "comment": "── Statut appareil ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sûr"
+          }
+        }
+      }
+    },
+    "device.status.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
+          }
+        }
+      }
+    },
+    "device.type.appletv": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple TV / HomePod"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple TV / HomePod"
+          }
+        }
+      }
+    },
+    "device.type.firewall": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Firewall"
+          }
+        }
+      }
+    },
+    "device.type.gaming": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Console"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Console"
+          }
+        }
+      }
+    },
+    "device.type.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        }
+      }
+    },
+    "device.type.iot": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smart device"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Objet connecté"
+          }
+        }
+      }
+    },
+    "device.type.ipad": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPad"
+          }
+        }
+      }
+    },
+    "device.type.iphone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone"
+          }
+        }
+      }
+    },
+    "device.type.mac": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mac"
+          }
+        }
+      }
+    },
+    "device.type.nas": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NAS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NAS"
+          }
+        }
+      }
+    },
+    "device.type.printer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Printer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Imprimante"
+          }
+        }
+      }
+    },
+    "device.type.router": {
+      "comment": "── Types d'appareils ──────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Router"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routeur"
+          }
+        }
+      }
+    },
+    "device.type.switch": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch"
+          }
+        }
+      }
+    },
+    "device.type.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
+          }
+        }
+      }
+    },
+    "device.type.wifi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi AP"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi AP"
+          }
+        }
+      }
+    },
+    "intrusion.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ (%2$@) is appearing on this network for the first time."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ (%2$@) apparaît pour la première fois sur ce réseau."
+          }
+        }
+      }
+    },
+    "intrusion.notif.multiple": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d new devices detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d nouveaux appareils détectés"
+          }
+        }
+      }
+    },
+    "intrusion.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make sure this device is authorized on your network."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez que cet appareil est autorisé sur votre réseau."
+          }
+        }
+      }
+    },
+    "intrusion.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New device detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvel appareil détecté"
+          }
+        }
+      }
+    },
+    "map.empty.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run a scan to discover devices"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lancez un scan pour découvrir les appareils"
+          }
+        }
+      }
+    },
+    "map.empty.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No devices detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun appareil détecté"
+          }
+        }
+      }
+    },
+    "map.internet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Internet"
+          }
+        }
+      }
+    },
+    "map.legend.alert": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alert"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alerte"
+          }
+        }
+      }
+    },
+    "map.legend.safe": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sûr"
+          }
+        }
+      }
+    },
+    "map.legend.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
+          }
+        }
+      }
+    },
+    "map.reset_view": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset view"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réinitialiser la vue"
+          }
+        }
+      }
+    },
+    "map.title": {
+      "comment": "── Carte réseau ───────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local network map"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Carte du réseau local"
+          }
+        }
+      }
+    },
+    "menu.alerts.mark_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark all alerts as read"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Marquer toutes les alertes comme lues"
+          }
+        }
+      }
+    },
+    "menu.scan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan"
+          }
+        }
+      }
+    },
+    "menu.scan.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full scan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complet"
+          }
+        }
+      }
+    },
+    "menu.scan.quick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide"
+          }
+        }
+      }
+    },
+    "monitor.banner.tap_rescan": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to rescan"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuyer pour rescanner"
+          }
+        }
+      }
+    },
+    "monitor.connected": {
+      "comment": "── Moniteur réseau ────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network connected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau connecté"
+          }
+        }
+      }
+    },
+    "monitor.disconnected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network disconnected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau déconnecté"
+          }
+        }
+      }
     },
-    "·" : {
-
+    "monitor.ethernet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethernet"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ethernet"
+          }
+        }
+      }
     },
-    "%@ (%@)" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$@)"
+    "monitor.interface_changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface changed"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface changée"
+          }
         }
       }
     },
-    "%@, %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@"
+    "monitor.no_network": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No network"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun réseau"
           }
         }
       }
     },
-    "%@, %@, %@" : {
-      "localizations" : {
-        "fr" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@, %3$@"
+    "monitor.wifi": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi"
           }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi"
+          }
         }
       }
     },
-    "%lld" : {
-
+    "os.ios": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS / iPadOS"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS / iPadOS"
+          }
+        }
+      }
     },
-    "%lld/100" : {
-
+    "os.linux": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linux"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Linux"
+          }
+        }
+      }
     },
-    "%lld%%" : {
-
+    "os.macos": {
+      "comment": "── Système d'exploitation ─────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS / Linux"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS / Linux"
+          }
+        }
+      }
     },
-    "→ %@" : {
-
+    "os.router": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Router / Firmware"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Routeur / Firmware"
+          }
+        }
+      }
     },
-    "a11y.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d alerts"
+    "os.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d alertes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "a11y.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet, gateway to the outside"
+    "os.windows": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet, passerelle vers l'extérieur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows"
           }
         }
       }
     },
-    "a11y.node.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Double-tap to see details."
+    "override.auto": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-detected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Touchez deux fois pour voir les détails."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auto-détecté"
           }
         }
       }
     },
-    "a11y.scan.done" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complete. %1$d devices, %2$d alerts."
+    "override.forced_badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan terminé. %1$d appareils, %2$d alertes."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forcé"
           }
         }
       }
     },
-    "a11y.scan.quick_done" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick scan complete. %d devices."
+    "override.menu.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manually choose the type if auto-detection is wrong. “Auto-detected” reverts to NetGuard's guess."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan rapide terminé. %d appareils."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis manuellement le type si l'auto-détection est incorrecte. « Auto-détecté » revient au type deviné par NetGuard."
           }
         }
       }
     },
-    "alert.severity.critical" : {
-      "comment" : "── Sévérité alertes ───────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Critical"
+    "port.risk.db_exposed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exposed database"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Critique"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base de données exposée"
           }
         }
       }
     },
-    "alert.severity.high" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "High"
+    "port.risk.db_exposed_noauth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exposed database without authentication"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Élevé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Base de données exposée sans auth"
           }
         }
       }
     },
-    "alert.severity.info" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Info"
+    "port.risk.ftp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted file transfer"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Info"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transfert de fichiers non chiffré"
           }
         }
       }
     },
-    "alert.severity.low" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Low"
+    "port.risk.http": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted web traffic"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faible"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trafic web non chiffré"
           }
         }
       }
     },
-    "alert.severity.medium" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Medium"
+    "port.risk.http_alt": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insecure admin interface"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Moyen"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface admin non sécurisée"
           }
         }
       }
     },
-    "app.last_scan.hours" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d h ago"
+    "port.risk.http_proxy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted proxy or service"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d h"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Proxy ou service non chiffré"
           }
         }
       }
     },
-    "app.last_scan.minutes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d min ago"
+    "port.risk.msrpc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exposed Windows RPC"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d min"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows RPC exposé"
           }
         }
       }
     },
-    "app.last_scan.never" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Never scanned"
+    "port.risk.netbios": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insecure Windows network sharing"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jamais scanné"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partage réseau Windows non sécurisé"
           }
         }
       }
     },
-    "app.last_scan.seconds" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last scan %d s ago"
+    "port.risk.nfs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network file sharing"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernier scan il y a %d s"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partage de fichiers réseau"
           }
         }
       }
     },
-    "app.name" : {
-      "comment" : "── App ───────────────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetGuard"
+    "port.risk.pop3": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted email"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetGuard"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mail non chiffré"
           }
         }
       }
     },
-    "cert.badge.expired" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expired"
+    "port.risk.pptp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolete, broken VPN"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expiré"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VPN obsolète et cassé"
           }
         }
       }
     },
-    "cert.badge.near_expiry" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expiring soon"
+    "port.risk.rdp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exposed remote desktop"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bientôt expiré"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bureau distant exposé"
           }
         }
       }
     },
-    "cert.badge.self_signed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Self-signed"
+    "port.risk.rtsp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insecure camera/stream"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto-signé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caméra/stream non sécurisé"
           }
         }
       }
     },
-    "cert.badge.trusted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Trusted"
+    "port.risk.smb": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Windows sharing (ransomware target)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Approuvé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partage Windows (cible ransomwares)"
           }
         }
       }
     },
-    "cert.badge.untrusted" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untrusted"
+    "port.risk.snmp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "May expose system information"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Non approuvé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Peut exposer des infos système"
           }
         }
       }
     },
-    "cert.days_left" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d day(s) left"
+    "port.risk.telnet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted protocol (obsolete)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d jour(s) restant(s)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protocole non chiffré (obsolète)"
           }
         }
       }
     },
-    "cert.fetch_failed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Couldn't fetch the certificate (device offline?)."
+    "port.risk.upnp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exposed UPnP service"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impossible de récupérer le certificat (appareil hors ligne ?)."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Service UPnP exposé"
           }
         }
       }
     },
-    "cert.label.issuer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Issuer"
+    "port.risk.vnc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted remote desktop"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Émetteur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bureau distant non chiffré"
           }
         }
       }
     },
-    "cert.label.subject" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subject"
+    "port.risk.winrm": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unencrypted Windows management"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sujet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gestion Windows non chiffrée"
           }
         }
       }
     },
-    "cert.label.valid_from" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valid since"
+    "qa.afp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AFP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Valide depuis"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AFP"
           }
         }
       }
     },
-    "cert.label.valid_to" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expires"
+    "qa.afp.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mounts the AFP (Apple Filing Protocol) share in Finder."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expire le"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monte le partage AFP (Apple Filing Protocol) dans le Finder."
           }
         }
       }
     },
-    "cert.section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSL CERTIFICATE"
+    "qa.browser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browser"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "CERTIFICAT SSL"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Navigateur"
           }
         }
       }
     },
-    "cert.view_button" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "View certificate"
+    "qa.browser.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the device's web interface in the default browser."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voir le certificat"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l'interface web de l'appareil dans le navigateur par défaut."
           }
         }
       }
     },
-    "cert.view_button.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the macOS system panel with full SSL certificate details."
+    "qa.ftp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FTP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre le panneau système macOS avec tous les détails du certificat SSL."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FTP"
           }
         }
       }
     },
-    "detail.actions.check_vuln" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vulnerabilities"
+    "qa.ftp.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens an FTP connection in Finder."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vulnérabilités"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre une connexion FTP dans le Finder."
           }
         }
       }
     },
-    "detail.actions.check_vuln.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analyses vulnerabilities from already-scanned ports."
+    "qa.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QUICK ACCESS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Analyse les vulnérabilités à partir des ports déjà scannés."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ACCÈS RAPIDE"
           }
         }
       }
     },
-    "detail.actions.enrich" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enrich"
+    "qa.sftp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SFTP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enrichir"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SFTP"
           }
         }
       }
     },
-    "detail.actions.enrich.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fetches OS, Bonjour name, NetBIOS, HTTP banner and latency."
+    "qa.sftp.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens an SFTP connection in Finder."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Récupère OS, nom Bonjour, NetBIOS, bannière HTTP et latence."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre une connexion SFTP dans le Finder."
           }
         }
       }
     },
-    "detail.actions.running" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Running…"
+    "qa.smb": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SMB"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En cours…"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SMB"
           }
         }
       }
     },
-    "detail.actions.scan_ports" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan ports"
+    "qa.smb.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mounts the SMB/Windows share in Finder."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanner les ports"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Monte le partage SMB/Windows dans le Finder."
           }
         }
       }
     },
-    "detail.actions.scan_ports.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scans all common ports of this device."
+    "qa.ssh": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanne tous les ports communs de cet appareil."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSH"
           }
         }
       }
     },
-    "detail.actions.section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ACTIONS"
+    "qa.ssh.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens an SSH session in Terminal."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ACTIONS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre une session SSH dans le Terminal."
           }
         }
       }
     },
-    "detail.current_device" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This Mac (current device)"
+    "qa.vnc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VNC"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ce Mac (appareil courant)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VNC"
           }
         }
       }
     },
-    "detail.label.bonjour" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bonjour"
+    "qa.vnc.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opens the remote screen in Screen Sharing."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bonjour"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvre l'écran distant dans Screen Sharing."
           }
         }
       }
     },
-    "detail.label.bonjour_services" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Services"
+    "scan.no_interface": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active network interface"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Services"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune interface réseau active"
           }
         }
       }
     },
-    "detail.label.dns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+    "scan.progress.analysis_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis complete"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse terminée"
           }
         }
       }
     },
-    "detail.label.first_seen" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "First seen"
+    "scan.progress.arp_read": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading ARP table…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vu pour la 1ère fois"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture table ARP…"
           }
         }
       }
     },
-    "detail.label.http_server" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "HTTP Server"
+    "scan.progress.arp_update": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating ARP table…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Serveur HTTP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mise à jour table ARP…"
           }
         }
       }
     },
-    "detail.label.last_seen" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Last seen"
+    "scan.progress.bonjour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discovering Bonjour services…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dernière activité"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte des services Bonjour…"
           }
         }
       }
     },
-    "detail.label.latency" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latency"
+    "scan.progress.bonjour_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour services discovered"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Latence"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services Bonjour découverts"
           }
         }
       }
     },
-    "detail.label.mac" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MAC address"
+    "scan.progress.build_map": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Building network map…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adresse MAC"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Construction de la carte réseau…"
           }
         }
       }
     },
-    "detail.label.netbios" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetBIOS"
+    "scan.progress.discovery_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discovery complete"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NetBIOS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte terminée"
           }
         }
       }
     },
-    "detail.label.os" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OS"
+    "scan.progress.net_info": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching network information…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupération des informations réseau…"
           }
         }
       }
     },
-    "detail.label.privacy" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Privacy"
+    "scan.progress.ping_sweep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping sweep %1$d–%2$d…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Confidentialité"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping sweep %1$d–%2$d…"
           }
         }
       }
     },
-    "detail.label.role" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Role"
+    "scan.progress.ports_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port scan complete"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rôle"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan des ports terminé"
           }
         }
       }
     },
-    "detail.label.ttl" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TTL"
+    "scan.progress.ports_host": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning ports: %@…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TTL"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports : %@…"
           }
         }
       }
     },
-    "detail.label.type" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
+    "scan.progress.ports_sweep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning ports %1$d–%2$d…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Type"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan ports %1$d–%2$d…"
           }
         }
       }
     },
-    "detail.label.upnp" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UPnP"
+    "scan.progress.quick": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "UPnP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide…"
           }
         }
       }
     },
-    "detail.label.vendor" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vendor"
+    "scan.progress.resolve_hostnames": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolving hostnames…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fabricant"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résolution hostnames…"
           }
         }
       }
     },
-    "detail.label.web_page" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Web page"
+    "scan.progress.resolve_names": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolving hostnames…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Page web"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résolution noms d'hôtes…"
           }
         }
       }
     },
-    "detail.placeholder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select a device"
+    "scan.progress.ssdp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP/SSDP discovery…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionne un appareil"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte UPnP/SSDP…"
           }
         }
       }
     },
-    "detail.placeholder.sub" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Click a node on the map\nto see its details"
+    "scan.status.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complete in %.1fs"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clique sur un nœud de la carte\npour voir ses détails"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan terminé en %.1fs"
           }
         }
       }
     },
-    "detail.privacy.mac_private" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Private MAC — verify on the device"
+    "scan.status.error": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error: %@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MAC privée — à vérifier sur l'appareil"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreur : %@"
           }
         }
       }
     },
-    "detail.privacy.mac_private.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This device uses a private MAC address (private Wi-Fi option on iOS/iPadOS/macOS Sonoma+/Android 10+). Type is inferred heuristically — confirm from the device itself."
+    "scan.status.ready": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cet appareil utilise une adresse MAC privée (option WiFi privé d'iOS/iPadOS/macOS Sonoma+/Android 10+). Le type est déduit par heuristique — confirme depuis l'appareil lui-même."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt"
           }
         }
       }
     },
-    "detail.section.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTS (%ld)"
+    "scope.network": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTES (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau"
           }
         }
       }
     },
-    "detail.section.identity" : {
-      "comment" : "── Détail appareil ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IDENTITY"
+    "scope.wifi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IDENTITÉ"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WiFi"
           }
         }
       }
     },
-    "detail.section.network" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NETWORK"
+    "sidebar.alerts.mark_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark all read"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RÉSEAU"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout lire"
           }
         }
       }
     },
-    "detail.section.ports" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "OPEN PORTS (%ld)"
+    "sidebar.alerts.none": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No alerts — run a scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PORTS OUVERTS (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune alerte — lancez un scan"
           }
         }
       }
     },
-    "detail.ttl_value" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%ld hops"
+    "sidebar.alerts.scanning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%ld sauts"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan en cours…"
           }
         }
       }
     },
-    "device.status.alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert"
+    "sidebar.alerts.see_all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See all alerts (%ld)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir toutes les alertes (%ld)"
           }
         }
       }
     },
-    "device.status.offline" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offline"
+    "sidebar.metric.devices": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Devices"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hors ligne"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appareils"
           }
         }
       }
     },
-    "device.status.safe" : {
-      "comment" : "── Statut appareil ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Safe"
+    "sidebar.metric.encrypt": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Encryption"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sûr"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiffrement"
           }
         }
       }
     },
-    "device.status.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "sidebar.metric.ports": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open ports"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ports ouverts"
           }
         }
       }
     },
-    "device.type.appletv" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apple TV / HomePod"
+    "sidebar.metric.unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apple TV / HomePod"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnus"
           }
         }
       }
     },
-    "device.type.firewall" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Firewall"
+    "sidebar.network.dns": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Firewall"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DNS"
           }
         }
       }
     },
-    "device.type.gaming" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Console"
+    "sidebar.network.gateway": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gateway"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Console"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passerelle"
           }
         }
       }
     },
-    "device.type.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+    "sidebar.network.interface": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interface"
           }
         }
       }
     },
-    "device.type.iot" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Smart device"
+    "sidebar.network.local_ip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Local IP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Objet connecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IP locale"
           }
         }
       }
     },
-    "device.type.ipad" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad"
+    "sidebar.network.security": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Security"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPad"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sécurité"
           }
         }
       }
     },
-    "device.type.iphone" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone"
+    "sidebar.network.ssid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSID"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iPhone"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSID"
           }
         }
       }
     },
-    "device.type.mac" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac"
+    "sidebar.network.subnet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subnet"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mac"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sous-réseau"
           }
         }
       }
     },
-    "device.type.nas" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NAS"
+    "sidebar.scan.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full scan"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NAS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complet"
           }
         }
       }
     },
-    "device.type.printer" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Printer"
+    "sidebar.scan.quick": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Imprimante"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapide"
           }
         }
       }
     },
-    "device.type.router" : {
-      "comment" : "── Types d'appareils ──────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Router"
+    "sidebar.section.alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Routeur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ALERTES"
           }
         }
       }
     },
-    "device.type.switch" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch"
+    "sidebar.section.network": {
+      "comment": "── Sidebar ────────────────────────────────────────",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NETWORK"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Switch"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "RÉSEAU"
           }
         }
       }
     },
-    "device.type.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "sidebar.sheet.all_alerts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All alerts"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les alertes"
           }
         }
       }
     },
-    "device.type.wifi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi AP"
+    "sidebar.sheet.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi AP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fermer"
           }
         }
       }
     },
-    "Filtre actif. Touchez pour désactiver." : {
-
+    "user.alias.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom name (e.g. My NAS)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nom personnalisé (ex : Mon NAS)"
+          }
+        }
+      }
     },
-    "map.empty.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Run a scan to discover devices"
+    "user.notes.placeholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add a note…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lancez un scan pour découvrir les appareils"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter une note…"
           }
         }
       }
     },
-    "map.empty.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No devices detected"
+    "user.notes.section": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTES"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun appareil détecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "NOTES"
           }
         }
       }
     },
-    "map.internet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+    "vuln.cert.expired.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %1$@ — Expired on %2$@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Internet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %1$@ — Expiré le %2$@"
           }
         }
       }
     },
-    "map.legend.alert" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alert"
+    "vuln.cert.expired.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renew the web service's certificate. An expired certificate leaves communications vulnerable."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alerte"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renouveler le certificat du service web. Un certificat expiré rend les communications vulnérables."
           }
         }
       }
     },
-    "map.legend.safe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Safe"
+    "vuln.cert.expired.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSL certificate expired"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sûr"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat SSL expiré"
           }
         }
       }
     },
-    "map.legend.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "vuln.cert.invalid.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %1$@ — %2$@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %1$@ — %2$@"
           }
         }
       }
     },
-    "map.reset_view" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reset view"
+    "vuln.cert.invalid.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the service's TLS configuration. The certificate is not accepted by standard clients."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réinitialiser la vue"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifier la configuration TLS du service. Le certificat n'est pas accepté par les clients standards."
           }
         }
       }
     },
-    "map.title" : {
-      "comment" : "── Carte réseau ───────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local network map"
+    "vuln.cert.invalid.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Invalid SSL certificate"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Carte du réseau local"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat SSL invalide"
           }
         }
       }
     },
-    "menu.alerts.mark_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark all alerts as read"
+    "vuln.cert.near.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %1$@ — Expires in %2$d day(s)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Marquer toutes les alertes comme lues"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %1$@ — Expire dans %2$d jour(s)"
           }
         }
       }
     },
-    "menu.scan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
+    "vuln.cert.near.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan to renew the certificate before it expires."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planifier le renouvellement du certificat avant expiration."
           }
         }
       }
     },
-    "menu.scan.full" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full scan"
+    "vuln.cert.near.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SSL certificate expiring soon"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat SSL bientôt expiré"
           }
         }
       }
     },
-    "menu.scan.quick" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick scan"
+    "vuln.cert.reason_unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unknown reason"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan rapide"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "raison inconnue"
           }
         }
       }
     },
-    "monitor.banner.tap_rescan" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap to rescan"
+    "vuln.cert.self.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@ — The certificate is not signed by a recognized authority"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appuyer pour rescanner"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %@ — Le certificat n'est pas signé par une autorité reconnue"
           }
         }
       }
     },
-    "monitor.connected" : {
-      "comment" : "── Moniteur réseau ────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network connected"
+    "vuln.cert.self.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a certificate issued by Let's Encrypt, or install the root certificate on trusted clients."
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réseau connecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser un certificat émis par Let's Encrypt ou installer le certificat racine sur les clients de confiance."
           }
         }
       }
     },
-    "monitor.disconnected" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Network disconnected"
+    "vuln.cert.self.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Self-signed SSL certificate"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Réseau déconnecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certificat SSL auto-signé"
           }
         }
       }
     },
-    "monitor.ethernet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ethernet"
+    "vuln.config.many_devices.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "High number of devices on the network"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ethernet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nombre élevé d'appareils sur le réseau"
           }
         }
       }
     },
-    "monitor.interface_changed" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface changed"
+    "vuln.config.many_devices.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segment the network with VLANs to isolate IoT devices"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface changée"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Segmenter le réseau avec des VLANs pour isoler les appareils IoT"
           }
         }
       }
     },
-    "monitor.no_network" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No network"
+    "vuln.config.many_devices.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d devices detected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucun réseau"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d appareils détectés"
           }
         }
       }
     },
-    "monitor.wifi" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi"
+    "vuln.config.many_risky.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Several devices expose insecure services"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plusieurs appareils exposent des services non sécurisés"
           }
         }
       }
     },
-    "os.ios" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS / iPadOS"
+    "vuln.config.many_risky.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable the firewall on each device and close unused services"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "iOS / iPadOS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer le firewall sur chaque appareil et fermer les services inutilisés"
           }
         }
       }
     },
-    "os.linux" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Linux"
+    "vuln.config.many_risky.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d devices with vulnerable ports"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Linux"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d appareils avec ports vulnérables"
           }
         }
       }
     },
-    "os.macos" : {
-      "comment" : "── Système d'exploitation ─────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS / Linux"
+    "vuln.db.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@ — Database reachable from the local network"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "macOS / Linux"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %@ — Base de données accessible depuis le réseau local"
           }
         }
       }
     },
-    "os.router" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Router / Firmware"
+    "vuln.db.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrict %@ access to 127.0.0.1 only (bind-address)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Routeur / Firmware"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limiter l'accès à %@ à 127.0.0.1 uniquement (bind-address)"
           }
         }
       }
     },
-    "os.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "vuln.db.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ exposed on the network"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnu"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ exposé sur le réseau"
           }
         }
       }
     },
-    "os.windows" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Windows"
+    "vuln.on_device": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %1$@ — %2$@"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Windows"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %1$@ — %2$@"
           }
         }
       }
     },
-    "override.auto" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto-detected"
+    "vuln.port.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %1$d open (%2$@)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auto-détecté"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Port %1$d ouvert (%2$@)"
           }
         }
       }
     },
-    "override.forced_badge" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forced"
+    "vuln.progress.analyzing": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning for vulnerabilities…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forcé"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse des vulnérabilités…"
           }
         }
       }
     },
-    "override.menu.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Manually choose the type if auto-detection is wrong. “Auto-detected” reverts to NetGuard's guess."
+    "vuln.progress.checking": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking %@…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Choisis manuellement le type si l'auto-détection est incorrecte. « Auto-détecté » revient au type deviné par NetGuard."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification %@…"
           }
         }
       }
     },
-    "qa.afp" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AFP"
+    "vuln.progress.config": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking configuration…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "AFP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérification configuration…"
           }
         }
       }
     },
-    "qa.afp.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mounts the AFP (Apple Filing Protocol) share in Finder."
+    "vuln.progress.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis complete"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monte le partage AFP (Apple Filing Protocol) dans le Finder."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse terminée"
           }
         }
       }
     },
-    "qa.browser" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Browser"
+    "vuln.progress.unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Detecting unknown devices…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Navigateur"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Détection appareils inconnus…"
           }
         }
       }
     },
-    "qa.browser.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the device's web interface in the default browser."
+    "vuln.progress.wifi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyzing Wi-Fi security…"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre l'interface web de l'appareil dans le navigateur par défaut."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse sécurité WiFi…"
           }
         }
       }
     },
-    "qa.ftp" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "FTP"
+    "vuln.reco.default": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable this service if it's not needed"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "FTP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver ce service s'il n'est pas nécessaire"
           }
         }
       }
     },
-    "qa.ftp.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens an FTP connection in Finder."
+    "vuln.reco.elastic": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrict Elasticsearch with a firewall"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre une connexion FTP dans le Finder."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restreindre Elasticsearch avec un firewall"
           }
         }
       }
     },
-    "qa.section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "QUICK ACCESS"
+    "vuln.reco.ftp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use SFTP or FTPS instead of FTP"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ACCÈS RAPIDE"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser SFTP ou FTPS à la place de FTP"
           }
         }
       }
     },
-    "qa.sftp" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SFTP"
+    "vuln.reco.http": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Redirect HTTP to HTTPS"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SFTP"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rediriger HTTP vers HTTPS"
           }
         }
       }
     },
-    "qa.sftp.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens an SFTP connection in Finder."
+    "vuln.reco.mongo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable MongoDB authentication"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre une connexion SFTP dans le Finder."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer l'authentification MongoDB"
           }
         }
       }
     },
-    "qa.smb" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMB"
+    "vuln.reco.mysql": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrict MySQL to localhost only"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SMB"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restreindre MySQL à localhost uniquement"
           }
         }
       }
     },
-    "qa.smb.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mounts the SMB/Windows share in Finder."
+    "vuln.reco.pptp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replace PPTP with WireGuard or OpenVPN"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Monte le partage SMB/Windows dans le Finder."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remplacer PPTP par WireGuard ou OpenVPN"
           }
         }
       }
     },
-    "qa.ssh" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSH"
+    "vuln.reco.rdp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restrict RDP to VPN only"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSH"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restreindre RDP à un VPN uniquement"
           }
         }
       }
     },
-    "qa.ssh.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens an SSH session in Terminal."
+    "vuln.reco.smb": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable SMB/NetBIOS sharing if not needed"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre une session SSH dans le Terminal."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver le partage SMB/NetBIOS si non nécessaire"
           }
         }
       }
     },
-    "qa.vnc" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VNC"
+    "vuln.reco.snmp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable SNMP or use SNMPv3 with authentication"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "VNC"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver SNMP ou utiliser SNMPv3 avec authentification"
           }
         }
       }
     },
-    "qa.vnc.hint" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opens the remote screen in Screen Sharing."
+    "vuln.reco.telnet": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable Telnet, use SSH"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ouvre l'écran distant dans Screen Sharing."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver Telnet, utiliser SSH"
           }
         }
       }
     },
-    "sidebar.alerts.mark_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mark all read"
+    "vuln.reco.vnc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable VNC or use an SSH tunnel"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tout lire"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver VNC ou utiliser un tunnel SSH"
           }
         }
       }
     },
-    "sidebar.alerts.none" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No alerts — run a scan"
+    "vuln.telnet.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@ — All traffic is in cleartext"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aucune alerte — lancez un scan"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %@ — Toutes les communications sont en clair"
           }
         }
       }
     },
-    "sidebar.alerts.scanning" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scanning…"
+    "vuln.telnet.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disable Telnet and use SSH (port 22) instead"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan en cours…"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver Telnet et utiliser SSH (port 22) à la place"
           }
         }
       }
     },
-    "sidebar.alerts.see_all" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "See all alerts (%ld)"
+    "vuln.telnet.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telnet active — unencrypted protocol"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voir toutes les alertes (%ld)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telnet actif — protocole non chiffré"
           }
         }
       }
     },
-    "sidebar.metric.devices" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Devices"
+    "vuln.unknown.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IP %1$@ — MAC: %2$@ — No recognized vendor"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Appareils"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "IP %1$@ — MAC : %2$@ — Aucun fournisseur reconnu"
           }
         }
       }
     },
-    "sidebar.metric.encrypt" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Encryption"
+    "vuln.unknown.mac": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chiffrement"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "inconnu"
           }
         }
       }
     },
-    "sidebar.metric.ports" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open ports"
+    "vuln.unknown.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check the device in your router logs and block it if unrecognized"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ports ouverts"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifier l'appareil dans les logs du routeur et bloquer si non reconnu"
           }
         }
       }
     },
-    "sidebar.metric.unknown" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unknown"
+    "vuln.unknown.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unidentified device"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inconnus"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appareil non identifié"
           }
         }
       }
     },
-    "sidebar.network.dns" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+    "vuln.vnc.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@ — Potentially insecure remote desktop access"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DNS"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sur %@ — Accès bureau à distance potentiellement non sécurisé"
           }
         }
       }
     },
-    "sidebar.network.gateway" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gateway"
+    "vuln.vnc.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protect VNC with a strong password or use SSH tunneling"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Passerelle"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protéger VNC par un mot de passe fort ou utiliser SSH tunneling"
           }
         }
       }
     },
-    "sidebar.network.interface" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface"
+    "vuln.vnc.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VNC exposed — remote desktop"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Interface"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "VNC exposé — bureau distant"
           }
         }
       }
     },
-    "sidebar.network.local_ip" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Local IP"
+    "vuln.wifi.open.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network “%@” — No encryption active"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "IP locale"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau « %@ » — Aucun chiffrement actif"
           }
         }
       }
     },
-    "sidebar.network.security" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Security"
+    "vuln.wifi.open.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable WPA3 or WPA2 with a strong password"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sécurité"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Activer WPA3 ou WPA2 avec un mot de passe fort"
           }
         }
       }
     },
-    "sidebar.network.ssid" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSID"
+    "vuln.wifi.open.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Wi-Fi network (no password)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSID"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau WiFi ouvert (sans mot de passe)"
           }
         }
       }
     },
-    "sidebar.network.subnet" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subnet"
+    "vuln.wifi.weak.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network “%@” — Weak signal, risk of disconnection"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sous-réseau"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau « %@ » — Signal faible, risque de déconnexion"
           }
         }
       }
     },
-    "sidebar.scan.full" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Full scan"
+    "vuln.wifi.weak.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move closer to the router or add an access point"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan complet"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rapprocher le routeur ou ajouter un point d'accès"
           }
         }
       }
     },
-    "sidebar.scan.quick" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quick"
+    "vuln.wifi.weak.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Very weak Wi-Fi signal (%d dBm)"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rapide"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signal WiFi très faible (%d dBm)"
           }
         }
       }
     },
-    "sidebar.section.alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTS"
+    "vuln.wifi.wep.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network “%@” — WEP is broken and no longer protects your data"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ALERTES"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau « %@ » — WEP est cassé et ne protège plus vos données"
           }
         }
       }
     },
-    "sidebar.section.network" : {
-      "comment" : "── Sidebar ────────────────────────────────────────",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NETWORK"
+    "vuln.wifi.wep.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to WPA2 or WPA3 immediately in your router settings"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "RÉSEAU"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer immédiatement à WPA2 ou WPA3 dans les paramètres du routeur"
           }
         }
       }
     },
-    "sidebar.sheet.all_alerts" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "All alerts"
+    "vuln.wifi.wep.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WEP encryption detected"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Toutes les alertes"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiffrement WEP détecté"
           }
         }
       }
     },
-    "sidebar.sheet.close" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Close"
+    "vuln.wifi.wpa1.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Network “%@” — WPA v1 is vulnerable"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fermer"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Réseau « %@ » — WPA v1 est vulnérable"
           }
         }
       }
     },
-    "Touchez pour filtrer la carte sur cette catégorie." : {
-
+    "vuln.wifi.wpa1.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to WPA2 or WPA3"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer à WPA2 ou WPA3"
+          }
+        }
+      }
     },
-    "user.alias.placeholder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom name (e.g. My NAS)"
+    "vuln.wifi.wpa1.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obsolete WPA (v1) encryption"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nom personnalisé (ex : Mon NAS)"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiffrement WPA (v1) obsolète"
           }
         }
       }
     },
-    "user.notes.placeholder" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add a note…"
+    "wifi.sec.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter une note…"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvert"
           }
         }
       }
     },
-    "user.notes.section" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NOTES"
+    "wifi.sec.unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "NOTES"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
           }
         }
       }
     },
-    "Zoom arrière" : {
-
+    "wifi.sec.wep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WEP (obsolete)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WEP (obsolète)"
+          }
+        }
+      }
     },
-    "Zoom avant" : {
-
-    }
+    "·": {},
+    "→ %@": {}
   },
-  "version" : "1.2"
+  "version": "1.2"
 }

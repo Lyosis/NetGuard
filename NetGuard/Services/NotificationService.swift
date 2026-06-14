@@ -27,10 +27,10 @@ final class NotificationService {
         content.threadIdentifier = "netguard.intrusion"
 
         if devices.count == 1, let device = devices.first {
-            content.title = "Nouvel appareil détecté"
+            content.title = L10n.Intrusion.title
             content.body  = "\(device.displayName) · \(device.ip)"
         } else {
-            content.title = "\(devices.count) nouveaux appareils détectés"
+            content.title = L10n.Intrusion.notifMultiple(devices.count)
             content.body  = devices.map(\.ip).joined(separator: ", ")
         }
 

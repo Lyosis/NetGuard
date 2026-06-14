@@ -19,10 +19,10 @@ enum ScanStatus {
 
     var message: String {
         switch self {
-        case .idle:                      return "Prêt"
+        case .idle:                      return L10n.Scan.statusReady
         case .scanning(_, let msg):      return msg
-        case .completed(let d):          return String(format: "Scan terminé en %.1fs", d)
-        case .failed(let err):           return "Erreur : \(err)"
+        case .completed(let d):          return L10n.Scan.statusDone(d)
+        case .failed(let err):           return L10n.Scan.statusError(err)
         }
     }
 }

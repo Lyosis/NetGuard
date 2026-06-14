@@ -49,7 +49,7 @@ actor DeviceEnricher {
     ) async {
         let total = devices.count
         guard total > 0 else {
-            await progressHandler(1.0, "Analyse terminée")
+            await progressHandler(1.0, L10n.Scan.analysisDone)
             return
         }
         let maxConcurrent = min(12, total)
@@ -73,7 +73,7 @@ actor DeviceEnricher {
                 }
             }
         }
-        await progressHandler(1.0, "Analyse terminée")
+        await progressHandler(1.0, L10n.Scan.analysisDone)
     }
 
     // MARK: - Enrich single device
