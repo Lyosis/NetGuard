@@ -300,8 +300,8 @@ struct MetricCard: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("\(title), \(value)")
                 .accessibilityHint(isActive
-                    ? "Filtre actif. Touchez pour désactiver."
-                    : "Touchez pour filtrer la carte sur cette catégorie.")
+                    ? L10n.A11y.filterActive
+                    : L10n.A11y.filterHint)
                 .accessibilityAddTraits(.isButton)
         } else {
             cardContent

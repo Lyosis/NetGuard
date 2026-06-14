@@ -56,6 +56,38 @@
         }
       }
     },
+    "a11y.filter.active": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filter active. Tap to turn off."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Filtre actif. Touchez pour désactiver."
+          }
+        }
+      }
+    },
+    "a11y.filter.hint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to filter the map by this category."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Touchez pour filtrer la carte sur cette catégorie."
+          }
+        }
+      }
+    },
     "a11y.internet": {
       "extractionState": "manual",
       "localizations": {
@@ -120,6 +152,38 @@
           "stringUnit": {
             "state": "translated",
             "value": "Scan rapide terminé. %d appareils."
+          }
+        }
+      }
+    },
+    "a11y.zoom_in": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom in"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom avant"
+          }
+        }
+      }
+    },
+    "a11y.zoom_out": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom out"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zoom arrière"
           }
         }
       }
@@ -1726,6 +1790,70 @@
         }
       }
     },
+    "intrusion.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ (%2$@) is appearing on this network for the first time."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ (%2$@) apparaît pour la première fois sur ce réseau."
+          }
+        }
+      }
+    },
+    "intrusion.notif.multiple": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d new devices detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d nouveaux appareils détectés"
+          }
+        }
+      }
+    },
+    "intrusion.reco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make sure this device is authorized on your network."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vérifiez que cet appareil est autorisé sur votre réseau."
+          }
+        }
+      }
+    },
+    "intrusion.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New device detected"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nouvel appareil détecté"
+          }
+        }
+      }
+    },
     "map.empty.subtitle": {
       "extractionState": "manual",
       "localizations": {
@@ -2760,6 +2888,278 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ouvre l'écran distant dans Screen Sharing."
+          }
+        }
+      }
+    },
+    "scan.no_interface": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No active network interface"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune interface réseau active"
+          }
+        }
+      }
+    },
+    "scan.progress.analysis_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analysis complete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyse terminée"
+          }
+        }
+      }
+    },
+    "scan.progress.arp_read": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading ARP table…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lecture table ARP…"
+          }
+        }
+      }
+    },
+    "scan.progress.arp_update": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating ARP table…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mise à jour table ARP…"
+          }
+        }
+      }
+    },
+    "scan.progress.bonjour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discovering Bonjour services…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte des services Bonjour…"
+          }
+        }
+      }
+    },
+    "scan.progress.bonjour_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bonjour services discovered"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services Bonjour découverts"
+          }
+        }
+      }
+    },
+    "scan.progress.build_map": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Building network map…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Construction de la carte réseau…"
+          }
+        }
+      }
+    },
+    "scan.progress.discovery_done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Discovery complete"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte terminée"
+          }
+        }
+      }
+    },
+    "scan.progress.net_info": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fetching network information…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Récupération des informations réseau…"
+          }
+        }
+      }
+    },
+    "scan.progress.ping_sweep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping sweep %1$d–%2$d…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ping sweep %1$d–%2$d…"
+          }
+        }
+      }
+    },
+    "scan.progress.quick": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick scan…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan rapide…"
+          }
+        }
+      }
+    },
+    "scan.progress.resolve_hostnames": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolving hostnames…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résolution hostnames…"
+          }
+        }
+      }
+    },
+    "scan.progress.resolve_names": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resolving hostnames…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Résolution noms d'hôtes…"
+          }
+        }
+      }
+    },
+    "scan.progress.ssdp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "UPnP/SSDP discovery…"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Découverte UPnP/SSDP…"
+          }
+        }
+      }
+    },
+    "scan.status.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan complete in %.1fs"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan terminé en %.1fs"
+          }
+        }
+      }
+    },
+    "scan.status.error": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Error: %@"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erreur : %@"
+          }
+        }
+      }
+    },
+    "scan.status.ready": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ready"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prêt"
           }
         }
       }
@@ -4225,6 +4625,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chiffrement WPA (v1) obsolète"
+          }
+        }
+      }
+    },
+    "wifi.sec.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ouvert"
+          }
+        }
+      }
+    },
+    "wifi.sec.unknown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unknown"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inconnu"
+          }
+        }
+      }
+    },
+    "wifi.sec.wep": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WEP (obsolete)"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WEP (obsolète)"
           }
         }
       }

@@ -181,14 +181,14 @@ class NetworkInfoService {
 
         let secString: String
         switch security {
-        case .none:            secString = "Ouvert"
-        case .WEP:             secString = "WEP (obsolète)"
+        case .none:            secString = L10n.WifiSecurity.open
+        case .WEP:             secString = L10n.WifiSecurity.wep
         case .wpaPersonal:     secString = "WPA"
         case .wpa2Personal:    secString = "WPA2"
         case .wpa3Personal:    secString = "WPA3"
         case .enterprise:      secString = "WPA2-Enterprise"
         case .wpa3Enterprise:  secString = "WPA3-Enterprise"
-        default:               secString = "Inconnu"
+        default:               secString = L10n.WifiSecurity.unknown
         }
 
         let isSecure = security == .wpa2Personal || security == .wpa3Personal

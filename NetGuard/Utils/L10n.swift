@@ -41,6 +41,10 @@ enum L10n {
         static func alerts(_ n: Int) -> String { t("a11y.alerts", "%d alertes", n) }
         /// Libellé du bouton Internet sur la carte
         static let internet   = t("a11y.internet", "Internet, passerelle vers l'extérieur")
+        static let zoomIn     = t("a11y.zoom_in",  "Zoom avant")
+        static let zoomOut    = t("a11y.zoom_out", "Zoom arrière")
+        static let filterActive = t("a11y.filter.active", "Filtre actif. Touchez pour désactiver.")
+        static let filterHint   = t("a11y.filter.hint",   "Touchez pour filtrer la carte sur cette catégorie.")
     }
 
     // MARK: - Barre de menus (macOS)
@@ -415,5 +419,42 @@ enum L10n {
         static func defaultCredsDetail(_ user: String) -> String { t("af.creds.detail", "Login « %@ » accepté avec un mot de passe par défaut. Changez les identifiants immédiatement.", user) }
         static let noVulnTitle  = t("af.none.title",  "Aucune vulnérabilité détectée")
         static let noVulnDetail = t("af.none.detail", "L'appareil semble correctement configuré.")
+    }
+
+    // MARK: - Statut & progression du scan (AppState, NetworkScanner, DeviceEnricher, ScanResult)
+    enum Scan {
+        static let statusReady = t("scan.status.ready", "Prêt")
+        static func statusDone(_ seconds: Double) -> String { t("scan.status.done", "Scan terminé en %.1fs", seconds) }
+        static func statusError(_ msg: String) -> String { t("scan.status.error", "Erreur : %@", msg) }
+        static let noInterface     = t("scan.no_interface",        "Aucune interface réseau active")
+        static let progressNetInfo = t("scan.progress.net_info",   "Récupération des informations réseau…")
+        static let quickScan       = t("scan.progress.quick",      "Scan rapide…")
+        static let bonjourDiscovering = t("scan.progress.bonjour",      "Découverte des services Bonjour…")
+        static let bonjourDone        = t("scan.progress.bonjour_done", "Services Bonjour découverts")
+        static let analysisDone    = t("scan.progress.analysis_done", "Analyse terminée")
+        // NetworkScanner
+        static let arpRead          = t("scan.progress.arp_read",          "Lecture table ARP…")
+        static let resolveNames     = t("scan.progress.resolve_names",     "Résolution noms d'hôtes…")
+        static func pingSweep(_ from: Int, _ to: Int) -> String { t("scan.progress.ping_sweep", "Ping sweep %1$d–%2$d…", from, to) }
+        static let ssdp             = t("scan.progress.ssdp",              "Découverte UPnP/SSDP…")
+        static let arpUpdate        = t("scan.progress.arp_update",        "Mise à jour table ARP…")
+        static let resolveHostnames = t("scan.progress.resolve_hostnames", "Résolution hostnames…")
+        static let buildMap         = t("scan.progress.build_map",         "Construction de la carte réseau…")
+        static let discoveryDone    = t("scan.progress.discovery_done",    "Découverte terminée")
+    }
+
+    // MARK: - Détection d'intrusion (nouveaux appareils — alerte + notification)
+    enum Intrusion {
+        static let title = t("intrusion.title", "Nouvel appareil détecté")
+        static func description(_ name: String, _ ip: String) -> String { t("intrusion.desc", "%1$@ (%2$@) apparaît pour la première fois sur ce réseau.", name, ip) }
+        static let recommendation = t("intrusion.reco", "Vérifiez que cet appareil est autorisé sur votre réseau.")
+        static func notifMultiple(_ count: Int) -> String { t("intrusion.notif.multiple", "%d nouveaux appareils détectés", count) }
+    }
+
+    // MARK: - Sécurité WiFi (NetworkInfoService) — libellés affichés
+    enum WifiSecurity {
+        static let open    = t("wifi.sec.open",    "Ouvert")
+        static let wep     = t("wifi.sec.wep",     "WEP (obsolète)")
+        static let unknown = t("wifi.sec.unknown", "Inconnu")
     }
 }

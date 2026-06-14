@@ -26,7 +26,7 @@ actor NetworkScanner {
         if !localIP.isEmpty  && localIP != "—"  { knownIPs.append(localIP) }
 
         // 3. Lire la table ARP (rapide)
-        await progressHandler(0.05, "Lecture table ARP…")
+        await progressHandler(0.05, L10n.Scan.arpRead)
         let arpDevices = readARPTable()
 
         // Merge ARP
@@ -36,7 +36,7 @@ actor NetworkScanner {
         }
 
         // 4. Résoudre les noms d'hôtes depuis le cache DNS
-        await progressHandler(0.10, "Résolution noms d'hôtes…")
+        await progressHandler(0.10, L10n.Scan.resolveNames)
 
         // 5. Ping sweep sur le sous-réseau /24 + sweep SSDP en parallèle.
         //    SSDP multicast tourne pendant tout le ping sweep — coût marginal,
@@ -50,7 +50,7 @@ actor NetworkScanner {
 
         for (chunkIdx, chunk) in allIPs.chunked(into: chunkSize).enumerated() {
             let progress = 0.10 + Double(chunkIdx * chunkSize) / Double(allIPs.count) * 0.55
-            await progressHandler(progress, "Ping sweep \(chunkIdx * chunkSize + 1)–\(min((chunkIdx + 1) * chunkSize, allIPs.count))…")
+            await progressHandler(progress, L10n.Scan.pingSweep(chunkIdx * chunkSize + 1, min((chunkIdx + 1) * chunkSize, allIPs.count)))
 
             await withTaskGroup(of: String?.self) { group in
                 for ip in chunk {
@@ -67,12 +67,12 @@ actor NetworkScanner {
         }
 
         // 5b. Récupérer les résultats SSDP et inclure les IP non vues par ICMP/TCP.
-        await progressHandler(0.68, "Découverte UPnP/SSDP…")
+        await progressHandler(0.68, L10n.Scan.ssdp)
         let ssdpMap = await ssdpTask
         for ip in ssdpMap.keys { activeIPs.insert(ip) }
 
         // 6. Rafraîchir la table ARP après le ping pour avoir les MAC
-        await progressHandler(0.72, "Mise à jour table ARP…")
+        await progressHandler(0.72, L10n.Scan.arpUpdate)
         let freshARP = readARPTable()
         for (ip, mac) in freshARP {
             if arpMap[ip] == nil {
@@ -81,7 +81,7 @@ actor NetworkScanner {
         }
 
         // 7. Résoudre les hostnames
-        await progressHandler(0.75, "Résolution hostnames…")
+        await progressHandler(0.75, L10n.Scan.resolveHostnames)
         var hostnameMap: [String: String] = [:]
         for ip in activeIPs {
             if let hostname = await resolveHostname(ip) {
@@ -90,7 +90,7 @@ actor NetworkScanner {
         }
 
         // 8. Construire les objets NetworkDevice
-        await progressHandler(0.85, "Construction de la carte réseau…")
+        await progressHandler(0.85, L10n.Scan.buildMap)
         for ip in activeIPs.sorted() {
             let mac      = arpMap[ip]?.mac ?? ""
             let hostname = hostnameMap[ip] ?? ""
@@ -122,7 +122,7 @@ actor NetworkScanner {
             devices.append(device)
         }
 
-        await progressHandler(1.0, "Découverte terminée")
+        await progressHandler(1.0, L10n.Scan.discoveryDone)
         return devices
     }
 

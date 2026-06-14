@@ -179,10 +179,10 @@ class AppState: ObservableObject {
             alerts.append(NetworkAlert(
                 severity:       .high,
                 category:       .intrusion,
-                title:          "Nouvel appareil détecté",
-                description:    "\(device.displayName) (\(device.ip)) apparaît pour la première fois sur ce réseau.",
+                title:          L10n.Intrusion.title,
+                description:    L10n.Intrusion.description(device.displayName, device.ip),
                 deviceIP:       device.ip,
-                recommendation: "Vérifiez que cet appareil est autorisé sur votre réseau."
+                recommendation: L10n.Intrusion.recommendation
             ))
         }
 
@@ -277,11 +277,11 @@ class AppState: ObservableObject {
         devices = []
 
         // Step 1 : Network info
-        scanStatus = .scanning(progress: 0.01, message: "Récupération des informations réseau…")
+        scanStatus = .scanning(progress: 0.01, message: L10n.Scan.progressNetInfo)
         await refreshNetworkInfo()
 
         guard primaryNetwork.localIP != "—" else {
-            scanStatus = .failed(error: "Aucune interface réseau active")
+            scanStatus = .failed(error: L10n.Scan.noInterface)
             return
         }
 
@@ -309,9 +309,9 @@ class AppState: ObservableObject {
         await MainActor.run { self.devices = discoveredDevices }
 
         // Step 3b : Bonjour discovery
-        scanStatus = .scanning(progress: 0.65, message: "Découverte des services Bonjour…")
+        scanStatus = .scanning(progress: 0.65, message: L10n.Scan.bonjourDiscovering)
         await enricher.discoverBonjourServices()
-        scanStatus = .scanning(progress: 0.70, message: "Services Bonjour découverts")
+        scanStatus = .scanning(progress: 0.70, message: L10n.Scan.bonjourDone)
 
         // Step 4 : Enrich devices
         await enricher.enrichAll(devices: discoveredDevices) { [weak self] progress, msg in
@@ -371,11 +371,11 @@ class AppState: ObservableObject {
     func startQuickScan() async {
         guard !scanStatus.isScanning else { return }
         let start = Date()
-        scanStatus = .scanning(progress: 0.01, message: "Scan rapide…")
+        scanStatus = .scanning(progress: 0.01, message: L10n.Scan.quickScan)
         await refreshNetworkInfo()
 
         guard primaryNetwork.localIP != "—" else {
-            scanStatus = .failed(error: "Aucune interface réseau active"); return
+            scanStatus = .failed(error: L10n.Scan.noInterface); return
         }
 
         let discovered = await networkScanner.discoverHosts(

@@ -158,7 +158,7 @@ struct NetworkMapView: View {
             }
             .buttonStyle(.plain)
             .disabled(scale <= 0.5)
-            .help("Zoom arrière")
+            .help(L10n.A11y.zoomOut)
 
             // Niveau de zoom
             Text("\(Int(scale * 100))%")
@@ -178,7 +178,7 @@ struct NetworkMapView: View {
             }
             .buttonStyle(.plain)
             .disabled(scale >= 3.0)
-            .help("Zoom avant")
+            .help(L10n.A11y.zoomIn)
 
             Divider().frame(height: 16).opacity(0.3)
             Button {
