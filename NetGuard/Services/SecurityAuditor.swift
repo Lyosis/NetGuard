@@ -47,16 +47,16 @@ actor SecurityAuditor {
         if portNumbers.contains(23) {
             score -= 30
             findings.append(.init(severity: .critical,
-                                  title: "Telnet détecté (port 23)",
-                                  detail: "Protocole non chiffré — toutes les communications transitent en clair."))
+                                  title: L10n.AuditFinding.telnetTitle,
+                                  detail: L10n.AuditFinding.telnetDetail))
         }
 
         // FTP
         if portNumbers.contains(21) {
             score -= 20
             findings.append(.init(severity: .high,
-                                  title: "FTP non chiffré (port 21)",
-                                  detail: "Préférer SFTP sur le port 22."))
+                                  title: L10n.AuditFinding.ftpTitle,
+                                  detail: L10n.AuditFinding.ftpDetail))
         }
 
         // HTTP sans HTTPS
@@ -65,8 +65,8 @@ actor SecurityAuditor {
         if hasHTTP && !hasHTTPS {
             score -= 10
             findings.append(.init(severity: .medium,
-                                  title: "Interface web non chiffrée (port 80)",
-                                  detail: "Les identifiants et données transitent en clair."))
+                                  title: L10n.AuditFinding.httpTitle,
+                                  detail: L10n.AuditFinding.httpDetail))
         }
 
         // Certificat SSL
@@ -74,14 +74,14 @@ actor SecurityAuditor {
             if cert.isExpired {
                 score -= 20
                 findings.append(.init(severity: .high,
-                                      title: "Certificat SSL expiré",
-                                      detail: "Les connexions HTTPS ne sont plus sécurisées."))
+                                      title: L10n.AuditFinding.certExpiredTitle,
+                                      detail: L10n.AuditFinding.certExpiredDetail))
             }
             if cert.isSelfSigned {
                 score -= 10
                 findings.append(.init(severity: .medium,
-                                      title: "Certificat auto-signé",
-                                      detail: "Impossible de vérifier l'authenticité du serveur."))
+                                      title: L10n.AuditFinding.certSelfTitle,
+                                      detail: L10n.AuditFinding.certSelfDetail))
             }
         }
 
@@ -89,16 +89,16 @@ actor SecurityAuditor {
         if device.openPorts.count > 5 {
             score -= 10
             findings.append(.init(severity: .low,
-                                  title: "\(device.openPorts.count) ports ouverts",
-                                  detail: "Réduire la surface d'attaque en fermant les services inutilisés."))
+                                  title: L10n.AuditFinding.manyPortsTitle(device.openPorts.count),
+                                  detail: L10n.AuditFinding.manyPortsDetail))
         }
 
         // Appareil inconnu
         if device.effectiveType == .unknown {
             score -= 5
             findings.append(.init(severity: .low,
-                                  title: "Appareil non identifié",
-                                  detail: "Vérifier manuellement l'origine de cet appareil."))
+                                  title: L10n.AuditFinding.unknownTitle,
+                                  detail: L10n.AuditFinding.unknownDetail))
         }
 
         // Identifiants par défaut (test actif — LAN uniquement)
@@ -109,16 +109,16 @@ actor SecurityAuditor {
             if let found = await checkDefaultCredentials(ip: device.ip, webPorts: webPorts) {
                 score -= 40
                 findings.append(.init(severity: .critical,
-                                      title: "Identifiants par défaut actifs",
-                                      detail: "Login « \(found.user) » accepté avec un mot de passe par défaut. Changez les identifiants immédiatement."))
+                                      title: L10n.AuditFinding.defaultCredsTitle,
+                                      detail: L10n.AuditFinding.defaultCredsDetail(found.user)))
             }
         }
 
         // Aucun problème
         if findings.isEmpty {
             findings.append(.init(severity: .info,
-                                  title: "Aucune vulnérabilité détectée",
-                                  detail: "L'appareil semble correctement configuré."))
+                                  title: L10n.AuditFinding.noVulnTitle,
+                                  detail: L10n.AuditFinding.noVulnDetail))
         }
 
         let sorted = findings.sorted { $0.severity > $1.severity }

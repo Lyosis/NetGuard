@@ -287,4 +287,133 @@ enum L10n {
         static let noNetwork          = t("monitor.no_network",        "Aucun réseau")
         static let tapToRescan        = t("monitor.banner.tap_rescan", "Appuyer pour rescanner")
     }
+
+    // MARK: - Portée réseau (deviceIP sentinelle des alertes globales)
+    enum Scope {
+        static let network = t("scope.network", "Réseau")
+        static let wifi    = t("scope.wifi",    "WiFi")
+    }
+
+    // MARK: - Raisons de risque des ports (PortScanner.CommonPort)
+    enum Port {
+        static let ftp             = t("port.risk.ftp",               "Transfert de fichiers non chiffré")
+        static let telnet          = t("port.risk.telnet",            "Protocole non chiffré (obsolète)")
+        static let http            = t("port.risk.http",              "Trafic web non chiffré")
+        static let pop3            = t("port.risk.pop3",              "Mail non chiffré")
+        static let msrpc           = t("port.risk.msrpc",             "Windows RPC exposé")
+        static let netbios         = t("port.risk.netbios",           "Partage réseau Windows non sécurisé")
+        static let snmp            = t("port.risk.snmp",              "Peut exposer des infos système")
+        static let smb             = t("port.risk.smb",               "Partage Windows (cible ransomwares)")
+        static let rtsp            = t("port.risk.rtsp",              "Caméra/stream non sécurisé")
+        static let dbExposed       = t("port.risk.db_exposed",        "Base de données exposée")
+        static let pptp            = t("port.risk.pptp",              "VPN obsolète et cassé")
+        static let nfs             = t("port.risk.nfs",               "Partage de fichiers réseau")
+        static let rdp             = t("port.risk.rdp",               "Bureau distant exposé")
+        static let upnp            = t("port.risk.upnp",              "Service UPnP exposé")
+        static let vnc             = t("port.risk.vnc",               "Bureau distant non chiffré")
+        static let winrm           = t("port.risk.winrm",             "Gestion Windows non chiffrée")
+        static let httpAlt         = t("port.risk.http_alt",          "Interface admin non sécurisée")
+        static let httpProxy       = t("port.risk.http_proxy",        "Proxy ou service non chiffré")
+        static let dbExposedNoAuth = t("port.risk.db_exposed_noauth", "Base de données exposée sans auth")
+    }
+
+    // MARK: - Alertes de vulnérabilités (VulnerabilityChecker)
+    enum Vuln {
+        // Progression
+        static let progressAnalyzing = t("vuln.progress.analyzing", "Analyse des vulnérabilités…")
+        static func progressChecking(_ ip: String) -> String { t("vuln.progress.checking", "Vérification %@…", ip) }
+        static let progressWifi      = t("vuln.progress.wifi",      "Analyse sécurité WiFi…")
+        static let progressUnknown   = t("vuln.progress.unknown",   "Détection appareils inconnus…")
+        static let progressConfig    = t("vuln.progress.config",    "Vérification configuration…")
+        static let progressDone      = t("vuln.progress.done",      "Analyse terminée")
+        // Ports
+        static func portOpenTitle(_ port: Int, _ service: String) -> String { t("vuln.port.title", "Port %1$d ouvert (%2$@)", port, service) }
+        static func onDevice(_ ip: String, _ notes: String) -> String { t("vuln.on_device", "Sur %1$@ — %2$@", ip, notes) }
+        // Telnet
+        static let telnetTitle = t("vuln.telnet.title", "Telnet actif — protocole non chiffré")
+        static func telnetDesc(_ ip: String) -> String { t("vuln.telnet.desc", "Sur %@ — Toutes les communications sont en clair", ip) }
+        static let telnetReco  = t("vuln.telnet.reco",  "Désactiver Telnet et utiliser SSH (port 22) à la place")
+        // VNC
+        static let vncTitle = t("vuln.vnc.title", "VNC exposé — bureau distant")
+        static func vncDesc(_ ip: String) -> String { t("vuln.vnc.desc", "Sur %@ — Accès bureau à distance potentiellement non sécurisé", ip) }
+        static let vncReco  = t("vuln.vnc.reco",  "Protéger VNC par un mot de passe fort ou utiliser SSH tunneling")
+        // Base de données exposée
+        static func dbTitle(_ service: String) -> String { t("vuln.db.title", "%@ exposé sur le réseau", service) }
+        static func dbDesc(_ ip: String) -> String { t("vuln.db.desc", "Sur %@ — Base de données accessible depuis le réseau local", ip) }
+        static func dbReco(_ service: String) -> String { t("vuln.db.reco", "Limiter l'accès à %@ à 127.0.0.1 uniquement (bind-address)", service) }
+        // Certificat
+        static let certExpiredTitle = t("vuln.cert.expired.title", "Certificat SSL expiré")
+        static func certExpiredDesc(_ ip: String, _ date: String) -> String { t("vuln.cert.expired.desc", "Sur %1$@ — Expiré le %2$@", ip, date) }
+        static let certExpiredReco  = t("vuln.cert.expired.reco", "Renouveler le certificat du service web. Un certificat expiré rend les communications vulnérables.")
+        static let certNearTitle = t("vuln.cert.near.title", "Certificat SSL bientôt expiré")
+        static func certNearDesc(_ ip: String, _ days: Int) -> String { t("vuln.cert.near.desc", "Sur %1$@ — Expire dans %2$d jour(s)", ip, days) }
+        static let certNearReco  = t("vuln.cert.near.reco", "Planifier le renouvellement du certificat avant expiration.")
+        static let certSelfTitle = t("vuln.cert.self.title", "Certificat SSL auto-signé")
+        static func certSelfDesc(_ ip: String) -> String { t("vuln.cert.self.desc", "Sur %@ — Le certificat n'est pas signé par une autorité reconnue", ip) }
+        static let certSelfReco  = t("vuln.cert.self.reco", "Utiliser un certificat émis par Let's Encrypt ou installer le certificat racine sur les clients de confiance.")
+        static let certInvalidTitle = t("vuln.cert.invalid.title", "Certificat SSL invalide")
+        static func certInvalidDesc(_ ip: String, _ reason: String) -> String { t("vuln.cert.invalid.desc", "Sur %1$@ — %2$@", ip, reason) }
+        static let certInvalidReco  = t("vuln.cert.invalid.reco", "Vérifier la configuration TLS du service. Le certificat n'est pas accepté par les clients standards.")
+        static let certReasonUnknown = t("vuln.cert.reason_unknown", "raison inconnue")
+        // WiFi
+        static let wepTitle = t("vuln.wifi.wep.title", "Chiffrement WEP détecté")
+        static func wepDesc(_ ssid: String) -> String { t("vuln.wifi.wep.desc", "Réseau « %@ » — WEP est cassé et ne protège plus vos données", ssid) }
+        static let wepReco  = t("vuln.wifi.wep.reco", "Passer immédiatement à WPA2 ou WPA3 dans les paramètres du routeur")
+        static let openTitle = t("vuln.wifi.open.title", "Réseau WiFi ouvert (sans mot de passe)")
+        static func openDesc(_ ssid: String) -> String { t("vuln.wifi.open.desc", "Réseau « %@ » — Aucun chiffrement actif", ssid) }
+        static let openReco  = t("vuln.wifi.open.reco", "Activer WPA3 ou WPA2 avec un mot de passe fort")
+        static let wpa1Title = t("vuln.wifi.wpa1.title", "Chiffrement WPA (v1) obsolète")
+        static func wpa1Desc(_ ssid: String) -> String { t("vuln.wifi.wpa1.desc", "Réseau « %@ » — WPA v1 est vulnérable", ssid) }
+        static let wpa1Reco  = t("vuln.wifi.wpa1.reco", "Passer à WPA2 ou WPA3")
+        static func weakSignalTitle(_ rssi: Int) -> String { t("vuln.wifi.weak.title", "Signal WiFi très faible (%d dBm)", rssi) }
+        static func weakSignalDesc(_ ssid: String) -> String { t("vuln.wifi.weak.desc", "Réseau « %@ » — Signal faible, risque de déconnexion", ssid) }
+        static let weakSignalReco  = t("vuln.wifi.weak.reco", "Rapprocher le routeur ou ajouter un point d'accès")
+        // Appareil inconnu
+        static let unknownTitle = t("vuln.unknown.title", "Appareil non identifié")
+        static func unknownDesc(_ ip: String, _ mac: String) -> String { t("vuln.unknown.desc", "IP %1$@ — MAC : %2$@ — Aucun fournisseur reconnu", ip, mac) }
+        static let unknownMac   = t("vuln.unknown.mac", "inconnu")
+        static let unknownReco  = t("vuln.unknown.reco", "Vérifier l'appareil dans les logs du routeur et bloquer si non reconnu")
+        // Configuration réseau
+        static func manyRiskyTitle(_ count: Int) -> String { t("vuln.config.many_risky.title", "%d appareils avec ports vulnérables", count) }
+        static let manyRiskyDesc = t("vuln.config.many_risky.desc", "Plusieurs appareils exposent des services non sécurisés")
+        static let manyRiskyReco = t("vuln.config.many_risky.reco", "Activer le firewall sur chaque appareil et fermer les services inutilisés")
+        static func manyDevicesTitle(_ count: Int) -> String { t("vuln.config.many_devices.title", "%d appareils détectés", count) }
+        static let manyDevicesDesc = t("vuln.config.many_devices.desc", "Nombre élevé d'appareils sur le réseau")
+        static let manyDevicesReco = t("vuln.config.many_devices.reco", "Segmenter le réseau avec des VLANs pour isoler les appareils IoT")
+        // Recommandations par port
+        static let recoFtp     = t("vuln.reco.ftp",     "Utiliser SFTP ou FTPS à la place de FTP")
+        static let recoTelnet  = t("vuln.reco.telnet",  "Désactiver Telnet, utiliser SSH")
+        static let recoHttp    = t("vuln.reco.http",    "Rediriger HTTP vers HTTPS")
+        static let recoSmb     = t("vuln.reco.smb",     "Désactiver le partage SMB/NetBIOS si non nécessaire")
+        static let recoSnmp    = t("vuln.reco.snmp",    "Désactiver SNMP ou utiliser SNMPv3 avec authentification")
+        static let recoRdp     = t("vuln.reco.rdp",     "Restreindre RDP à un VPN uniquement")
+        static let recoVnc     = t("vuln.reco.vnc",     "Désactiver VNC ou utiliser un tunnel SSH")
+        static let recoMysql   = t("vuln.reco.mysql",   "Restreindre MySQL à localhost uniquement")
+        static let recoMongo   = t("vuln.reco.mongo",   "Activer l'authentification MongoDB")
+        static let recoElastic = t("vuln.reco.elastic", "Restreindre Elasticsearch avec un firewall")
+        static let recoPptp    = t("vuln.reco.pptp",    "Remplacer PPTP par WireGuard ou OpenVPN")
+        static let recoDefault = t("vuln.reco.default", "Désactiver ce service s'il n'est pas nécessaire")
+    }
+
+    // MARK: - Findings de l'audit de sécurité (SecurityAuditor)
+    enum AuditFinding {
+        static let telnetTitle  = t("af.telnet.title",  "Telnet détecté (port 23)")
+        static let telnetDetail = t("af.telnet.detail", "Protocole non chiffré — toutes les communications transitent en clair.")
+        static let ftpTitle     = t("af.ftp.title",     "FTP non chiffré (port 21)")
+        static let ftpDetail    = t("af.ftp.detail",    "Préférer SFTP sur le port 22.")
+        static let httpTitle    = t("af.http.title",    "Interface web non chiffrée (port 80)")
+        static let httpDetail   = t("af.http.detail",   "Les identifiants et données transitent en clair.")
+        static let certExpiredTitle  = t("af.cert.expired.title",  "Certificat SSL expiré")
+        static let certExpiredDetail = t("af.cert.expired.detail", "Les connexions HTTPS ne sont plus sécurisées.")
+        static let certSelfTitle  = t("af.cert.self.title",  "Certificat auto-signé")
+        static let certSelfDetail = t("af.cert.self.detail", "Impossible de vérifier l'authenticité du serveur.")
+        static func manyPortsTitle(_ count: Int) -> String { t("af.many_ports.title", "%d ports ouverts", count) }
+        static let manyPortsDetail = t("af.many_ports.detail", "Réduire la surface d'attaque en fermant les services inutilisés.")
+        static let unknownTitle  = t("af.unknown.title",  "Appareil non identifié")
+        static let unknownDetail = t("af.unknown.detail", "Vérifier manuellement l'origine de cet appareil.")
+        static let defaultCredsTitle = t("af.creds.title", "Identifiants par défaut actifs")
+        static func defaultCredsDetail(_ user: String) -> String { t("af.creds.detail", "Login « %@ » accepté avec un mot de passe par défaut. Changez les identifiants immédiatement.", user) }
+        static let noVulnTitle  = t("af.none.title",  "Aucune vulnérabilité détectée")
+        static let noVulnDetail = t("af.none.detail", "L'appareil semble correctement configuré.")
+    }
 }
