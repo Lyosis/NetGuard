@@ -27,6 +27,16 @@ No telemetry. No cloud. No subscription.
 
 ---
 
+## Download
+
+**[⬇ Download NetGuard 1.0 (.dmg)](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and **notarized by Apple**, so it runs without Gatekeeper warnings.
+
+Open the `.dmg`, drag **NetGuard** to your Applications folder, and launch it. Grant **Local Network** access when macOS asks. Requires macOS 15.0+ on Apple Silicon.
+
+Prefer to build from source? See [Build & Run](#build--run) below.
+
+---
+
 ## Screenshots
 
 | Network Map | Device Detail |

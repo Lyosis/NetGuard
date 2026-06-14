@@ -5,6 +5,8 @@
 
 # Xcode
 build/
+*.app
+*.dmg
 *.xcworkspace
 xcuserdata/
 *.xcodeproj/xcuserdata/
