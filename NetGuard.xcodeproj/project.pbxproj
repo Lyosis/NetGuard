@@ -17,6 +17,7 @@
 		6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A819D17455B4AAFB4FC5783 /* Assets.xcassets */; };
 		72AFF281ED6A439C8FFD9F68 /* NetworkInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCCCFEFED8A41FBB75158A4 /* NetworkInfoService.swift */; };
 		78ACA65C2FC8E03400D6687A /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */; };
+		78ACA65E2FC8E03400D6687A /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 78ACA65D2FC8E03400D6687A /* InfoPlist.xcstrings */; };
 		8B1A2C3D4E5F6A7B8C9D0E1F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */; };
 		991FEE69892C44339DAD3FB2 /* VulnerabilityChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */; };
 		9B354F1BE7354639B20AE511 /* NetworkMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1499604EDC4A4CE48B13CD61 /* NetworkMapView.swift */; };
@@ -54,6 +55,7 @@
 		6A53D95B2F1F43F98C565E36 /* NetGuardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardApp.swift; sourceTree = "<group>"; };
 		7465D9412F5E40F6BFA2C33C /* NetGuard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NetGuard.entitlements; sourceTree = "<group>"; };
 		78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		78ACA65D2FC8E03400D6687A /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		790F30B3EA554AD5A8D88827 /* NetworkDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDevice.swift; sourceTree = "<group>"; };
 		8A1B2C3D4E5F6A7B8C9D0E1F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		932796120BDE4AAEAB44CE21 /* PortScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortScanner.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				6D1111D4CAE94DD28B66E77F /* Services */,
 				FF001122334455667788AABB /* Utils */,
 				78ACA65B2FC8E03400D6687A /* Localizable.xcstrings */,
+				78ACA65D2FC8E03400D6687A /* InfoPlist.xcstrings */,
 				0A819D17455B4AAFB4FC5783 /* Assets.xcassets */,
 				A4001122334455667788DD0C /* Resources/manuf.txt */,
 				510C720947E44C558C259046 /* Info.plist */,
@@ -241,6 +244,7 @@
 			files = (
 				6670F1D9DA9C4A0A9160E44B /* Assets.xcassets in Resources */,
 				78ACA65C2FC8E03400D6687A /* Localizable.xcstrings in Resources */,
+				78ACA65E2FC8E03400D6687A /* InfoPlist.xcstrings in Resources */,
 				A4001122334455667788DD0B /* Resources/manuf.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
