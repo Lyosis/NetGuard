@@ -15,9 +15,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSBonjourServices</key>
@@ -40,7 +40,7 @@
 		<string>_daap._tcp</string>
 	</array>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2025. Usage personnel uniquement.</string>
+	<string>Copyright © 2026 Wilfrid Bombilaj. MIT License.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>NetGuard a besoin d'accéder au réseau local pour scanner et analyser les appareils connectés.</string>
 	<key>NSPrincipalClass</key>
