@@ -257,6 +257,9 @@ actor NetworkScanner {
     }
 
     // MARK: - Subnet parsing
+    /// Parse un CIDR (ex: "192.168.1.0/24") → (première adresse hôte, nombre d'hôtes utilisables).
+    /// Calcule la vraie adresse réseau via masque 32 bits — gère correctement les
+    /// sous-réseaux non-/24 (/25, /26…) où le réseau ne commence pas à `.0`.
     private func parseSubnet(_ cidr: String) -> (base: String, count: Int) {
         let parts = cidr.split(separator: "/")
         guard parts.count == 2,
@@ -264,20 +267,29 @@ actor NetworkScanner {
               prefix >= 8, prefix <= 30 else {
             return (cidr, 0)
         }
-        let hostBits = 32 - prefix
-        let count    = (1 << hostBits) - 2
-        // Compute base IP (network address + 1)
-        let ipParts = parts[0].split(separator: ".").compactMap { Int($0) }
-        guard ipParts.count == 4 else { return (String(parts[0]), count) }
-        let base = "\(ipParts[0]).\(ipParts[1]).\(ipParts[2]).1"
+        let octets = parts[0].split(separator: ".").compactMap { UInt32($0) }
+        guard octets.count == 4, octets.allSatisfy({ $0 <= 255 }) else {
+            return (String(parts[0]), 0)
+        }
+        let ipInt   = (octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]
+        let mask    = UInt32.max << (32 - prefix)        // prefix ∈ 8…30 → shift sûr
+        let network = ipInt & mask
+        let count   = (1 << (32 - prefix)) - 2           // exclut réseau + broadcast
+        let base    = Self.ipv4String(network &+ 1)      // première adresse utilisable
         return (base, count)
     }
 
     private func generateIPs(base: String, count: Int) -> [String] {
-        let components = base.split(separator: ".").compactMap { Int($0) }
-        guard components.count == 4 else { return [] }
-        let prefix = "\(components[0]).\(components[1]).\(components[2])"
-        return (1...min(count, 254)).map { "\(prefix).\($0)" }
+        let octets = base.split(separator: ".").compactMap { UInt32($0) }
+        guard octets.count == 4, octets.allSatisfy({ $0 <= 255 }) else { return [] }
+        let start = (octets[0] << 24) | (octets[1] << 16) | (octets[2] << 8) | octets[3]
+        let n     = UInt32(min(count, 254))              // cap inchangé : ~un /24 par scan
+        return (0..<n).map { Self.ipv4String(start &+ $0) }
+    }
+
+    /// UInt32 → "A.B.C.D"
+    private static func ipv4String(_ addr: UInt32) -> String {
+        "\((addr >> 24) & 0xFF).\((addr >> 16) & 0xFF).\((addr >> 8) & 0xFF).\(addr & 0xFF)"
     }
 
     // MARK: - Vendor lookup (OUI prefix)

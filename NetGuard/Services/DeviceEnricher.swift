@@ -39,14 +39,39 @@ actor DeviceEnricher {
     ]
 
     // MARK: - Enrich all devices
+    /// Enrichit les appareils avec une concurrence bornée. Chaque `enrichDevice`
+    /// passe l'essentiel de son temps suspendu (ping subprocess, requête HTTP) :
+    /// la fenêtre glissante permet d'analyser plusieurs appareils en parallèle
+    /// sans lancer des centaines de sous-processus simultanés.
     func enrichAll(
         devices: [NetworkDevice],
         progressHandler: @Sendable @escaping (Double, String) async -> Void
     ) async {
-        let total = Double(devices.count)
-        for (idx, device) in devices.enumerated() {
-            await progressHandler(Double(idx) / total, "Analyse \(device.ip)…")
-            await enrichDevice(device)
+        let total = devices.count
+        guard total > 0 else {
+            await progressHandler(1.0, "Analyse terminée")
+            return
+        }
+        let maxConcurrent = min(12, total)
+        var iterator = devices.makeIterator()
+        var completed = 0
+
+        await withTaskGroup(of: Void.self) { group in
+            // Amorçage : on remplit la fenêtre.
+            for _ in 0..<maxConcurrent {
+                if let device = iterator.next() {
+                    group.addTask { await self.enrichDevice(device) }
+                }
+            }
+            // Dès qu'un appareil est analysé, on en lance un nouveau.
+            for await _ in group {
+                completed += 1
+                await progressHandler(Double(completed) / Double(total),
+                                      "Analyse \(completed)/\(total)…")
+                if let device = iterator.next() {
+                    group.addTask { await self.enrichDevice(device) }
+                }
+            }
         }
         await progressHandler(1.0, "Analyse terminée")
     }
@@ -599,6 +624,7 @@ actor DeviceEnricher {
 
             session.dataTask(with: request) { _, _, _ in
                 continuation.resume(returning: delegate.capturedTrust(for: ip))
+                session.finishTasksAndInvalidate()   // libère session + delegate
             }.resume()
         }
     }
@@ -666,6 +692,7 @@ actor DeviceEnricher {
                 continuation.resume(returning: HTTPInfo(banner: banner,
                                                         title: title,
                                                         certificate: certificate))
+                session.finishTasksAndInvalidate()   // libère session + delegate
             }.resume()
         }
     }
