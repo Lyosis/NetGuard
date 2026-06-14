@@ -161,9 +161,9 @@ struct NetworkMapView: View {
             .help(L10n.A11y.zoomOut)
 
             // Niveau de zoom
-            Text("\(Int(scale * 100))%")
+            Text(Double(scale), format: .percent.precision(.fractionLength(0)))
                 .font(.system(size: 11, design: .monospaced))
-                .foregroundColor(.white.opacity(0.3))
+                .foregroundStyle(.white.opacity(0.3))
                 .frame(width: 36)
 
             // Zoom +
