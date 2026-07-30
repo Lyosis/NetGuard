@@ -185,13 +185,31 @@ actor SSDPDiscovery {
         )
     }
 
+    /// Fetch du descripteur XML sur une session **éphémère et non redirigeable**.
+    ///
+    /// - Session éphémère (comme SecurityAuditor/DeviceEnricher) : le descripteur
+    ///   d'un appareil LAN ne partage ni cache ni cookies avec le reste du process.
+    /// - Redirections refusées : `isLANURL` ne valide que l'URL *initiale*. Sans
+    ///   ce délégué, un appareil hostile du LAN passerait la garde avec un
+    ///   `LOCATION:` privé puis renverrait un 302 vers un hôte externe, que
+    ///   URLSession suivrait — annulant la restriction LAN.
     private nonisolated static func fetchXML(url: URL) async -> String? {
         var request = URLRequest(url: url)
         request.timeoutInterval = 2.0
         request.httpMethod = "GET"
         request.setValue("close", forHTTPHeaderField: "Connection")
+
+        let config = URLSessionConfiguration.ephemeral
+        config.timeoutIntervalForRequest  = 2.0
+        config.timeoutIntervalForResource = 2.0
+        let session = URLSession(configuration: config,
+                                 delegate: NoRedirectDelegate(),
+                                 delegateQueue: nil)
+        defer { session.invalidateAndCancel() }
+
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await session.data(for: request)
+            // Une redirection bloquée ressort ici en 3xx → rejetée par ce test.
             if let http = response as? HTTPURLResponse, http.statusCode != 200 { return nil }
             return String(data: data, encoding: .utf8)
         } catch {
@@ -205,6 +223,23 @@ actor SSDPDiscovery {
         parser.delegate = delegate
         parser.parse()
         return delegate.result
+    }
+}
+
+// MARK: - Délégué anti-redirection
+
+/// Refuse toute redirection HTTP sur le fetch du descripteur UPnP.
+/// Sans état : `@unchecked Sendable` est sûr par absence de stockage mutable.
+private final class NoRedirectDelegate: NSObject, URLSessionTaskDelegate, @unchecked Sendable {
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Void
+    ) {
+        // `nil` → la redirection n'est pas suivie, la réponse 3xx est remontée telle quelle.
+        completionHandler(nil)
     }
 }
 

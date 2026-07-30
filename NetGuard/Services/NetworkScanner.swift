@@ -188,6 +188,8 @@ actor NetworkScanner {
 
     // MARK: - Ping
     private func pingHost(_ ip: String) async -> String? {
+        // Défense en profondeur : jamais d'argument non validé dans l'argv de ping.
+        guard IPv4.isValid(ip) else { return nil }
         return await withCheckedContinuation { continuation in
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/sbin/ping")

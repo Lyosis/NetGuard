@@ -500,6 +500,8 @@ actor DeviceEnricher {
     private struct PingResult { var ms: Double; var ttl: Int }
 
     private func precisePing(ip: String) async -> PingResult {
+        // Défense en profondeur : jamais d'argument non validé dans l'argv de ping.
+        guard IPv4.isValid(ip) else { return PingResult(ms: 0, ttl: 0) }
         return await withCheckedContinuation { continuation in
             let process = Process()
             process.executableURL = URL(fileURLWithPath: "/sbin/ping")
@@ -573,6 +575,8 @@ actor DeviceEnricher {
 
     // MARK: - NetBIOS name (nmblookup)
     private func resolveNetBIOS(ip: String) async -> String {
+        // Défense en profondeur : jamais d'argument non validé dans l'argv de nmblookup.
+        guard IPv4.isValid(ip) else { return "" }
         return await withCheckedContinuation { continuation in
             let nmb = Process()
             nmb.executableURL = URL(fileURLWithPath: "/usr/bin/nmblookup")
