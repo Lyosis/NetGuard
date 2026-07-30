@@ -215,3 +215,32 @@ class NetworkInfoService {
         return String(data: data, encoding: .utf8) ?? ""
     }
 }
+
+// MARK: - Validation IPv4
+
+/// Validation IPv4 stricte, utilisée comme garde de défense en profondeur avant
+/// tout lancement de `Process` réseau (`/sbin/ping`, `/usr/bin/nmblookup`).
+///
+/// Les IPs manipulées par l'app proviennent du parsing de sources externes
+/// (table ARP, headers SSDP, résolution mDNS). Aucune injection shell n'est
+/// possible — `Process` reçoit un `argv` et ne passe jamais par un shell — mais
+/// une adresse malformée pourrait être interprétée comme un *flag* (`-x`) ou un
+/// nom d'hôte à résoudre. Valider ici rend la garantie explicite et locale au
+/// point d'usage, plutôt que dépendante des filtres appliqués en amont.
+enum IPv4 {
+    /// Retourne `true` uniquement pour quatre octets décimaux `0...255` séparés
+    /// par des points, sans zéro de tête, sans suffixe de zone (`%en0`) et sans
+    /// chiffre non-ASCII (`isNumber` accepte les chiffres Unicode, pas `Int`).
+    static func isValid(_ ip: String) -> Bool {
+        let parts = ip.split(separator: ".", omittingEmptySubsequences: false)
+        guard parts.count == 4 else { return false }
+        for part in parts {
+            guard !part.isEmpty, part.count <= 3,
+                  part.allSatisfy({ $0.isASCII && $0.isNumber }),
+                  part.count == 1 || part.first != "0",
+                  let value = Int(part), (0...255).contains(value)
+            else { return false }
+        }
+        return true
+    }
+}
