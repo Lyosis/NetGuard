@@ -1,23 +1,43 @@
 # NetGuard — Contexte projet
 
-App macOS SwiftUI de scan et sécurité réseau local. Usage personnel, open source éventuel.  
+App macOS SwiftUI de scan et sécurité réseau local. **Open source (MIT), dépôt public** — contributions externes possibles.  
 Dépôt : `git@github.com:Lyosis/NetGuard.git`  
 **CDC complet** : `CDC.md` à la racine du projet.
 
 ## Stack technique
 
 - **macOS 15.0+** (deployment target), **macOS 26+ Liquid Glass + FoundationModels** via `#available`, Universal Binary (arm64 + x86_64), SwiftUI, **no sandbox**
-- **Swift 6** strict concurrency
+- ⚠️ **Concurrence : mode langage Swift 5** (`SWIFT_VERSION = 5.0`) et `SWIFT_STRICT_CONCURRENCY` **non défini** → vérification `minimal`. Le code *suit* les conventions Swift 6 (actors, `MainActor.run`) mais **rien n'est vérifié par le compilateur** : ne pas conclure d'un build vert que l'isolation est correcte. Passage à `complete` suivi dans l'issue #31 (~32 diagnostics réels).
 - Architecture : `HSplitView` 3 colonnes (Sidebar | NetworkMapView | DeviceDetailView)
-- Services : `actor` NetworkScanner, PortScanner, DeviceEnricher, VulnerabilityChecker, AppState (@MainActor)
-- Réseau : `NWConnection` (port scan), `NWPathMonitor` (changements réseau), `NWBrowser` (Bonjour — à implémenter), URLSession (HTTP banners)
-- Enrichissement : ping TTL, `dns-sd` subprocess (mDNS — à remplacer par NWBrowser), `nmblookup` (NetBIOS), OUI vendor lookup
-- Persistance : SwiftData (à implémenter), Keychain (à implémenter)
-- Localisation : `fr.lproj` + `en.lproj` Localizable.strings → migration `.xcstrings` prévue + `Utils/L10n.swift` (enum type-safe)
+- Services : `actor` NetworkScanner, PortScanner, DeviceEnricher, VulnerabilityChecker, SecurityAuditor, SSDPDiscovery ; AppState (`@MainActor`)
+- Réseau : `NWConnection` (port scan), `NWPathMonitor` (changements réseau), `NWBrowser` (Bonjour ✅), `NWMulticastGroup` (SSDP/UPnP), URLSession (HTTP banners)
+- Enrichissement : ping TTL, `NWBrowser` (mDNS/Bonjour), `nmblookup` (NetBIOS), OUI vendor lookup (`manuf.txt`), SSDP/UPnP
+- Persistance : **SwiftData** (`PersistedDevice`, `ScanSnapshot`) ✅ — Keychain non implémenté (aucun secret à stocker à ce jour)
+- Localisation : **`Localizable.xcstrings` + `InfoPlist.xcstrings` (FR + EN complets)** ✅ + `Utils/L10n.swift` (enum type-safe). ⚠️ `L10n.t()` passe la clé via une variable → les clés doivent être en `extractionState: "manual"` dans le catalogue, sinon Xcode émet 100+ warnings « References to this key could not be found ». Ne **pas** mettre les clés format auto-extraites (`%@`, `%lld`) en `manual` : erreur « Unable to derive a symbol name ».
+- Sécurité réseau : garde `IPv4.isValid` avant tout `Process` (ping/nmblookup), `isLANURL` + `NoRedirectDelegate` sur le fetch UPnP (une redirection contournerait la restriction LAN), sessions `URLSessionConfiguration.ephemeral`
 
-## Améliorations à implémenter (ordre recommandé)
+## Améliorations — état réel
 
-> Voir `CDC.md` pour le détail complet de chaque point.
+> ⚠️ **Les specs détaillées ci-dessous datent d'avant l'implémentation.** Statut vérifié dans le code au 14/06/2026 — se fier à ce tableau, pas aux « à implémenter » des sections suivantes.
+
+| Item | Statut |
+|---|---|
+| A1 NWBrowser (Bonjour) | ✅ livré — `dns-sd` supprimé |
+| A2 SecCertificate / SecTrust | ✅ livré (`CertificateInspector`) |
+| A3 SFCertificatePanel | ✅ livré |
+| A4 Diagnostiquer le réseau | ✅ livré |
+| A5 Persistance SwiftData | ✅ livré — Keychain non nécessaire (aucun secret) |
+| A6 Historique des scans | ✅ livré (`ScanSnapshot`, limite 30) |
+| A7 Notifications intrusion | ✅ livré — ⏳ **scan planifié** (`NSBackgroundActivityScheduler`) reste à faire |
+| A8 Accessibilité VoiceOver | ✅ livré (labels + `AccessibilityNotification`) |
+| A9 String Catalogs | ✅ livré (FR + EN complets) |
+| A12 Fingerprinting avancé | ✅ livré (UPnP > Bonjour > HTTP > vendor > heuristics) |
+| A13 Notes utilisateur | ✅ livré (`userNote`) |
+| **A10 Swift Testing** | ❌ **aucune cible de test** — le principal manque du projet |
+| **A11 FoundationModels** | ❌ non commencé |
+| **#31 Strict concurrency** | ❌ `complete` non activé (~32 diagnostics à traiter) |
+
+### Specs détaillées (historiques — voir `CDC.md`)
 
 ### 🟢 Qualité / maintenance (faire en premier)
 
