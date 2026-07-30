@@ -32,12 +32,7 @@
       }
     },
     "%lld": {},
-    "%lld%%": {},
     "%lld/100": {},
-    "Filtre actif. Touchez pour désactiver.": {},
-    "Touchez pour filtrer la carte sur cette catégorie.": {},
-    "Zoom arrière": {},
-    "Zoom avant": {},
     "a11y.alerts": {
       "extractionState": "manual",
       "localizations": {
