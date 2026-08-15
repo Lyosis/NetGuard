@@ -29,11 +29,15 @@ No telemetry. No cloud. No subscription.
 
 ## Download
 
-**[⬇ Download the latest release (.dmg)](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and **notarized by Apple**, so it runs without Gatekeeper warnings.
+> ### ⚠️ Downloads temporarily unavailable
+>
+> **A full scan can disrupt the host Mac's networking.** On a wired (Ethernet) Mac, running a **full scan** can leave the machine with no network connectivity — local *and* internet — until it is restarted. Other devices on the network are **not** affected, and **quick scan is not affected**.
+>
+> All published versions (1.0, 1.1, 1.1.1) are affected, so the `.dmg` files have been pulled while this is fixed. Tracking: [#41](https://github.com/Lyosis/NetGuard/issues/41).
+>
+> You can still [build from source](#build--run) — just avoid full scans until a fixed release ships.
 
-Open the `.dmg`, drag **NetGuard** to your Applications folder, and launch it. Grant **Local Network** access when macOS asks. Requires macOS 15.0+ on Apple Silicon.
-
-Prefer to build from source? See [Build & Run](#build--run) below.
+Once a fixed release is out, the `.dmg` will be back at **[Releases](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and notarized by Apple, so it runs without Gatekeeper warnings. Requires macOS 15.0+ on Apple Silicon.
 
 ---
 
