@@ -67,7 +67,10 @@ actor PortScanner {
             let results = await withTaskGroup(of: (Int, Bool).self) { group in
                 for port in chunk {
                     group.addTask {
-                        let isOpen = await self.checkPort(host: host, port: port, timeout: timeout)
+                        // Jeton global partagé avec le balayage (issue #41).
+                        let isOpen = await ScanThrottle.shared.run {
+                            await self.checkPort(host: host, port: port, timeout: timeout)
+                        }
                         return (port, isOpen)
                     }
                 }
