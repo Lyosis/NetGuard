@@ -52,7 +52,16 @@ actor DeviceEnricher {
             await progressHandler(1.0, L10n.Scan.analysisDone)
             return
         }
-        let maxConcurrent = min(12, total)
+        // Issue #41 — fenêtre réduite de 12 à 6 : chaque `enrichDevice` déclenche
+        // lui-même un ping, un NetBIOS et une requête HTTP, soit ~3 flux par
+        // appareil. La fenêtre volontairement basse évite de reconstituer un pic
+        // de connexions après le balayage.
+        //
+        // Délibérément **hors** de `ScanThrottle` : l'enrichissement est composite
+        // et pourrait un jour appeler du code lui-même throttlé — un `run { }`
+        // imbriqué interbloquerait. L'étape est séquentielle par rapport au
+        // balayage et au scan de ports, donc les plafonds ne se cumulent pas.
+        let maxConcurrent = min(6, total)
         var iterator = devices.makeIterator()
         var completed = 0
 

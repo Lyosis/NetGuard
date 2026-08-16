@@ -1,5 +1,4 @@
 import Foundation
-import Network
 
 // MARK: - NetworkScanner
 /// Découvre les hôtes actifs sur le réseau local via ARP + ping
@@ -40,7 +39,9 @@ actor NetworkScanner {
 
         // 5. Ping sweep sur le sous-réseau /24 + sweep SSDP en parallèle.
         //    SSDP multicast tourne pendant tout le ping sweep — coût marginal,
-        //    gain important pour les devices silencieux côté ICMP/TCP.
+        //    gain important pour les devices silencieux côté ICMP.
+        //    La concurrence est bornée globalement par `ScanThrottle` (issue #41) :
+        //    le découpage en chunks ne sert plus qu'à la progression affichée.
         let allIPs = generateIPs(base: baseIP, count: min(hostCount, 254))
         let chunkSize = 32
         var activeIPs: Set<String> = []
@@ -55,7 +56,7 @@ actor NetworkScanner {
             await withTaskGroup(of: String?.self) { group in
                 for ip in chunk {
                     group.addTask {
-                        await self.probeHost(ip)
+                        await ScanThrottle.shared.run { await self.pingHost(ip) }
                     }
                 }
                 for await result in group {
@@ -78,6 +79,19 @@ actor NetworkScanner {
             if arpMap[ip] == nil {
                 arpMap[ip] = (mac: mac, hostname: "")
             }
+        }
+
+        // 6b. Repêchage ARP — remplace les sondes TCP de découverte (issue #41).
+        //     Un hôte qui filtre l'ICMP répond quand même à l'ARP : la résolution
+        //     d'adresse se fait sous IP, le filtrage applicatif ne s'y applique
+        //     pas. Le ping sweep vient donc de peupler la table ARP pour tous les
+        //     hôtes vivants du segment, y compris les silencieux — l'information
+        //     était déjà collectée ici, elle n'était simplement pas exploitée.
+        //     Restreint aux IP du sous-réseau balayé : `arp -a` liste aussi les
+        //     autres interfaces (VM pontée, VPN, Thunderbolt).
+        let scannedIPs = Set(allIPs)
+        for (ip, mac) in freshARP where scannedIPs.contains(ip) && mac.contains(":") {
+            activeIPs.insert(ip)
         }
 
         // 7. Résoudre les hostnames
@@ -126,65 +140,12 @@ actor NetworkScanner {
         return devices
     }
 
-    // MARK: - Host probing (ICMP + TCP en parallèle)
-    /// Combine un ping ICMP et 3 TCP probes (80/443/22). Le premier qui répond
-    /// gagne. Détecte les hôtes qui filtrent ICMP (switchs managés, IPMI,
-    /// imprimantes pro, certains NAS) tant qu'au moins un port admin TCP
-    /// répond.
-    private func probeHost(_ ip: String) async -> String? {
-        await withTaskGroup(of: String?.self) { group in
-            group.addTask { await self.pingHost(ip) }
-            group.addTask { await self.tcpProbe(ip: ip, port: 80,  timeout: 0.5) }
-            group.addTask { await self.tcpProbe(ip: ip, port: 443, timeout: 0.5) }
-            group.addTask { await self.tcpProbe(ip: ip, port: 22,  timeout: 0.5) }
-
-            // Race : on consomme jusqu'à la première réussite, puis on annule.
-            for await result in group {
-                if let alive = result {
-                    group.cancelAll()
-                    return alive
-                }
-            }
-            return nil
-        }
-    }
-
-    /// TCP probe : tente d'ouvrir un socket TCP vers `ip:port`. Si la
-    /// connexion devient `.ready` (handshake complet) avant `timeout`, on
-    /// renvoie l'IP. Sinon nil.
-    private nonisolated func tcpProbe(ip: String, port: Int, timeout: TimeInterval) async -> String? {
-        guard let nwPort = NWEndpoint.Port(rawValue: UInt16(port)) else { return nil }
-        let host = NWEndpoint.Host(ip)
-
-        final class State: @unchecked Sendable { var resumed = false }
-        let state = State()
-        let lock = NSLock()
-        let conn = NWConnection(host: host, port: nwPort, using: .tcp)
-
-        return await withCheckedContinuation { continuation in
-            let finish: @Sendable (String?) -> Void = { result in
-                lock.lock()
-                defer { lock.unlock() }
-                guard !state.resumed else { return }
-                state.resumed = true
-                conn.cancel()
-                continuation.resume(returning: result)
-            }
-
-            conn.stateUpdateHandler = { newState in
-                switch newState {
-                case .ready:                  finish(ip)
-                case .failed, .cancelled:     finish(nil)
-                default: break
-                }
-            }
-            conn.start(queue: .global(qos: .utility))
-
-            DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + timeout) {
-                finish(nil)
-            }
-        }
-    }
+    // MARK: - Host probing (ICMP)
+    // Note (issue #41) : le balayage sondait aussi chaque IP en TCP sur 80/443/22
+    // pour rattraper les hôtes qui filtrent l'ICMP — soit ~762 connexions par
+    // scan /24, pour une information que le repêchage ARP (étape 6b) fournit
+    // gratuitement. Ces sondes ont été retirées ; leur seul usage restant serait
+    // le sondage d'une adresse absente de la liste, suivi dans une issue dédiée.
 
     // MARK: - Ping
     private func pingHost(_ ip: String) async -> String? {
