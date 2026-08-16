@@ -29,15 +29,17 @@ No telemetry. No cloud. No subscription.
 
 ## Download
 
-> ### ⚠️ Downloads temporarily unavailable
->
-> **A full scan can disrupt the host Mac's networking.** On a wired (Ethernet) Mac, running a **full scan** can leave the machine with no network connectivity — local *and* internet — until it is restarted. Other devices on the network are **not** affected, and **quick scan is not affected**.
->
-> All published versions (1.0, 1.1, 1.1.1) are affected, so the `.dmg` files have been pulled while this is fixed. Tracking: [#41](https://github.com/Lyosis/NetGuard/issues/41).
->
-> You can still [build from source](#build--run) — just avoid full scans until a fixed release ships.
+**[Download NetGuard 1.1.2](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and notarized by Apple, so it runs without Gatekeeper warnings. Requires macOS 15.0+ on Apple Silicon.
 
-Once a fixed release is out, the `.dmg` will be back at **[Releases](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and notarized by Apple, so it runs without Gatekeeper warnings. Requires macOS 15.0+ on Apple Silicon.
+> ### ✅ The full-scan networking issue is fixed in 1.1.2
+>
+> Versions 1.0, 1.1 and 1.1.1 could leave the host Mac with **no network connectivity** — local *and* internet — after a full scan, until restart. Other devices on the network were never affected, and quick scan was never affected.
+>
+> The cause: the sweep opened three TCP connections to each of the 254 subnet addresses within nine seconds. A third-party application firewall performing synchronous reverse-DNS lookups on every observed address would saturate its thread pool and stop issuing verdicts, freezing the machine's socket stack.
+>
+> 1.1.2 removes those discovery probes — the ARP table already provides the same information — and caps scan concurrency globally. Validated over four full scans on a real network, with no regression in device detection. Details: [#41](https://github.com/Lyosis/NetGuard/issues/41).
+>
+> **If you run a third-party application firewall**, allowing NetGuard in its application list is still recommended: scans complete faster and the firewall no longer has to arbitrate every connection.
 
 ---
 
