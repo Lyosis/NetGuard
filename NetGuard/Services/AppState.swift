@@ -164,6 +164,41 @@ class AppState: ObservableObject {
         }
     }
 
+    /// Détection des nouveaux appareils puis persistance — sauf si la lecture ARP a échoué.
+    ///
+    /// Sans MAC, chaque appareil prend une clé `ip:` : il serait signalé comme une
+    /// intrusion et enregistré en double. Le scan est alors signalé comme dégradé et
+    /// rien n'est écrit — plutôt qu'un échec silencieux. Cas réel : depuis macOS 27, une
+    /// app signée avec un Team ID lit une table ARP vide, sans erreur (via `arp` comme
+    /// via `sysctl`), même avec l'autorisation Réseau local. Seul root la voit encore.
+    /// Retourne le nombre de nouveaux appareils.
+    private func detectAndPersist(_ discovered: [NetworkDevice]) -> Int {
+        // Une seule alerte de ce type à la fois : le scan rapide ne vide pas la liste.
+        alerts.removeAll { $0.category == .configuration && $0.title == L10n.ARPFailure.title }
+        if let alert = Self.arpReadFailure(in: discovered) {
+            alerts.append(alert)
+            return 0
+        }
+        let newCount = detectAndAlertNewDevices(discovered)
+        upsertToStore(discovered)
+        return newCount
+    }
+
+    /// Des hôtes répondent, mais aucune MAC n'a été lue. La machine locale est exclue :
+    /// sa propre MAC n'est jamais dans la table ARP.
+    private static func arpReadFailure(in discovered: [NetworkDevice]) -> NetworkAlert? {
+        let others = discovered.filter { !$0.isCurrentDevice }
+        guard others.count >= 2, others.allSatisfy({ $0.mac.isEmpty }) else { return nil }
+        return NetworkAlert(
+            severity:       .medium,
+            category:       .configuration,
+            title:          L10n.ARPFailure.title,
+            description:    L10n.ARPFailure.description(others.count),
+            deviceIP:       "",
+            recommendation: L10n.ARPFailure.recommendation
+        )
+    }
+
     /// Détecte les appareils inconnus de SwiftData et génère des alertes `.intrusion`.
     /// N'est actif que si SwiftData contient déjà des données (pas au tout premier scan).
     /// Retourne le nombre de nouveaux appareils détectés (pour ScanSnapshot).
@@ -341,8 +376,7 @@ class AppState: ObservableObject {
         }
 
         // Step 7 : Détection nouveaux appareils + persistance
-        let newCount = detectAndAlertNewDevices(discoveredDevices)
-        upsertToStore(discoveredDevices)
+        let newCount = detectAndPersist(discoveredDevices)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)
@@ -389,8 +423,7 @@ class AppState: ObservableObject {
         applyPersistedAnnotations(to: discovered)
         for device in discovered { device.scanState = .active }
 
-        let newCount = detectAndAlertNewDevices(discovered)
-        upsertToStore(discovered)
+        let newCount = detectAndPersist(discovered)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)

@@ -181,8 +181,7 @@ struct SidebarView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             } else {
                 ForEach(state.alerts.prefix(5)) { alert in
-                    AlertRow(alert: alert)
-                        .onTapGesture { state.markAlertRead(alert) }
+                    AlertRow(alert: alert) { state.markAlertRead(alert) }
                 }
                 if state.alerts.count > 5 {
                     Button(L10n.Sidebar.seeAll(state.alerts.count)) {
@@ -363,42 +362,70 @@ struct NetworkInfoRow: View {
 
 struct AlertRow: View {
     let alert: NetworkAlert
+    /// Appelé à chaque activation — marque l'alerte comme lue.
+    let onActivate: () -> Void
+
+    /// Une alerte sans appareil (ex. lecture ARP impossible) n'est lisible en entier
+    /// nulle part ailleurs : un clic la déplie pour afficher description et recommandation.
+    @State private var isExpanded = false
 
     var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: alert.severity.icon)
-                .font(.system(size: 15))
-                .foregroundColor(alert.severity.color)
-                .frame(width: 18)
-                .padding(.top, 1)
+        Button {
+            isExpanded.toggle()
+            onActivate()
+        } label: {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: alert.severity.icon)
+                    .font(.system(size: 15))
+                    .foregroundStyle(alert.severity.color)
+                    .frame(width: 18)
+                    .padding(.top, 1)
 
-            VStack(alignment: .leading, spacing: 3) {
-                Text(alert.title)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(alert.isRead ? .white.opacity(0.4) : .white.opacity(0.9))
-                    .lineLimit(2)
-                Text(alert.description)
-                    .font(.system(size: 12))
-                    .foregroundColor(.white.opacity(0.35))
-                    .lineLimit(2)
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(alert.title)
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(alert.isRead ? .white.opacity(0.4) : .white.opacity(0.9))
+                        .lineLimit(isExpanded ? nil : 2)
+                    Text(alert.description)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.white.opacity(isExpanded ? 0.6 : 0.35))
+                        .lineLimit(isExpanded ? nil : 2)
+                        .fixedSize(horizontal: false, vertical: isExpanded)
+                    if isExpanded && !alert.recommendation.isEmpty {
+                        Text(alert.recommendation)
+                            .font(.system(size: 12))
+                            .italic()
+                            .foregroundStyle(.white.opacity(0.6))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 2)
+                    }
+                }
+                Spacer()
+                VStack(spacing: 6) {
+                    if !alert.isRead {
+                        Circle()
+                            .fill(alert.severity.color)
+                            .frame(width: 6, height: 6)
+                    }
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+                .padding(.top, 4)
             }
-            Spacer()
-            if !alert.isRead {
-                Circle()
-                    .fill(alert.severity.color)
-                    .frame(width: 6, height: 6)
-                    .padding(.top, 4)
+            .padding(10)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(alert.severity.color.opacity(alert.isRead ? 0.03 : 0.08))
+            )
+            .overlay {
+                RoundedRectangle(cornerRadius: 6)
+                    .stroke(alert.severity.color.opacity(alert.isRead ? 0.05 : 0.2), lineWidth: 0.5)
             }
+            .contentShape(.rect)
         }
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 6)
-                .fill(alert.severity.color.opacity(alert.isRead ? 0.03 : 0.08))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(alert.severity.color.opacity(alert.isRead ? 0.05 : 0.2), lineWidth: 0.5)
-        )
+        .buttonStyle(.plain)
+        .accessibilityHint(isExpanded ? L10n.Sidebar.alertHideDetail : L10n.Sidebar.alertShowDetail)
     }
 }
 
@@ -443,8 +470,7 @@ struct AllAlertsSheet: View {
             ScrollView {
                 VStack(spacing: 6) {
                     ForEach(state.alerts) { alert in
-                        AlertRow(alert: alert)
-                            .onTapGesture { state.markAlertRead(alert) }
+                        AlertRow(alert: alert) { state.markAlertRead(alert) }
                     }
                 }
                 .padding()

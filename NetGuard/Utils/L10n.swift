@@ -67,6 +67,8 @@ enum L10n {
         static let scanning         = t("sidebar.alerts.scanning",   "Scan en cours…")
         static let noAlerts         = t("sidebar.alerts.none",       "Aucune alerte — lancez un scan")
         static func seeAll(_ n: Int) -> String { t("sidebar.alerts.see_all", "Voir toutes les alertes (%ld)", n) }
+        static let alertShowDetail  = t("sidebar.alert.show_detail", "Afficher le détail")
+        static let alertHideDetail  = t("sidebar.alert.hide_detail", "Masquer le détail")
         static let scanFull         = t("sidebar.scan.full",         "Scan complet")
         static let scanQuick        = t("sidebar.scan.quick",        "Rapide")
         static let allAlerts        = t("sidebar.sheet.all_alerts",  "Toutes les alertes")
@@ -453,6 +455,13 @@ enum L10n {
         static func description(_ name: String, _ ip: String) -> String { t("intrusion.desc", "%1$@ (%2$@) apparaît pour la première fois sur ce réseau.", name, ip) }
         static let recommendation = t("intrusion.reco", "Vérifiez que cet appareil est autorisé sur votre réseau.")
         static func notifMultiple(_ count: Int) -> String { t("intrusion.notif.multiple", "%d nouveaux appareils détectés", count) }
+    }
+
+    // MARK: - Lecture ARP impossible (scan dégradé)
+    enum ARPFailure {
+        static let title = t("arp.failure.title", "Adresses MAC indisponibles")
+        static func description(_ count: Int) -> String { t("arp.failure.desc", "%d appareils ont répondu, mais depuis macOS 27 les applications ne peuvent plus lire leurs adresses MAC. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
+        static let recommendation = t("arp.failure.reco", "Il s'agit d'une limitation de macOS, en cours d'étude. Les autres fonctions de NetGuard restent disponibles.")
     }
 
     // MARK: - Sécurité WiFi (NetworkInfoService) — libellés affichés
