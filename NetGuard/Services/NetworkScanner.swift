@@ -166,30 +166,10 @@ actor NetworkScanner {
     }
 
     // MARK: - ARP Table
+    /// Lue dans le processus — jamais via `/usr/sbin/arp` : sous macOS 27, un `arp`
+    /// lancé par l'app voit une table vide. Voir `ARPTable`.
     private func readARPTable() -> [(ip: String, mac: String)] {
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/sbin/arp")
-        process.arguments = ["-a"]
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError  = Pipe()
-        try? process.run()
-        process.waitUntilExit()
-        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
-
-        var results: [(String, String)] = []
-        // Format: hostname (ip) at mac on interface
-        let regex = try? NSRegularExpression(pattern: #"\((\d+\.\d+\.\d+\.\d+)\) at ([0-9a-f:]+)"#)
-        let ns = output as NSString
-        regex?.enumerateMatches(in: output, range: NSRange(location: 0, length: ns.length)) { match, _, _ in
-            guard let m = match, m.numberOfRanges == 3 else { return }
-            let ip  = ns.substring(with: m.range(at: 1))
-            let mac = ns.substring(with: m.range(at: 2))
-            if mac != "(incomplete)" {
-                results.append((ip, mac))
-            }
-        }
-        return results
+        ARPTable.read()
     }
 
     // MARK: - Hostname resolution

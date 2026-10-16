@@ -4,6 +4,57 @@
     "" : {
 
     },
+    "arp.failure.desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d devices responded, but no MAC address could be read. Vendors, device types and new-device detection are unavailable for this scan, which was not saved."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Constructeurs, types d'appareils et détection des nouveaux appareils sont indisponibles pour ce scan, qui n'a pas été enregistré."
+          }
+        }
+      }
+    },
+    "arp.failure.reco" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update NetGuard. If the problem persists, report it and include your macOS version."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettez NetGuard à jour. Si le problème persiste, signalez-le en précisant votre version de macOS."
+          }
+        }
+      }
+    },
+    "arp.failure.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MAC addresses unavailable"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresses MAC illisibles"
+          }
+        }
+      }
+    },
     "·" : {
 
     },

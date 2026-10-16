@@ -455,6 +455,13 @@ enum L10n {
         static func notifMultiple(_ count: Int) -> String { t("intrusion.notif.multiple", "%d nouveaux appareils détectés", count) }
     }
 
+    // MARK: - Lecture ARP impossible (scan dégradé)
+    enum ARPFailure {
+        static let title = t("arp.failure.title", "Adresses MAC illisibles")
+        static func description(_ count: Int) -> String { t("arp.failure.desc", "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Constructeurs, types d'appareils et détection des nouveaux appareils sont indisponibles pour ce scan, qui n'a pas été enregistré.", count) }
+        static let recommendation = t("arp.failure.reco", "Mettez NetGuard à jour. Si le problème persiste, signalez-le en précisant votre version de macOS.")
+    }
+
     // MARK: - Sécurité WiFi (NetworkInfoService) — libellés affichés
     enum WifiSecurity {
         static let open    = t("wifi.sec.open",    "Ouvert")
