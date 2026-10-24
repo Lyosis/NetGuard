@@ -127,9 +127,16 @@ class AppState: ObservableObject {
         }
 
         guard !id.isEmpty, id != "net:" else { return }
+        // MAC de la passerelle illisible (table ARP vide) : ce n'est pas un changement de
+        // réseau. Garder le dernier réseau identifié par sa passerelle plutôt que d'en
+        // inventer un — sinon les appareils connus disparaissent de l'affichage. Le scan
+        // lui-même est alors dégradé : il n'écrit rien et ne lève aucune intrusion.
+        if id.hasPrefix("net:"), currentNetworkID.hasPrefix("gw:") { return }
         currentNetworkID = id
         UserDefaults.standard.set(id, forKey: Self.networkIDKey)
-        migrateDeviceIdentityIfNeeded()
+        // La migration rattache chaque fiche à un réseau, une fois pour toutes : elle
+        // attend une identité fiable, celle de la passerelle.
+        if id.hasPrefix("gw:") { migrateDeviceIdentityIfNeeded() }
     }
 
     // MARK: - Persistance SwiftData
