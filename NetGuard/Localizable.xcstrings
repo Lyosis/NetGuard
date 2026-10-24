@@ -10,23 +10,6 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d devices responded, but since macOS 27 apps can no longer read their MAC addresses. Devices are shown, but their vendor and new-device detection are unavailable. This scan was not saved."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%d appareils ont répondu, mais depuis macOS 27 les applications ne peuvent plus lire leurs adresses MAC. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré."
-          }
-        }
-      }
-    },
-    "arp.failure.desc.generic" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
             "value" : "%d devices responded, but no MAC address could be read. Devices are shown, but their vendor and new-device detection are unavailable. This scan was not saved."
           }
         },
@@ -39,23 +22,6 @@
       }
     },
     "arp.failure.reco" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This is a macOS limitation, currently being investigated. NetGuard's other features remain available."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il s'agit d'une limitation de macOS, en cours d'étude. Les autres fonctions de NetGuard restent disponibles."
-          }
-        }
-      }
-    },
-    "arp.failure.reco.generic" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
