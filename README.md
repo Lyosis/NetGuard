@@ -29,7 +29,7 @@ No telemetry. No cloud. No subscription.
 
 ## Download
 
-**[Download NetGuard 1.1.2](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and notarized by Apple, so it runs without Gatekeeper warnings. Requires macOS 15.0+ on Apple Silicon.
+**[Download NetGuard 1.1.3](https://github.com/Lyosis/NetGuard/releases/latest)** — signed with a Developer ID and notarized by Apple, so it runs without Gatekeeper warnings. Requires macOS 15.0+ on Apple Silicon.
 
 > ### ✅ The full-scan networking issue is fixed in 1.1.2
 >
