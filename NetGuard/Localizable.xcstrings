@@ -21,6 +21,23 @@
         }
       }
     },
+    "arp.failure.desc.generic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d devices responded, but no MAC address could be read. Devices are shown, but their vendor and new-device detection are unavailable. This scan was not saved."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré."
+          }
+        }
+      }
+    },
     "arp.failure.reco" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -38,6 +55,23 @@
         }
       }
     },
+    "arp.failure.reco.generic" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Run the scan again. If the problem persists, report it and include your macOS version."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relancez un scan. Si le problème persiste, signalez-le en précisant votre version de macOS."
+          }
+        }
+      }
+    },
     "arp.failure.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51,6 +85,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adresses MAC indisponibles"
+          }
+        }
+      }
+    },
+    "sidebar.alert.collapsed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Collapsed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Replié"
+          }
+        }
+      }
+    },
+    "sidebar.alert.expanded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expanded"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplié"
           }
         }
       }
@@ -85,6 +153,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afficher le détail"
+          }
+        }
+      }
+    },
+    "user.annotations.unavailable" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name, note and forced type can't be saved: this device's MAC address could not be read."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom, note et type forcé ne peuvent pas être enregistrés : l'adresse MAC de cet appareil n'a pas pu être lue."
           }
         }
       }

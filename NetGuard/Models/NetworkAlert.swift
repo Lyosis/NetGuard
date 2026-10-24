@@ -54,6 +54,8 @@ enum AlertCategory: String, Codable {
     case configuration   = "Configuration"
     case intrusion       = "Intrusion potentielle"
     case certificate     = "Certificat SSL"
+    /// Qualité du scan lui-même (ex. table ARP illisible) — une seule alerte à la fois.
+    case scanHealth      = "Qualité du scan"
 }
 
 // MARK: - Network Alert

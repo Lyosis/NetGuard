@@ -283,12 +283,17 @@ struct DeviceDetailView: View {
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
             .fixedSize()
-            .help(L10n.Override.menuHint)
+            .disabled(!canAnnotate)
+            .help(canAnnotate ? L10n.Override.menuHint : L10n.UserAnnotation.unavailable)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(L10n.Detail.labelType), \(device.effectiveType.localizedName)")
         .accessibilityHint(L10n.Override.menuHint)
     }
+
+    /// Faux pour un appareil sans MAC pendant une lecture ARP dégradée (macOS 27) :
+    /// ses annotations ne pourraient pas être enregistrées.
+    private var canAnnotate: Bool { state.canPersistAnnotations(for: device) }
 
     // MARK: - Bindings annotations utilisateur
     private var aliasBinding: Binding<String> {
@@ -483,6 +488,8 @@ struct DeviceDetailView: View {
                     .cornerRadius(6)
                     .padding(.top, 2)
                     .accessibilityLabel(L10n.UserAnnotation.aliasPlaceholder)
+                    .disabled(!canAnnotate)
+                    .help(canAnnotate ? "" : L10n.UserAnnotation.unavailable)
             }
         }
         .frame(maxWidth: .infinity)
@@ -677,8 +684,15 @@ struct DeviceDetailView: View {
                     .font(.system(size: 13))
                     .foregroundColor(.white.opacity(0.9))
                     .frame(minHeight: 80)
+                    .disabled(!canAnnotate)
             }
             .accessibilityLabel(L10n.UserAnnotation.notesSection)
+            if !canAnnotate {
+                Label(L10n.UserAnnotation.unavailable, systemImage: "info.circle")
+                    .font(.system(size: 12))
+                    .foregroundStyle(.white.opacity(0.55))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 

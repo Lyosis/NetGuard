@@ -410,6 +410,7 @@ struct AlertRow: View {
                     Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                         .font(.system(size: 9, weight: .semibold))
                         .foregroundStyle(.white.opacity(0.3))
+                        .accessibilityHidden(true)
                 }
                 .padding(.top, 4)
             }
@@ -425,6 +426,7 @@ struct AlertRow: View {
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
+        .accessibilityValue(isExpanded ? L10n.Sidebar.alertExpanded : L10n.Sidebar.alertCollapsed)
         .accessibilityHint(isExpanded ? L10n.Sidebar.alertHideDetail : L10n.Sidebar.alertShowDetail)
     }
 }

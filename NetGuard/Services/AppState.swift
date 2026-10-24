@@ -23,6 +23,10 @@ class AppState: ObservableObject {
     @Published var deviceFilter: DeviceFilter = .all
     @Published var snapshots: [ScanSnapshot]  = []
     @Published var auditResults: [UUID: SecurityAuditor.AuditResult] = [:]
+    /// Dernier scan sans aucune MAC lisible (cf. `NetworkScanner.lastARPResolvedCount`).
+    /// Tant qu'il est vrai, aucun appareil sans MAC n'est écrit en base, et les
+    /// annotations de ces appareils sont désactivées : elles ne pourraient pas être enregistrées.
+    @Published private(set) var isARPDegraded = false
 
     /// Sous-ensemble de `devices` à afficher selon le filtre courant.
     var filteredDevices: [NetworkDevice] {
@@ -73,6 +77,7 @@ class AppState: ObservableObject {
         self.modelContext = modelContext
         networkMonitor.start()
         migrateFromStopGapIfNeeded()
+        purgeIPKeyedRecordsIfNeeded()
         loadPersistedDevices()
         loadSnapshots()
         Task { await notificationService.requestAuthorization() }
@@ -137,11 +142,17 @@ class AppState: ObservableObject {
     }
 
     /// Upsert des appareils dans SwiftData après un scan. Fetch unique → pas de N+1.
+    ///
+    /// Point de passage unique de toutes les écritures (scans et actions sur un appareil) :
+    /// c'est ici, et non dans chaque appelant, qu'un appareil sans MAC est refusé quand la
+    /// lecture ARP est dégradée — sinon il serait enregistré sous une clé `ip:`.
     private func upsertToStore(_ scanned: [NetworkDevice]) {
+        let writable = isARPDegraded ? scanned.filter { !$0.mac.isEmpty } : scanned
+        guard !writable.isEmpty else { return }
         let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
         let byKey = Dictionary(uniqueKeysWithValues: allPersisted.map { ($0.persistenceKey, $0) })
 
-        for device in scanned {
+        for device in writable {
             if let existing = byKey[device.persistenceKey] {
                 existing.update(from: device)
             } else {
@@ -172,31 +183,59 @@ class AppState: ObservableObject {
     /// app signée avec un Team ID lit une table ARP vide, sans erreur (via `arp` comme
     /// via `sysctl`), même avec l'autorisation Réseau local. Seul root la voit encore.
     /// Retourne le nombre de nouveaux appareils.
-    private func detectAndPersist(_ discovered: [NetworkDevice]) -> Int {
+    private func detectAndPersist(_ discovered: [NetworkDevice], arpResolvedCount: Int) -> Int {
         // Une seule alerte de ce type à la fois : le scan rapide ne vide pas la liste.
-        alerts.removeAll { $0.category == .configuration && $0.title == L10n.ARPFailure.title }
-        if let alert = Self.arpReadFailure(in: discovered) {
+        alerts.removeAll { $0.category == .scanHealth }
+        if let alert = Self.arpReadFailure(in: discovered, arpResolvedCount: arpResolvedCount) {
+            isARPDegraded = true
             alerts.append(alert)
             return 0
         }
+        isARPDegraded = false
         let newCount = detectAndAlertNewDevices(discovered)
         upsertToStore(discovered)
         return newCount
     }
 
-    /// Des hôtes répondent, mais aucune MAC n'a été lue. La machine locale est exclue :
-    /// sa propre MAC n'est jamais dans la table ARP.
-    private static func arpReadFailure(in discovered: [NetworkDevice]) -> NetworkAlert? {
+    /// Des hôtes répondent, mais la table ARP n'a renvoyé aucune entrée pour le sous-réseau.
+    /// La machine locale est exclue du décompte : sa propre MAC n'est jamais dans la table.
+    private static func arpReadFailure(in discovered: [NetworkDevice], arpResolvedCount: Int) -> NetworkAlert? {
         let others = discovered.filter { !$0.isCurrentDevice }
-        guard others.count >= 2, others.allSatisfy({ $0.mac.isEmpty }) else { return nil }
+        guard arpResolvedCount == 0, !others.isEmpty else { return nil }
+        let isMacOS27: Bool
+        if #available(macOS 27, *) { isMacOS27 = true } else { isMacOS27 = false }
         return NetworkAlert(
             severity:       .medium,
-            category:       .configuration,
+            category:       .scanHealth,
             title:          L10n.ARPFailure.title,
-            description:    L10n.ARPFailure.description(others.count),
+            description:    isMacOS27 ? L10n.ARPFailure.description(others.count)
+                                      : L10n.ARPFailure.descriptionGeneric(others.count),
             deviceIP:       "",
-            recommendation: L10n.ARPFailure.recommendation
+            recommendation: isMacOS27 ? L10n.ARPFailure.recommendation
+                                      : L10n.ARPFailure.recommendationGeneric
         )
+    }
+
+    /// Les annotations (alias, note, type forcé) d'un appareil peuvent-elles être enregistrées ?
+    /// Non pour un appareil sans MAC pendant une lecture ARP dégradée : il n'est pas en base.
+    func canPersistAnnotations(for device: NetworkDevice) -> Bool {
+        !(isARPDegraded && device.mac.isEmpty)
+    }
+
+    /// Purge unique des fiches créées par la 1.1.2 sous macOS 27 : faute de MAC lisible,
+    /// chaque appareil y avait été enregistré sous une clé `ip:`, en double de sa fiche
+    /// MAC. Limitée à macOS 27 : avant, une clé `ip:` désigne un appareil légitimement
+    /// sans MAC (découvert par SSDP seul) et peut porter des annotations.
+    private func purgeIPKeyedRecordsIfNeeded() {
+        guard #available(macOS 27, *) else { return }
+        let flag = "netguard.purged_ip_records.v1"
+        guard !UserDefaults.standard.bool(forKey: flag) else { return }
+        let all = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        let stale = all.filter { $0.persistenceKey.hasPrefix("ip:") && $0.mac.isEmpty }
+        stale.forEach(modelContext.delete)
+        guard (try? modelContext.save()) != nil else { return }
+        UserDefaults.standard.set(true, forKey: flag)
+        print("[NetGuard] Purge macOS 27 : \(stale.count) fiches `ip:` sans MAC supprimées.")
     }
 
     /// Détecte les appareils inconnus de SwiftData et génère des alertes `.intrusion`.
@@ -332,6 +371,7 @@ class AppState: ObservableObject {
         ) { [weak self] progress, msg in
             await self?.setScanStatus(.scanning(progress: 0.05 + progress * 0.35, message: msg))
         }
+        let arpResolved = await networkScanner.lastARPResolvedCount
 
         applyPersistedAnnotations(to: discoveredDevices)
         await MainActor.run { self.devices = discoveredDevices }
@@ -376,7 +416,7 @@ class AppState: ObservableObject {
         }
 
         // Step 7 : Détection nouveaux appareils + persistance
-        let newCount = detectAndPersist(discoveredDevices)
+        let newCount = detectAndPersist(discoveredDevices, arpResolvedCount: arpResolved)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)
@@ -385,7 +425,7 @@ class AppState: ObservableObject {
             date: scanDate,
             duration: duration,
             deviceCount: discoveredDevices.count,
-            alertCount: newAlerts.count + newCount,
+            alertCount: newAlerts.count + newCount + (isARPDegraded ? 1 : 0),
             newDeviceCount: newCount
         )
 
@@ -419,11 +459,12 @@ class AppState: ObservableObject {
         ) { [weak self] p, msg in
             await self?.setScanStatus(.scanning(progress: p * 0.95, message: msg))
         }
+        let arpResolved = await networkScanner.lastARPResolvedCount
 
         applyPersistedAnnotations(to: discovered)
         for device in discovered { device.scanState = .active }
 
-        let newCount = detectAndPersist(discovered)
+        let newCount = detectAndPersist(discovered, arpResolvedCount: arpResolved)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)
@@ -432,7 +473,7 @@ class AppState: ObservableObject {
             date: scanDate,
             duration: duration,
             deviceCount: discovered.count,
-            alertCount: newCount,
+            alertCount: newCount + (isARPDegraded ? 1 : 0),
             newDeviceCount: newCount
         )
 

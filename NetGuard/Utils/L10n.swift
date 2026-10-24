@@ -69,6 +69,8 @@ enum L10n {
         static func seeAll(_ n: Int) -> String { t("sidebar.alerts.see_all", "Voir toutes les alertes (%ld)", n) }
         static let alertShowDetail  = t("sidebar.alert.show_detail", "Afficher le détail")
         static let alertHideDetail  = t("sidebar.alert.hide_detail", "Masquer le détail")
+        static let alertExpanded    = t("sidebar.alert.expanded",    "Déplié")
+        static let alertCollapsed   = t("sidebar.alert.collapsed",   "Replié")
         static let scanFull         = t("sidebar.scan.full",         "Scan complet")
         static let scanQuick        = t("sidebar.scan.quick",        "Rapide")
         static let allAlerts        = t("sidebar.sheet.all_alerts",  "Toutes les alertes")
@@ -190,6 +192,8 @@ enum L10n {
         static let notesSection     = t("user.notes.section",     "NOTES")
         static let notesPlaceholder = t("user.notes.placeholder",
                                         "Ajouter une note…")
+        static let unavailable      = t("user.annotations.unavailable",
+                                        "Nom, note et type forcé ne peuvent pas être enregistrés : l'adresse MAC de cet appareil n'a pas pu être lue.")
     }
 
     // MARK: - Audit de sécurité
@@ -462,6 +466,9 @@ enum L10n {
         static let title = t("arp.failure.title", "Adresses MAC indisponibles")
         static func description(_ count: Int) -> String { t("arp.failure.desc", "%d appareils ont répondu, mais depuis macOS 27 les applications ne peuvent plus lire leurs adresses MAC. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
         static let recommendation = t("arp.failure.reco", "Il s'agit d'une limitation de macOS, en cours d'étude. Les autres fonctions de NetGuard restent disponibles.")
+        /// Variantes sans cause présumée, hors macOS 27.
+        static func descriptionGeneric(_ count: Int) -> String { t("arp.failure.desc.generic", "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
+        static let recommendationGeneric = t("arp.failure.reco.generic", "Relancez un scan. Si le problème persiste, signalez-le en précisant votre version de macOS.")
     }
 
     // MARK: - Sécurité WiFi (NetworkInfoService) — libellés affichés
