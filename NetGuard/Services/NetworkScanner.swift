@@ -4,6 +4,11 @@ import Foundation
 /// Découvre les hôtes actifs sur le réseau local via ARP + ping
 actor NetworkScanner {
 
+    /// Entrées ARP résolues sur le sous-réseau balayé, lors du dernier `discoverHosts`.
+    /// Zéro alors que des hôtes répondent = table ARP illisible (macOS 27 pour une app
+    /// signée avec un Team ID) : `AppState` passe alors en mode dégradé.
+    private(set) var lastARPResolvedCount = 0
+
     // MARK: - Discover hosts
     /// Retourne la liste des IP actives sur le sous-réseau
     func discoverHosts(
@@ -93,6 +98,7 @@ actor NetworkScanner {
         for (ip, mac) in freshARP where scannedIPs.contains(ip) && mac.contains(":") {
             activeIPs.insert(ip)
         }
+        lastARPResolvedCount = freshARP.filter { scannedIPs.contains($0.ip) }.count
 
         // 7. Résoudre les hostnames
         await progressHandler(0.75, L10n.Scan.resolveHostnames)

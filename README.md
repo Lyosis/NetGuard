@@ -41,6 +41,12 @@ No telemetry. No cloud. No subscription.
 >
 > **If you run a third-party application firewall**, allowing NetGuard in its application list is still recommended: scans complete faster and the firewall no longer has to arbitrate every connection.
 
+> ### ⚠️ Known issue — macOS 27: MAC addresses unavailable
+>
+> Since macOS 27, applications signed by a developer can no longer read the system ARP table — the call succeeds but returns an empty table, even with Local Network access granted. Only Apple's own tools, processes running as root and ad-hoc-signed builds still see it — and distributed apps are always signed with a developer certificate.
+>
+> On macOS 27, NetGuard still discovers devices, scans their ports and audits them, but it **cannot show device vendors**, **new-device detection is unavailable**, and devices that ignore ping may be missed. Scans affected by this are flagged with an alert and are not saved, so no false intrusion alerts are raised. Earlier versions of macOS are not affected. A solution is being investigated.
+
 ---
 
 ## Screenshots
