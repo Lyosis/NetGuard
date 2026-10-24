@@ -291,7 +291,7 @@ struct DeviceDetailView: View {
         .accessibilityHint(L10n.Override.menuHint)
     }
 
-    /// Faux pour un appareil sans MAC pendant une lecture ARP dégradée (macOS 27) :
+    /// Faux pour un appareil sans MAC pendant une lecture ARP dégradée :
     /// ses annotations ne pourraient pas être enregistrées.
     private var canAnnotate: Bool { state.canPersistAnnotations(for: device) }
 

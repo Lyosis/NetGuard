@@ -464,11 +464,8 @@ enum L10n {
     // MARK: - Lecture ARP impossible (scan dégradé)
     enum ARPFailure {
         static let title = t("arp.failure.title", "Adresses MAC indisponibles")
-        static func description(_ count: Int) -> String { t("arp.failure.desc", "%d appareils ont répondu, mais depuis macOS 27 les applications ne peuvent plus lire leurs adresses MAC. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
-        static let recommendation = t("arp.failure.reco", "Il s'agit d'une limitation de macOS, en cours d'étude. Les autres fonctions de NetGuard restent disponibles.")
-        /// Variantes sans cause présumée, hors macOS 27.
-        static func descriptionGeneric(_ count: Int) -> String { t("arp.failure.desc.generic", "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
-        static let recommendationGeneric = t("arp.failure.reco.generic", "Relancez un scan. Si le problème persiste, signalez-le en précisant votre version de macOS.")
+        static func description(_ count: Int) -> String { t("arp.failure.desc", "%d appareils ont répondu, mais aucune adresse MAC n'a pu être lue. Les appareils sont affichés, mais leur constructeur et la détection des nouveaux appareils sont indisponibles. Ce scan n'a pas été enregistré.", count) }
+        static let recommendation = t("arp.failure.reco", "Relancez un scan. Si le problème persiste, signalez-le en précisant votre version de macOS.")
     }
 
     // MARK: - Sécurité WiFi (NetworkInfoService) — libellés affichés

@@ -77,7 +77,6 @@ class AppState: ObservableObject {
         self.modelContext = modelContext
         networkMonitor.start()
         migrateFromStopGapIfNeeded()
-        purgeIPKeyedRecordsIfNeeded()
         loadPersistedDevices()
         loadSnapshots()
         Task { await notificationService.requestAuthorization() }
@@ -179,9 +178,9 @@ class AppState: ObservableObject {
     ///
     /// Sans MAC, chaque appareil prend une clé `ip:` : il serait signalé comme une
     /// intrusion et enregistré en double. Le scan est alors signalé comme dégradé et
-    /// rien n'est écrit — plutôt qu'un échec silencieux. Cas réel : depuis macOS 27, une
-    /// app signée avec un Team ID lit une table ARP vide, sans erreur (via `arp` comme
-    /// via `sysctl`), même avec l'autorisation Réseau local. Seul root la voit encore.
+    /// rien n'est écrit — plutôt qu'un échec silencieux. Cas réel : sous macOS 27, un
+    /// build signé Apple Development (Debug lancé depuis Xcode) lit une table ARP vide,
+    /// sans erreur. Les builds Developer ID distribués ne sont pas touchés.
     /// Retourne le nombre de nouveaux appareils.
     private func detectAndPersist(_ discovered: [NetworkDevice], arpResolvedCount: Int) -> Int {
         // Une seule alerte de ce type à la fois : le scan rapide ne vide pas la liste.
@@ -202,17 +201,13 @@ class AppState: ObservableObject {
     private static func arpReadFailure(in discovered: [NetworkDevice], arpResolvedCount: Int) -> NetworkAlert? {
         let others = discovered.filter { !$0.isCurrentDevice }
         guard arpResolvedCount == 0, !others.isEmpty else { return nil }
-        let isMacOS27: Bool
-        if #available(macOS 27, *) { isMacOS27 = true } else { isMacOS27 = false }
         return NetworkAlert(
             severity:       .medium,
             category:       .scanHealth,
             title:          L10n.ARPFailure.title,
-            description:    isMacOS27 ? L10n.ARPFailure.description(others.count)
-                                      : L10n.ARPFailure.descriptionGeneric(others.count),
+            description:    L10n.ARPFailure.description(others.count),
             deviceIP:       "",
-            recommendation: isMacOS27 ? L10n.ARPFailure.recommendation
-                                      : L10n.ARPFailure.recommendationGeneric
+            recommendation: L10n.ARPFailure.recommendation
         )
     }
 
@@ -220,22 +215,6 @@ class AppState: ObservableObject {
     /// Non pour un appareil sans MAC pendant une lecture ARP dégradée : il n'est pas en base.
     func canPersistAnnotations(for device: NetworkDevice) -> Bool {
         !(isARPDegraded && device.mac.isEmpty)
-    }
-
-    /// Purge unique des fiches créées par la 1.1.2 sous macOS 27 : faute de MAC lisible,
-    /// chaque appareil y avait été enregistré sous une clé `ip:`, en double de sa fiche
-    /// MAC. Limitée à macOS 27 : avant, une clé `ip:` désigne un appareil légitimement
-    /// sans MAC (découvert par SSDP seul) et peut porter des annotations.
-    private func purgeIPKeyedRecordsIfNeeded() {
-        guard #available(macOS 27, *) else { return }
-        let flag = "netguard.purged_ip_records.v1"
-        guard !UserDefaults.standard.bool(forKey: flag) else { return }
-        let all = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
-        let stale = all.filter { $0.persistenceKey.hasPrefix("ip:") && $0.mac.isEmpty }
-        stale.forEach(modelContext.delete)
-        guard (try? modelContext.save()) != nil else { return }
-        UserDefaults.standard.set(true, forKey: flag)
-        print("[NetGuard] Purge macOS 27 : \(stale.count) fiches `ip:` sans MAC supprimées.")
     }
 
     /// Détecte les appareils inconnus de SwiftData et génère des alertes `.intrusion`.

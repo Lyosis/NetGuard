@@ -5,8 +5,8 @@ import Foundation
 actor NetworkScanner {
 
     /// Entrées ARP résolues sur le sous-réseau balayé, lors du dernier `discoverHosts`.
-    /// Zéro alors que des hôtes répondent = table ARP illisible (macOS 27 pour une app
-    /// signée avec un Team ID) : `AppState` passe alors en mode dégradé.
+    /// Zéro alors que des hôtes répondent = table ARP illisible (cas mesuré : build signé
+    /// Apple Development sous macOS 27) : `AppState` passe alors en mode dégradé.
     private(set) var lastARPResolvedCount = 0
 
     // MARK: - Discover hosts
