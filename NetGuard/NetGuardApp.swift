@@ -9,7 +9,12 @@ struct NetGuardApp: App {
     init() {
         let c: ModelContainer
         do {
-            c = try ModelContainer(for: PersistedDevice.self, ScanSnapshot.self)
+            // Schéma versionné + plan de migration explicite (cf. NetGuardMigrationPlan).
+            // Les bases 1.0–1.1.3 sont reconnues comme V1 et migrées en V2.
+            c = try ModelContainer(
+                for: Schema(versionedSchema: NetGuardSchemaV2.self),
+                migrationPlan: NetGuardMigrationPlan.self
+            )
         } catch {
             // Fallback mémoire si le schéma SwiftData est corrompu — données non persistées
             // mais l'app reste fonctionnelle.

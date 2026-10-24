@@ -105,7 +105,8 @@ actor DeviceEnricher {
         await MainActor.run {
             device.responseTime = pingResult.ms
             device.ttl          = pingResult.ttl
-            device.osGuess      = os
+            // Jamais de rétrogradation : un OS déjà identifié ne redevient pas inconnu.
+            if os != .unknown { device.osGuess = os }
             if let b = bonjour {
                 if !b.instanceName.isEmpty { device.mdnsName = b.instanceName }
                 device.bonjourServices = b.services

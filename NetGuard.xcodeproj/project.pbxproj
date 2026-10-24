@@ -30,6 +30,9 @@
 		A5001122334455667788DD11 /* SSDPDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5001122334455667788DD12 /* SSDPDiscovery.swift */; };
 		A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788EE02 /* ViewModifiers+Glass.swift */; };
 		A6001122334455667788FF05 /* ScanSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788FF06 /* ScanSnapshot.swift */; };
+		A3001122334455667788EE11 /* NetGuardSchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788EE12 /* NetGuardSchemaV1.swift */; };
+		A3001122334455667788EE13 /* NetGuardSchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788EE14 /* NetGuardSchemaV2.swift */; };
+		A3001122334455667788EE15 /* NetGuardMigrationPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3001122334455667788EE16 /* NetGuardMigrationPlan.swift */; };
 		A6001122334455667788FF07 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6001122334455667788FF08 /* HistoryView.swift */; };
 		A7001122334455667788DD13 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7001122334455667788DD14 /* NotificationService.swift */; };
 		A8001122334455667788EE01 /* SecurityAuditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8001122334455667788EE02 /* SecurityAuditor.swift */; };
@@ -69,6 +72,9 @@
 		A5001122334455667788DD12 /* SSDPDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSDPDiscovery.swift; sourceTree = "<group>"; };
 		A6001122334455667788EE02 /* ViewModifiers+Glass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewModifiers+Glass.swift"; sourceTree = "<group>"; };
 		A6001122334455667788FF06 /* ScanSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanSnapshot.swift; sourceTree = "<group>"; };
+		A3001122334455667788EE12 /* NetGuardSchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardSchemaV1.swift; sourceTree = "<group>"; };
+		A3001122334455667788EE14 /* NetGuardSchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardSchemaV2.swift; sourceTree = "<group>"; };
+		A3001122334455667788EE16 /* NetGuardMigrationPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetGuardMigrationPlan.swift; sourceTree = "<group>"; };
 		A6001122334455667788FF08 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		A7001122334455667788DD14 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A7E38524AACA4C3CB619B539 /* VulnerabilityChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VulnerabilityChecker.swift; sourceTree = "<group>"; };
@@ -144,6 +150,9 @@
 				A8001122334455667788FF02 /* PersistedDevice.swift */,
 				A8001122334455667788FF04 /* PersistedDevice+Conversion.swift */,
 				A6001122334455667788FF06 /* ScanSnapshot.swift */,
+				A3001122334455667788EE12 /* NetGuardSchemaV1.swift */,
+				A3001122334455667788EE14 /* NetGuardSchemaV2.swift */,
+				A3001122334455667788EE16 /* NetGuardMigrationPlan.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -309,6 +318,9 @@
 				A6001122334455667788EE01 /* ViewModifiers+Glass.swift in Sources */,
 				DEMO0011223344556677AABB /* DemoData.swift in Sources */,
 				A6001122334455667788FF05 /* ScanSnapshot.swift in Sources */,
+				A3001122334455667788EE11 /* NetGuardSchemaV1.swift in Sources */,
+				A3001122334455667788EE13 /* NetGuardSchemaV2.swift in Sources */,
+				A3001122334455667788EE15 /* NetGuardMigrationPlan.swift in Sources */,
 				A6001122334455667788FF07 /* HistoryView.swift in Sources */,
 				A7001122334455667788DD13 /* NotificationService.swift in Sources */,
 				A8001122334455667788EE01 /* SecurityAuditor.swift in Sources */,
