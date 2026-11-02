@@ -23,8 +23,13 @@ extension NetworkDevice {
     /// rapprochement par nom, s'il devient nécessaire, se fera au moment de l'alerte,
     /// jamais dans la clé.
     var deviceIdentity: String {
-        let mac = normalizedMAC
-        if !mac.isEmpty { return "mac:\(mac)" }
+        Self.deviceIdentity(mac: mac, ip: ip)
+    }
+
+    /// Formule unique de l'identité, partagée avec `PersistedDevice.deviceIdentity`.
+    static func deviceIdentity(mac: String, ip: String) -> String {
+        let normalized = mac.lowercased().filter(\.isHexDigit)
+        if !normalized.isEmpty { return "mac:\(normalized)" }
         return "ip:\(ip)"
     }
 
@@ -38,64 +43,14 @@ extension NetworkDevice {
     }
 }
 
-// MARK: - Identité du réseau courant
-
-enum NetworkIdentity {
-
-    /// Identifiant du réseau courant.
-    ///
-    /// La MAC de la passerelle est préférée au SSID : elle existe aussi en Ethernet,
-    /// survit à un renommage du réseau, et distingue deux réseaux qui partageraient
-    /// le même plan d'adressage — `192.168.1.0/24` étant tout sauf discriminant.
-    ///
-    /// - Parameter knownDevices: résultat d'un scan, si disponible. Évite un appel
-    ///   à `arp` quand la passerelle vient d'être vue.
-    static func identifier(
-        gatewayIP: String,
-        subnetCIDR: String,
-        knownDevices: [NetworkDevice] = []
-    ) -> String {
-        if let mac = knownDevices.first(where: { $0.ip == gatewayIP })?.normalizedMAC,
-           !mac.isEmpty {
-            return "gw:\(mac)"
-        }
-        if let mac = gatewayMAC(gatewayIP), !mac.isEmpty {
-            return "gw:\(mac)"
-        }
-        // Repli faible mais borné : deux réseaux au même plan d'adressage seraient
-        // confondus. N'arrive que si la passerelle n'a pas encore répondu à l'ARP.
-        return "net:\(subnetCIDR)"
-    }
-
-    /// Lit la MAC de la passerelle dans la table ARP du système.
-    private static func gatewayMAC(_ ip: String) -> String? {
-        // Défense en profondeur (cf. #30) : jamais d'argument non validé dans un argv.
-        guard IPv4.isValid(ip) else { return nil }
-
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/usr/sbin/arp")
-        process.arguments = ["-n", ip]
-        let pipe = Pipe()
-        process.standardOutput = pipe
-        process.standardError  = Pipe()
-        guard (try? process.run()) != nil else { return nil }
-        process.waitUntilExit()
-
-        let output = String(data: pipe.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
-        guard let regex = try? NSRegularExpression(pattern: #"at ([0-9a-f:]+)"#, options: .caseInsensitive) else {
-            return nil
-        }
-        let ns = output as NSString
-        guard let match = regex.firstMatch(in: output, range: NSRange(location: 0, length: ns.length)),
-              match.numberOfRanges == 2 else { return nil }
-        let mac = ns.substring(with: match.range(at: 1)).lowercased().filter(\.isHexDigit)
-        return mac.isEmpty ? nil : mac
-    }
-}
-
 // MARK: - PersistedDevice ↔ NetworkDevice
 
 extension PersistedDevice {
+
+    /// Identité de l'appareil, lue sur les colonnes de la fiche — sans décoder ses JSON.
+    var deviceIdentity: String {
+        NetworkDevice.deviceIdentity(mac: mac, ip: ip)
+    }
 
     // MARK: NetworkDevice → PersistedDevice (factory)
 

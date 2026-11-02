@@ -2125,6 +2125,57 @@
         }
       }
     },
+    "gateway.change.desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The gateway now answers with a new MAC address (%1$@, previously %2$@), while the other devices on your network are still here. NetGuard now monitors this network under the new gateway."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La passerelle répond avec une nouvelle adresse MAC (%1$@, auparavant %2$@), alors que les autres appareils de votre réseau sont toujours là. NetGuard surveille désormais ce réseau sous cette nouvelle passerelle."
+          }
+        }
+      }
+    },
+    "gateway.change.reco" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you haven't replaced your router, a device may be impersonating it (ARP spoofing): check the device list, then restart your router."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si vous n'avez pas changé de box ou de routeur, un appareil se fait peut-être passer pour elle (usurpation ARP) : vérifiez la liste des appareils, puis redémarrez votre box."
+          }
+        }
+      }
+    },
+    "gateway.change.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your network's gateway has changed"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La passerelle de votre réseau a changé"
+          }
+        }
+      }
+    },
     "history.alerts" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4216,6 +4267,57 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fermer"
+          }
+        }
+      }
+    },
+    "store.failure.desc" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NetGuard's database could not be opened. Scans work, but nothing is kept between launches: new-device detection starts from scratch each time."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La base de NetGuard n'a pas pu être ouverte. Les scans fonctionnent, mais rien n'est conservé d'un lancement à l'autre : la détection des nouveaux appareils repart de zéro à chaque lancement."
+          }
+        }
+      }
+    },
+    "store.failure.reco" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit and relaunch NetGuard. If the problem persists, report it with your macOS version."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quittez puis relancez NetGuard. Si le problème persiste, signalez-le en précisant votre version de macOS."
+          }
+        }
+      }
+    },
+    "store.failure.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data not saved"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données non enregistrées"
           }
         }
       }
