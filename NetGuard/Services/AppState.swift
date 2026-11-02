@@ -72,15 +72,33 @@ class AppState: ObservableObject {
         return L10n.App.lastScanHours(Int(interval / 3600))
     }
 
+    /// Faux quand le store sur disque n'a pas pu être ouvert (cf. `NetGuardStore`) : rien
+    /// n'est conservé d'un lancement à l'autre, et l'utilisateur doit le savoir.
+    private let isStorePersistent: Bool
+
     // MARK: - Init
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext, isStorePersistent: Bool = true) {
         self.modelContext = modelContext
+        self.isStorePersistent = isStorePersistent
+        if !isStorePersistent { alerts.append(Self.storeFailure) }
         networkMonitor.start()
         migrateFromStopGapIfNeeded()
         loadPersistedDevices()
         loadSnapshots()
         Task { await notificationService.requestAuthorization() }
-        Task { await refreshNetworkInfo() }
+        Task {
+            await refreshNetworkInfo()
+            // Identifie le réseau et déclenche la migration d'identité sans attendre
+            // un premier scan — sinon les appareils déjà connus resteraient orphelins.
+            let remembered = currentNetworkID
+            await refreshNetworkID()
+            // La carte a été remplie avec le réseau mémorisé au dernier lancement. Si la
+            // machine a changé de réseau entre-temps, elle montrerait celui d'avant.
+            // Un scan lancé entre-temps a déjà remplacé la carte : ne pas l'écraser.
+            if currentNetworkID != remembered, case .idle = scanStatus {
+                loadPersistedDevices()
+            }
+        }
         Task.detached(priority: .utility) {
             await OUIDatabase.shared.preload()
         }
@@ -90,7 +108,118 @@ class AppState: ObservableObject {
         networkMonitor.stop()
     }
 
+    // MARK: - Identité du réseau courant
+
+    private static let networkIDKey       = "netguard.current_network_id"
+    private static let identityMigratedKey = "netguard.identity_migrated.v2"
+
+    /// Réseau sur lequel on se trouve. Mémorisé entre deux lancements : au démarrage
+    /// on doit pouvoir afficher le cache avant que le premier scan ait identifié la
+    /// passerelle.
+    private(set) var currentNetworkID: String =
+        UserDefaults.standard.string(forKey: AppState.networkIDKey) ?? ""
+
+    /// Recalcule l'identité du réseau, la mémorise, et déclenche la migration
+    /// d'identité si elle n'a pas encore pu tourner (elle a besoin du réseau).
+    ///
+    /// Quand la passerelle figure dans `devices` — le cas après chaque scan — la MAC
+    /// est déjà connue et rien n'est lu sur le disque. Sinon le repli interroge `arp`,
+    /// donc un `Process` synchrone : il est écarté du `MainActor` pour ne pas figer
+    /// l'interface.
+    private func refreshNetworkID(from devices: [NetworkDevice] = []) async {
+        let gateway = primaryNetwork.gateway
+        let cidr    = primaryNetwork.subnetCIDR
+
+        let id: String
+        if let mac = devices.first(where: { $0.ip == gateway })?.normalizedMAC, !mac.isEmpty {
+            id = "gw:\(mac)"
+        } else {
+            id = await Task.detached(priority: .utility) {
+                NetworkIdentity.identifier(gatewayIP: gateway, subnetCIDR: cidr)
+            }.value
+        }
+
+        guard !id.isEmpty, id != "net:" else { return }
+        // MAC de la passerelle illisible (table ARP vide) : ce n'est pas un changement de
+        // réseau. Garder le dernier réseau identifié par sa passerelle plutôt que d'en
+        // inventer un — sinon les appareils connus disparaissent de l'affichage. Le scan
+        // lui-même est alors dégradé : il n'écrit rien et ne lève aucune intrusion.
+        if id.hasPrefix("net:"), currentNetworkID.hasPrefix("gw:") { return }
+        currentNetworkID = id
+        UserDefaults.standard.set(id, forKey: Self.networkIDKey)
+        // La migration rattache chaque fiche à un réseau, une fois pour toutes : elle
+        // attend une identité fiable, celle de la passerelle.
+        if id.hasPrefix("gw:") { migrateDeviceIdentityIfNeeded() }
+    }
+
     // MARK: - Persistance SwiftData
+
+    /// Migration unique vers les clés portées par réseau.
+    ///
+    /// La formule de `persistenceKey` a changé : sans cette passe, tous les appareils
+    /// déjà connus obtiendraient une clé différente et seraient signalés comme autant
+    /// d'intrusions au premier lancement suivant la mise à jour.
+    ///
+    /// Ne touche que les fiches sans réseau (`networkID` vide) : celles de la 1.1.3 et
+    /// des stop-gaps. Elles ne disent pas de quel réseau elles viennent ; on ne les
+    /// rattache au réseau courant que s'il est **le leur**, c'est-à-dire si sa passerelle
+    /// figure parmi elles. Sinon — mise à jour lancée au café — la migration attend le
+    /// retour sur le réseau d'origine, au lieu de rattacher la maison au café.
+    /// Limite assumée : si la box a été remplacée entre-temps, ces fiches restent en
+    /// attente. Elles ne servent alors ni à la détection ni à l'enrichissement.
+    ///
+    /// Ne peut tourner qu'une fois le réseau identifié par sa passerelle — d'où l'appel
+    /// depuis `refreshNetworkID()` plutôt que depuis `init`.
+    private func migrateDeviceIdentityIfNeeded() {
+        guard !UserDefaults.standard.bool(forKey: Self.identityMigratedKey) else { return }
+        guard currentNetworkID.hasPrefix("gw:") else { return }   // réessai au prochain scan
+
+        let all    = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        let legacy = all.filter { $0.networkID.isEmpty }
+        guard !legacy.isEmpty else {
+            UserDefaults.standard.set(true, forKey: Self.identityMigratedKey)
+            return
+        }
+
+        let gatewayIdentity = "mac:" + currentNetworkID.dropFirst("gw:".count)
+        guard legacy.contains(where: { $0.deviceIdentity == gatewayIdentity }) else {
+            print("[NetGuard] Migration identité en attente : \(legacy.count) appareils "
+                  + "d'un autre réseau que \(currentNetworkID)")
+            return
+        }
+
+        // Défensif : `persistenceKey` est unique, une collision ferait échouer tout
+        // l'enregistrement. Elle supposerait une fiche déjà rattachée à ce réseau sous la
+        // même identité, ou deux fiches héritées dont les MAC ne différaient que par un
+        // séparateur autre que « : » et « - » (seuls retirés par la 1.1.3). On garde alors
+        // la fiche la plus récente.
+        var claimed = Set(all.filter { !$0.networkID.isEmpty }.map(\.persistenceKey))
+        var merged = 0
+        for device in legacy.sorted(by: { $0.lastSeen > $1.lastSeen }) {
+            let newKey = "\(currentNetworkID)|\(device.deviceIdentity)"
+            if claimed.contains(newKey) {
+                modelContext.delete(device)
+                merged += 1
+                continue
+            }
+            claimed.insert(newKey)
+            device.persistenceKey = newKey
+            device.networkID      = currentNetworkID
+        }
+
+        // Le drapeau n'est posé qu'une fois la migration écrite : un échec la fera
+        // retenter au prochain scan, au lieu de la marquer faite à tort.
+        do {
+            try modelContext.save()
+        } catch {
+            modelContext.rollback()
+            print("[NetGuard] Migration identité échouée, nouvel essai au prochain scan : \(error)")
+            return
+        }
+        UserDefaults.standard.set(true, forKey: Self.identityMigratedKey)
+        print("[NetGuard] Migration identité : \(legacy.count) appareils rattachés à \(currentNetworkID)"
+              + (merged > 0 ? ", \(merged) fusionnés" : ""))
+    }
 
     /// Migration unique depuis les stop-gaps (ScanCache JSON + UserAnnotations UserDefaults).
     /// Ne s'exécute que si SwiftData est vide — idempotente.
@@ -121,7 +250,9 @@ class AppState: ObservableObject {
                 device.userNote         = annotation.note
                 device.userOverrideType = annotation.overrideType
             }
-            modelContext.insert(PersistedDevice.make(from: device))
+            // Réseau pas encore identifié à ce stade : `migrateDeviceIdentityIfNeeded()`
+            // rattachera ces entrées dès que leur réseau d'origine sera identifié.
+            modelContext.insert(PersistedDevice.make(from: device, networkID: currentNetworkID))
         }
 
         try? modelContext.save()
@@ -135,9 +266,17 @@ class AppState: ObservableObject {
         let descriptor = FetchDescriptor<PersistedDevice>(
             sortBy: [SortDescriptor(\.lastSeen, order: .reverse)]
         )
-        guard let persisted = try? modelContext.fetch(descriptor), !persisted.isEmpty else { return }
-        self.devices      = persisted.map { $0.toNetworkDevice() }
-        self.lastScanDate = persisted.first?.lastSeen
+        let persisted = (try? modelContext.fetch(descriptor)) ?? []
+        // N'afficher que le réseau courant. Les entrées sans réseau sont celles qui
+        // n'ont pas encore été migrées : les garder visibles évite un écran vide au
+        // premier lancement suivant la mise à jour.
+        let scoped = persisted.filter { $0.networkID.isEmpty || $0.networkID == currentNetworkID }
+        // Rappelée au lancement après un changement de réseau : remplacer, vide compris.
+        self.devices      = scoped.map { $0.toNetworkDevice() }
+        self.lastScanDate = scoped.first?.lastSeen
+        if let selected = selectedDevice, !devices.contains(where: { $0.id == selected.id }) {
+            selectedDevice = nil
+        }
     }
 
     /// Upsert des appareils dans SwiftData après un scan. Fetch unique → pas de N+1.
@@ -152,25 +291,53 @@ class AppState: ObservableObject {
         let byKey = Dictionary(uniqueKeysWithValues: allPersisted.map { ($0.persistenceKey, $0) })
 
         for device in writable {
-            if let existing = byKey[device.persistenceKey] {
-                existing.update(from: device)
+            let key = device.persistenceKey(networkID: currentNetworkID)
+            if let existing = byKey[key] {
+                existing.update(from: device)   // même clé ⇒ déjà rattachée à ce réseau
             } else {
-                modelContext.insert(PersistedDevice.make(from: device))
+                modelContext.insert(PersistedDevice.make(from: device, networkID: currentNetworkID))
             }
         }
         try? modelContext.save()
     }
 
-    /// Applique les annotations (alias, note, override) depuis SwiftData aux devices fraîchement scannés.
+    /// Reprend de SwiftData ce que le scan n'a pas mesuré : annotations utilisateur et
+    /// enrichissement (type, OS, noms, bannières, services, ports).
+    ///
+    /// Un scan rapide ne fait ni Bonjour, ni HTTP, ni empreinte d'OS : ses appareils
+    /// arrivent avec ces champs vides. Sans cette reprise, `upsertToStore` les recopiait
+    /// tels quels et effaçait l'enrichissement du dernier scan complet — en base comme
+    /// à l'écran. Règle : une donnée ne peut être remplacée que par une donnée.
+    ///
+    /// Les mesures fraîches (IP, latence, TTL, `lastSeen`) ne sont jamais reprises.
     /// Fetch unique — O(n) total.
-    private func applyPersistedAnnotations(to list: [NetworkDevice]) {
+    private func applyPersistedKnowledge(to list: [NetworkDevice]) {
         let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
         let byKey = Dictionary(uniqueKeysWithValues: allPersisted.map { ($0.persistenceKey, $0) })
         for device in list {
-            guard let persisted = byKey[device.persistenceKey] else { continue }
-            device.userAlias        = persisted.userAlias
-            device.userNote         = persisted.userNote
-            device.userOverrideType = persisted.userOverrideTypeRaw.flatMap { DeviceType(rawValue: $0) }
+            guard let persisted = byKey[device.persistenceKey(networkID: currentNetworkID)] else { continue }
+            let known = persisted.toNetworkDevice()
+
+            device.userAlias        = known.userAlias
+            device.userNote         = known.userNote
+            device.userOverrideType = known.userOverrideType
+
+            // Type et OS établis par l'enrichissement priment sur la devinette faite à la
+            // découverte à partir du seul constructeur. Seul un scan complet les révise.
+            if known.type    != .unknown { device.type    = known.type }
+            if known.osGuess != .unknown { device.osGuess = known.osGuess }
+
+            if device.vendor.isEmpty          { device.vendor          = known.vendor }
+            if device.hostname.isEmpty        { device.hostname        = known.hostname }
+            if device.mdnsName.isEmpty        { device.mdnsName        = known.mdnsName }
+            if device.netbiosName.isEmpty     { device.netbiosName     = known.netbiosName }
+            if device.httpBanner.isEmpty      { device.httpBanner      = known.httpBanner }
+            if device.httpTitle.isEmpty       { device.httpTitle       = known.httpTitle }
+            if device.bonjourServices.isEmpty { device.bonjourServices = known.bonjourServices }
+            // Un scan complet remesure les ports et remplace cette liste, vide comprise.
+            if device.openPorts.isEmpty       { device.openPorts       = known.openPorts }
+            if device.upnp == nil             { device.upnp            = known.upnp }
+            if device.sslCertificate == nil   { device.sslCertificate  = known.sslCertificate }
         }
     }
 
@@ -181,19 +348,91 @@ class AppState: ObservableObject {
     /// rien n'est écrit — plutôt qu'un échec silencieux. Cas réel : sous macOS 27, un
     /// build signé Apple Development (Debug lancé depuis Xcode) lit une table ARP vide,
     /// sans erreur. Les builds Developer ID distribués ne sont pas touchés.
-    /// Retourne le nombre de nouveaux appareils.
-    private func detectAndPersist(_ discovered: [NetworkDevice], arpResolvedCount: Int) -> Int {
-        // Une seule alerte de ce type à la fois : le scan rapide ne vide pas la liste.
+    /// Retourne le nombre de nouveaux appareils et celui des autres alertes levées ici.
+    private func detectAndPersist(
+        _ discovered: [NetworkDevice], arpResolvedCount: Int
+    ) -> (newDevices: Int, otherAlerts: Int) {
+        // Une seule alerte de chaque type : le scan rapide ne vide pas la liste,
+        // le scan complet si — d'où leur reconstruction ici, à chaque scan.
         alerts.removeAll { $0.category == .scanHealth }
+        let storeAlerts = isStorePersistent ? 0 : 1
+        if !isStorePersistent { alerts.append(Self.storeFailure) }
         if let alert = Self.arpReadFailure(in: discovered, arpResolvedCount: arpResolvedCount) {
             isARPDegraded = true
             alerts.append(alert)
-            return 0
+            return (0, storeAlerts + 1)
         }
         isARPDegraded = false
+        // Avant l'écriture : une fois enregistré, le réseau n'est plus « jamais vu ».
+        let gatewayAlert = gatewayChangeAlert(in: discovered)
+        if let gatewayAlert { alerts.append(gatewayAlert) }
         let newCount = detectAndAlertNewDevices(discovered)
         upsertToStore(discovered)
-        return newCount
+        return (newCount, storeAlerts + (gatewayAlert == nil ? 0 : 1))
+    }
+
+    /// Le store est en mémoire : les scans marchent, la mémoire du réseau non.
+    private static var storeFailure: NetworkAlert {
+        NetworkAlert(
+            severity:       .high,
+            category:       .scanHealth,
+            title:          L10n.StoreFailure.title,
+            description:    L10n.StoreFailure.description,
+            deviceIP:       "",
+            recommendation: L10n.StoreFailure.recommendation
+        )
+    }
+
+    /// Appareils connus à partir desquels un réseau « nouveau » est reconnu comme un
+    /// réseau connu dont seule la passerelle a changé.
+    private static let gatewayChangeMinKnown = 3
+
+    /// La MAC de la passerelle a changé, mais le reste du réseau est un réseau connu.
+    ///
+    /// Le réseau est identifié par la MAC de sa passerelle : quand elle change, NetGuard
+    /// se croit sur un réseau jamais vu et apprend tout ce qu'il voit, sans alerte. C'est
+    /// le cas légitime d'une box remplacée, mais aussi celui d'un appareil qui se fait
+    /// passer pour la passerelle (usurpation ARP). On le reconnaît à ce que les autres
+    /// appareils, eux, sont ceux d'un réseau connu : au moins `gatewayChangeMinKnown`, et
+    /// la majorité de ceux qui ont une MAC. Chez un tiers au même plan d'adressage, aucun
+    /// ne l'est — les MAC privées d'iOS et d'Android changent d'un réseau à l'autre.
+    ///
+    /// Ne s'évalue que sur un réseau jamais vu : c'est là que l'apprentissage silencieux
+    /// a lieu. L'alerte est donc levée une fois, au premier scan sous la nouvelle MAC.
+    private func gatewayChangeAlert(in discovered: [NetworkDevice]) -> NetworkAlert? {
+        guard currentNetworkID.hasPrefix("gw:") else { return nil }
+        let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
+        guard !allPersisted.contains(where: { $0.networkID == currentNetworkID }) else { return nil }
+
+        let gatewayIP = primaryNetwork.gateway
+        let others = Set(discovered
+            .filter { !$0.isCurrentDevice && $0.ip != gatewayIP && !$0.normalizedMAC.isEmpty }
+            .map(\.deviceIdentity))
+        guard others.count >= Self.gatewayChangeMinKnown else { return nil }
+
+        // Fiches non migrées comprises (`networkID` vide) : une box remplacée depuis la
+        // mise à jour est le cas même que cette alerte doit signaler.
+        var knownByNetwork: [String: Int] = [:]
+        for record in allPersisted where others.contains(record.deviceIdentity) {
+            knownByNetwork[record.networkID, default: 0] += 1
+        }
+        guard let (previousID, known) = knownByNetwork.max(by: { $0.value < $1.value }),
+              known >= Self.gatewayChangeMinKnown,
+              known * 2 >= others.count else { return nil }
+
+        let newMAC = discovered.first { $0.ip == gatewayIP }?.mac ?? ""
+        let previousMAC = allPersisted.first { $0.networkID == previousID && $0.ip == gatewayIP }?.mac ?? ""
+        return NetworkAlert(
+            severity:       .high,
+            category:       .intrusion,
+            title:          L10n.GatewayChange.title,
+            description:    L10n.GatewayChange.description(
+                newMAC:      newMAC.isEmpty ? "—" : newMAC,
+                previousMAC: previousMAC.isEmpty ? "—" : previousMAC
+            ),
+            deviceIP:       gatewayIP,
+            recommendation: L10n.GatewayChange.recommendation
+        )
     }
 
     /// Des hôtes répondent, mais la table ARP n'a renvoyé aucune entrée pour le sous-réseau.
@@ -223,11 +462,16 @@ class AppState: ObservableObject {
     @discardableResult
     private func detectAndAlertNewDevices(_ discovered: [NetworkDevice]) -> Int {
         let allPersisted = (try? modelContext.fetch(FetchDescriptor<PersistedDevice>())) ?? []
-        guard !allPersisted.isEmpty else { return 0 }
-        let knownKeys = Set(allPersisted.map(\.persistenceKey))
+        // Ne comparer qu'aux appareils déjà vus **sur ce réseau**. Arriver sur un réseau
+        // inconnu ne doit pas signaler chacun de ses appareils comme une intrusion : un
+        // réseau jamais vu se comporte comme un premier scan — on apprend, on n'alerte pas.
+        let onThisNetwork = allPersisted.filter { $0.networkID == currentNetworkID }
+        guard !onThisNetwork.isEmpty else { return 0 }
+        let knownKeys = Set(onThisNetwork.map(\.persistenceKey))
 
         var newDevices: [NetworkDevice] = []
-        for device in discovered where !knownKeys.contains(device.persistenceKey) {
+        for device in discovered
+        where !knownKeys.contains(device.persistenceKey(networkID: currentNetworkID)) {
             newDevices.append(device)
             alerts.append(NetworkAlert(
                 severity:       .high,
@@ -246,16 +490,30 @@ class AppState: ObservableObject {
         return newDevices.count
     }
 
-    // MARK: - Oublier un appareil
-
-    /// Supprime définitivement un appareil de SwiftData et de la liste courante.
-    func forgetDevice(_ device: NetworkDevice) {
-        let key = device.persistenceKey
+    /// Fiche SwiftData d'un appareil affiché.
+    ///
+    /// Un appareil affiché depuis le cache peut provenir d'une fiche pas encore migrée
+    /// (`networkID` vide, ancienne clé) : la migration attend le réseau d'origine. La
+    /// chercher sous la seule clé courante faisait échouer sans bruit l'annotation et
+    /// l'oubli de cet appareil.
+    private func persistedRecord(for device: NetworkDevice) -> PersistedDevice? {
+        let key = device.persistenceKey(networkID: currentNetworkID)
         var descriptor = FetchDescriptor<PersistedDevice>(
             predicate: #Predicate { $0.persistenceKey == key }
         )
         descriptor.fetchLimit = 1
-        if let persisted = try? modelContext.fetch(descriptor).first {
+        if let current = try? modelContext.fetch(descriptor).first { return current }
+
+        let identity = device.deviceIdentity
+        let legacy = FetchDescriptor<PersistedDevice>(predicate: #Predicate { $0.networkID == "" })
+        return (try? modelContext.fetch(legacy))?.first { $0.deviceIdentity == identity }
+    }
+
+    // MARK: - Oublier un appareil
+
+    /// Supprime définitivement un appareil de SwiftData et de la liste courante.
+    func forgetDevice(_ device: NetworkDevice) {
+        if let persisted = persistedRecord(for: device) {
             modelContext.delete(persisted)
             try? modelContext.save()
         }
@@ -352,7 +610,11 @@ class AppState: ObservableObject {
         }
         let arpResolved = await networkScanner.lastARPResolvedCount
 
-        applyPersistedAnnotations(to: discoveredDevices)
+        // La passerelle vient d'être scannée : l'identité du réseau est à jour et
+        // gratuite. Doit précéder toute lecture ou écriture des clés de persistance.
+        await refreshNetworkID(from: discoveredDevices)
+
+        applyPersistedKnowledge(to: discoveredDevices)
         await MainActor.run { self.devices = discoveredDevices }
 
         // Step 3 : Port scan
@@ -395,7 +657,7 @@ class AppState: ObservableObject {
         }
 
         // Step 7 : Détection nouveaux appareils + persistance
-        let newCount = detectAndPersist(discoveredDevices, arpResolvedCount: arpResolved)
+        let (newCount, otherAlerts) = detectAndPersist(discoveredDevices, arpResolvedCount: arpResolved)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)
@@ -404,12 +666,15 @@ class AppState: ObservableObject {
             date: scanDate,
             duration: duration,
             deviceCount: discoveredDevices.count,
-            alertCount: newAlerts.count + newCount + (isARPDegraded ? 1 : 0),
+            alertCount: newAlerts.count + newCount + otherAlerts,
             newDeviceCount: newCount
         )
 
         await MainActor.run {
-            self.alerts       = newAlerts + self.alerts   // intrusion alerts en tête
+            // Alertes d'état (base, ARP, passerelle) et d'intrusion en tête : la barre
+            // latérale n'en montre que cinq, et un réseau ordinaire lève des dizaines
+            // d'alertes de ports. L'ordre inverse les rendait invisibles.
+            self.alerts       = self.alerts + newAlerts
             self.devices      = discoveredDevices
             self.lastScanDate = scanDate
             self.scanStatus   = .completed(duration: duration)
@@ -440,10 +705,11 @@ class AppState: ObservableObject {
         }
         let arpResolved = await networkScanner.lastARPResolvedCount
 
-        applyPersistedAnnotations(to: discovered)
+        await refreshNetworkID(from: discovered)
+        applyPersistedKnowledge(to: discovered)
         for device in discovered { device.scanState = .active }
 
-        let newCount = detectAndPersist(discovered, arpResolvedCount: arpResolved)
+        let (newCount, otherAlerts) = detectAndPersist(discovered, arpResolvedCount: arpResolved)
 
         let scanDate = Date()
         let duration = scanDate.timeIntervalSince(start)
@@ -452,7 +718,7 @@ class AppState: ObservableObject {
             date: scanDate,
             duration: duration,
             deviceCount: discovered.count,
-            alertCount: newCount + (isARPDegraded ? 1 : 0),
+            alertCount: newCount + otherAlerts,
             newDeviceCount: newCount
         )
 
@@ -482,12 +748,10 @@ class AppState: ObservableObject {
 
     /// Persiste l'alias, la note et le type overridé d'un appareil dans SwiftData.
     func persistAnnotation(for device: NetworkDevice) {
-        let key = device.persistenceKey
-        var descriptor = FetchDescriptor<PersistedDevice>(
-            predicate: #Predicate { $0.persistenceKey == key }
-        )
-        descriptor.fetchLimit = 1
-        guard let persisted = try? modelContext.fetch(descriptor).first else { return }
+        guard let persisted = persistedRecord(for: device) else {
+            print("[NetGuard] Annotation non enregistrée : \(device.ip) absent de la base")
+            return
+        }
         persisted.userAlias         = device.userAlias
         persisted.userNote          = device.userNote
         persisted.userOverrideTypeRaw = device.userOverrideType?.rawValue

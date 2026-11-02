@@ -9,9 +9,16 @@ import SwiftData
 @Model
 final class PersistedDevice {
 
-    /// Clé stable unique : MAC normalisée (minuscules, sans séparateurs),
-    /// ou "ip:<ip>" si la MAC est absente (ex : gateway sans ARP response).
+    /// Clé stable unique, **portée par réseau** : `"<networkID>|<identité>"`.
+    /// Voir `NetworkDevice.persistenceKey(networkID:)` pour la construction.
     @Attribute(.unique) var persistenceKey: String
+
+    /// Réseau sur lequel cet appareil a été vu — MAC de la passerelle, sinon CIDR.
+    /// Sans ce champ, changer de réseau faisait apparaître tous ses appareils comme
+    /// des intrusions, et deux réseaux se mélangeaient dans la même base.
+    /// Valeur par défaut vide : requise pour la migration légère des bases existantes,
+    /// que `migrateDeviceIdentityIfNeeded()` renseigne ensuite en une passe.
+    var networkID: String = ""
 
     var mac: String
     var ip: String
@@ -39,6 +46,7 @@ final class PersistedDevice {
 
     init(
         persistenceKey: String,
+        networkID: String = "",
         mac: String,
         ip: String,
         hostname: String = "",
@@ -64,6 +72,7 @@ final class PersistedDevice {
         ttlValue: Int = 0
     ) {
         self.persistenceKey     = persistenceKey
+        self.networkID          = networkID
         self.mac                = mac
         self.ip                 = ip
         self.hostname           = hostname

@@ -7,20 +7,14 @@ struct NetGuardApp: App {
     @StateObject private var appState: AppState
 
     init() {
-        let c: ModelContainer
-        do {
-            c = try ModelContainer(for: PersistedDevice.self, ScanSnapshot.self)
-        } catch {
-            // Fallback mémoire si le schéma SwiftData est corrompu — données non persistées
-            // mais l'app reste fonctionnelle.
-            print("[NetGuard] ModelContainer init failed: \(error) — falling back to in-memory store")
-            c = try! ModelContainer(
-                for: PersistedDevice.self, ScanSnapshot.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            )
-        }
-        self.container = c
-        self._appState = StateObject(wrappedValue: AppState(modelContext: c.mainContext))
+        // Store dédié + reprise unique de l'ancien emplacement (cf. NetGuardStore).
+        // Schéma versionné : les bases 1.0–1.1.3 sont reconnues comme V1 et migrées en V2.
+        let store = NetGuardStore.open()
+        self.container = store.container
+        self._appState = StateObject(wrappedValue: AppState(
+            modelContext: store.container.mainContext,
+            isStorePersistent: store.failure == nil
+        ))
     }
 
     var body: some Scene {

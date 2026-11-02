@@ -461,6 +461,20 @@ enum L10n {
         static func notifMultiple(_ count: Int) -> String { t("intrusion.notif.multiple", "%d nouveaux appareils détectés", count) }
     }
 
+    // MARK: - Passerelle changée (usurpation ARP possible)
+    enum GatewayChange {
+        static let title = t("gateway.change.title", "La passerelle de votre réseau a changé")
+        static func description(newMAC: String, previousMAC: String) -> String { t("gateway.change.desc", "La passerelle répond avec une nouvelle adresse MAC (%1$@, auparavant %2$@), alors que les autres appareils de votre réseau sont toujours là. NetGuard surveille désormais ce réseau sous cette nouvelle passerelle.", newMAC, previousMAC) }
+        static let recommendation = t("gateway.change.reco", "Si vous n'avez pas changé de box ou de routeur, un appareil se fait peut-être passer pour elle (usurpation ARP) : vérifiez la liste des appareils, puis redémarrez votre box.")
+    }
+
+    // MARK: - Store SwiftData inutilisable (fonctionnement en mémoire)
+    enum StoreFailure {
+        static let title = t("store.failure.title", "Données non enregistrées")
+        static let description = t("store.failure.desc", "La base de NetGuard n'a pas pu être ouverte. Les scans fonctionnent, mais rien n'est conservé d'un lancement à l'autre : la détection des nouveaux appareils repart de zéro à chaque lancement.")
+        static let recommendation = t("store.failure.reco", "Quittez puis relancez NetGuard. Si le problème persiste, signalez-le en précisant votre version de macOS.")
+    }
+
     // MARK: - Lecture ARP impossible (scan dégradé)
     enum ARPFailure {
         static let title = t("arp.failure.title", "Adresses MAC indisponibles")

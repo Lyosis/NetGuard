@@ -3,14 +3,43 @@ import Foundation
 // MARK: - NetworkDevice → clé de persistance
 
 extension NetworkDevice {
-    /// Clé stable pour la persistance : MAC normalisée (minuscules, sans séparateurs),
-    /// ou "ip:<ip>" si la MAC est absente (gateway sans ARP, device virtuel…).
-    var persistenceKey: String {
-        let normalized = mac
-            .lowercased()
-            .replacingOccurrences(of: ":", with: "")
-            .replacingOccurrences(of: "-", with: "")
-        return normalized.isEmpty ? "ip:\(ip)" : normalized
+
+    /// MAC normalisée : minuscules, sans séparateurs. Vide si absente.
+    var normalizedMAC: String {
+        mac.lowercased().filter(\.isHexDigit)
+    }
+
+    /// Identité de l'appareil, indépendante du réseau.
+    ///
+    /// La MAC, constructeur ou privée : c'est la seule donnée que **tous** les scans
+    /// mesurent, dès la découverte. Une clé ne doit dépendre que de ce type de donnée et
+    /// ne jamais changer au cours d'un scan. Une version antérieure se rabattait sur le
+    /// nom mDNS pour les MAC privées : ce nom n'étant mesuré qu'à l'enrichissement d'un
+    /// scan complet, la clé changeait en cours de scan — fausse alerte d'intrusion et
+    /// fiche en double.
+    ///
+    /// Une MAC privée (iOS, Android) peut tourner : l'appareil réapparaît alors comme
+    /// nouveau. Mesuré sur un réseau réel, elles restent stables plusieurs mois ; le
+    /// rapprochement par nom, s'il devient nécessaire, se fera au moment de l'alerte,
+    /// jamais dans la clé.
+    var deviceIdentity: String {
+        Self.deviceIdentity(mac: mac, ip: ip)
+    }
+
+    /// Formule unique de l'identité, partagée avec `PersistedDevice.deviceIdentity`.
+    static func deviceIdentity(mac: String, ip: String) -> String {
+        let normalized = mac.lowercased().filter(\.isHexDigit)
+        if !normalized.isEmpty { return "mac:\(normalized)" }
+        return "ip:\(ip)"
+    }
+
+    /// Clé de persistance, portée par réseau.
+    ///
+    /// Le même appareil vu sur deux réseaux différents donne deux entrées distinctes :
+    /// c'est voulu. Sans cette portée, brancher la machine sur un autre réseau signalait
+    /// chacun de ses appareils comme une intrusion.
+    func persistenceKey(networkID: String) -> String {
+        "\(networkID)|\(deviceIdentity)"
     }
 }
 
@@ -18,12 +47,18 @@ extension NetworkDevice {
 
 extension PersistedDevice {
 
+    /// Identité de l'appareil, lue sur les colonnes de la fiche — sans décoder ses JSON.
+    var deviceIdentity: String {
+        NetworkDevice.deviceIdentity(mac: mac, ip: ip)
+    }
+
     // MARK: NetworkDevice → PersistedDevice (factory)
 
-    static func make(from device: NetworkDevice) -> PersistedDevice {
+    static func make(from device: NetworkDevice, networkID: String) -> PersistedDevice {
         let enc = JSONEncoder()
         return PersistedDevice(
-            persistenceKey:      device.persistenceKey,
+            persistenceKey:      device.persistenceKey(networkID: networkID),
+            networkID:           networkID,
             mac:                 device.mac,
             ip:                  device.ip,
             hostname:            device.hostname,
