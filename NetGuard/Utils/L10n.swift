@@ -120,6 +120,7 @@ enum L10n {
         static let labelType        = t("detail.label.type",        "Type")
         static let labelRole        = t("detail.label.role",        "Rôle")
         static let currentDevice    = t("detail.current_device",    "Ce Mac (appareil courant)")
+        static let currentDeviceShort = t("detail.current_device_short", "Ce Mac")
         static let labelPrivacy     = t("detail.label.privacy",     "Confidentialité")
         static let privateMACBadge  = t("detail.privacy.mac_private",
                                         "MAC privée — à vérifier sur l'appareil")

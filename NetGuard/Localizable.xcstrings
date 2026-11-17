@@ -1374,6 +1374,23 @@
         }
       }
     },
+    "detail.current_device_short" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This Mac"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce Mac"
+          }
+        }
+      }
+    },
     "detail.label.bonjour" : {
       "extractionState" : "manual",
       "localizations" : {
