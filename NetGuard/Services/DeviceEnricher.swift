@@ -168,6 +168,16 @@ actor DeviceEnricher {
         }
     }
 
+    /// Type déduit des seules informations déjà connues de l'appareil, sans requête réseau.
+    ///
+    /// Sert aux fiches enregistrées dont le fabricant vient d'être retrouvé au chargement
+    /// (cf. `AppState.refreshStoredIdentification`) : mêmes règles que l'enrichissement,
+    /// pour qu'un appareil éteint soit classé comme il le serait en ligne.
+    @MainActor
+    static func inferredType(for device: NetworkDevice) -> DeviceType? {
+        inferType(from: InferSnapshot(device: device))
+    }
+
     /// Tente d'inférer un type plus précis qu'`.unknown` en croisant tous les
     /// signaux collectés pendant l'enrichissement.
     /// Renvoie `nil` si aucune amélioration n'est trouvée — on garde alors le

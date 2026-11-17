@@ -277,6 +277,34 @@ class AppState: ObservableObject {
         if let selected = selectedDevice, !devices.contains(where: { $0.id == selected.id }) {
             selectedDevice = nil
         }
+        refreshStoredIdentification(of: devices)
+    }
+
+    /// Fabricant et type des fiches enregistrées sans fabricant.
+    ///
+    /// Jusqu'à la 1.1.3, la MAC lue dans `arp` (`0:11:32`) n'était pas complétée avant la
+    /// recherche du fabricant : les fiches écrites alors n'en ont pas. Elles ne se
+    /// corrigeaient qu'au prochain passage de l'appareil — un appareil éteint, ou parti,
+    /// restait « inconnu » indéfiniment.
+    ///
+    /// Affichage seulement : rien n'est écrit ici. Le prochain enregistrement de l'appareil
+    /// (scan ou annotation) portera les valeurs corrigées. Le type n'est revu que s'il est
+    /// inconnu, et le type choisi par l'utilisateur n'est jamais touché.
+    ///
+    /// Si un scan remplace `devices` entre-temps, la tâche modifie des fiches qui ne sont
+    /// plus affichées : sans effet, le scan les a reconstruites.
+    private func refreshStoredIdentification(of loaded: [NetworkDevice]) {
+        let pending = loaded.filter { $0.vendor.isEmpty && !$0.mac.isEmpty }
+        guard !pending.isEmpty else { return }
+        Task { @MainActor in
+            for device in pending {
+                guard let vendor = await OUIDatabase.shared.lookup(mac: device.mac) else { continue }
+                device.vendor = vendor
+                if device.type == .unknown, let type = DeviceEnricher.inferredType(for: device) {
+                    device.type = type
+                }
+            }
+        }
     }
 
     /// Upsert des appareils dans SwiftData après un scan. Fetch unique → pas de N+1.

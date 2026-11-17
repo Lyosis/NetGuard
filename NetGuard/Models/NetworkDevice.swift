@@ -314,10 +314,17 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
         return (value & 0x02) != 0
     }
 
+    /// Nom affiché sur la carte, dans l'en-tête du détail et lu par VoiceOver.
+    ///
+    /// Le nom personnalisé passe en premier : c'est l'utilisateur qui sait ce qu'est
+    /// l'appareil. Jusqu'à la 1.1.4, il était ignoré et n'apparaissait que dans son
+    /// propre champ de saisie.
     var displayName: String {
+        let alias = userAlias.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !alias.isEmpty     { return alias }
         if !mdnsName.isEmpty  { return mdnsName }
         if !hostname.isEmpty  { return hostname }
-        if isCurrentDevice    { return "Ce Mac" }
+        if isCurrentDevice    { return L10n.Detail.currentDeviceShort }
         return ip
     }
 
