@@ -2108,6 +2108,23 @@
         }
       }
     },
+    "device.type.vm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Virtual machine"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine virtuelle"
+          }
+        }
+      }
+    },
     "device.type.wifi" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2957,6 +2974,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Choisis manuellement le type si l'auto-détection est incorrecte. « Auto-détecté » revient au type deviné par NetGuard."
+          }
+        }
+      }
+    },
+    "port.non_web.notes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepts connections but does not answer as a web server: a service specific to the device"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepte les connexions mais ne répond pas comme un serveur web : service propre à l'appareil"
+          }
+        }
+      }
+    },
+    "port.non_web.service" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non-web service"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service non web"
           }
         }
       }
@@ -4981,6 +5032,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restreindre MySQL à localhost uniquement"
+          }
+        }
+      }
+    },
+    "vuln.reco.non_web" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find out what this service is for; disable it if it is not used"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifier à quoi sert ce service ; le désactiver s'il n'est pas utilisé"
           }
         }
       }

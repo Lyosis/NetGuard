@@ -103,7 +103,27 @@ actor NetworkScanner {
         // 7. Résoudre les hostnames
         await progressHandler(0.75, L10n.Scan.resolveHostnames)
         var hostnameMap: [String: String] = [:]
+        // La box connaît le nom que chaque appareil lui a donné en DHCP. Le résolveur
+        // système ne le sait pas si le Mac est réglé sur un DNS public (1.1.1.1 …) :
+        // on lui pose donc la question directement, sauf si elle ne répond pas au DNS.
+        // Abandon après deux silences de suite : un paquet UDP perdu ne doit pas priver
+        // tout le scan des noms, une box sans DNS ne doit pas coûter ~1 s par appareil.
+        var askGateway = IPv4.isPrivate(gateway)
+        var gatewaySilences = 0
         for ip in activeIPs {
+            if askGateway {
+                switch await gatewayReverseName(ip, gateway: gateway) {
+                case .name(let name):
+                    gatewaySilences = 0
+                    hostnameMap[ip] = name
+                    continue
+                case .noName:
+                    gatewaySilences = 0
+                case .noReply:
+                    gatewaySilences += 1
+                    askGateway = gatewaySilences < 2
+                }
+            }
             if let hostname = await resolveHostname(ip) {
                 hostnameMap[ip] = hostname
             }
@@ -199,6 +219,66 @@ actor NetworkScanner {
     }
 
     // MARK: - Hostname resolution
+
+    private enum ReverseName {
+        case name(String)
+        case noName     // la passerelle a répondu, sans nom pour cette adresse
+        case noReply    // la passerelle ne répond pas au DNS
+    }
+
+    /// Nom d'une adresse du LAN, demandé au DNS de la passerelle (`dig -x`).
+    ///
+    /// Limité aux adresses privées, posé uniquement à la passerelle : rien ne sort du
+    /// réseau local. `dig` renvoie 9 quand le serveur ne répond pas ; 0 avec une sortie
+    /// vide quand il répond sans nom (NXDOMAIN).
+    private func gatewayReverseName(_ ip: String, gateway: String) async -> ReverseName {
+        // Défense en profondeur : jamais d'argument non validé dans l'argv de dig.
+        guard IPv4.isPrivate(ip), IPv4.isPrivate(gateway) else { return .noName }
+        return await withCheckedContinuation { continuation in
+            let dig = Process()
+            dig.executableURL = URL(fileURLWithPath: "/usr/bin/dig")
+            dig.arguments = ["+short", "+time=1", "+tries=1", "-x", ip, "@\(gateway)"]
+            let pipe = Pipe()
+            dig.standardOutput = pipe
+            dig.standardError  = Pipe()
+            dig.terminationHandler = { process in
+                let out = String(data: pipe.fileHandleForReading.readDataToEndOfFile(),
+                                 encoding: .utf8) ?? ""
+                guard process.terminationStatus == 0 else {
+                    continuation.resume(returning: .noReply)
+                    return
+                }
+                if let name = Self.parseReverseName(out) {
+                    continuation.resume(returning: .name(name))
+                } else {
+                    continuation.resume(returning: .noName)
+                }
+            }
+            do { try dig.run() }
+            catch { continuation.resume(returning: .noReply) }
+        }
+    }
+
+    /// Premier nom de la sortie `dig +short -x`, sans le point final.
+    ///
+    /// Le nom vient de la box, qui le tient de l'appareil (DHCP) : donnée non fiable.
+    /// Seul un nom d'hôte syntaxiquement valide est retenu.
+    nonisolated static func parseReverseName(_ output: String) -> String? {
+        for line in output.split(whereSeparator: \.isNewline) {
+            guard !line.hasPrefix(";") else { continue }   // ;; commentaires de dig
+            var name = line.trimmingCharacters(in: .whitespaces)
+            if name.hasSuffix(".") { name.removeLast() }
+            let labels = name.split(separator: ".", omittingEmptySubsequences: false)
+            let valid = (1...253).contains(name.count) && labels.allSatisfy { label in
+                (1...63).contains(label.count)
+                    && label.first != "-" && label.last != "-"
+                    && label.allSatisfy { $0.isASCII && ($0.isLetter || $0.isNumber || $0 == "-" || $0 == "_") }
+            }
+            return valid ? name : nil
+        }
+        return nil
+    }
+
     private func resolveHostname(_ ip: String) async -> String? {
         return await withCheckedContinuation { continuation in
             DispatchQueue.global(qos: .background).async {
@@ -263,8 +343,11 @@ actor NetworkScanner {
 
     // MARK: - Vendor lookup (OUI prefix)
     private func lookupVendor(mac: String) -> String {
-        let oui = mac.components(separatedBy: ":").prefix(3).joined(separator: ":")
-                      .uppercased()
+        // Octets complétés à deux chiffres : `arp` écrit `0:11:32`, la table `00:11:32`.
+        let hex = Array(OUIDatabase.normalize(mac))
+        guard hex.count >= 6 else { return "" }
+        let oui = stride(from: 0, to: 6, by: 2).map { String(hex[$0...$0 + 1]) }
+                                               .joined(separator: ":")
         let vendors: [String: String] = [
             "00:03:93": "Apple", "00:0A:27": "Apple", "00:0A:95": "Apple",
             "00:1C:B3": "Apple", "00:1E:52": "Apple", "00:1F:F3": "Apple",
@@ -291,6 +374,10 @@ actor NetworkScanner {
     private func guessDeviceType(vendor: String, hostname: String, mac: String) -> DeviceType {
         let v = vendor.lowercased()
         let h = hostname.lowercased()
+        // Mots entiers du nom : avec les noms fournis par la box, une recherche de
+        // sous-chaîne classait `pc-de-jonas` en NAS et `nintendo-switch` en switch réseau.
+        let words = Set(h.split(whereSeparator: { !$0.isLetter && !$0.isNumber }).map(String.init))
+        if DeviceType.isVirtualMachine(vendor: v, mac: mac) { return .virtualMachine }
         if v.contains("apple") || h.contains("macbook") || h.contains("mac-mini") || h.contains("imac") {
             if h.contains("iphone") { return .iphone }
             if h.contains("ipad")   { return .ipad }
@@ -298,10 +385,11 @@ actor NetworkScanner {
         }
         if h.contains("iphone") { return .iphone }
         if h.contains("ipad")   { return .ipad }
-        if v.contains("synology") || h.contains("nas") || h.contains("diskstation") { return .nas }
-        if v.contains("brother") || h.contains("print") { return .printer }
+        if v.contains("synology") || words.contains("nas") || h.contains("diskstation") { return .nas }
+        if v.contains("brother") || words.contains("print") || words.contains("printer") { return .printer }
         if v.contains("ubiquiti") || v.contains("cisco") { return .firewall }
-        if h.contains("switch") { return .switch }
+        // `.switch` est un type fort, jamais révisé par l'enrichissement : règle stricte.
+        if words.contains("switch") && !words.contains("nintendo") { return .switch }
         return .unknown
     }
 }

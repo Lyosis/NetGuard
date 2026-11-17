@@ -25,7 +25,7 @@ actor OUIDatabase {
     /// Le premier appel déclenche le chargement (~100-200 ms, en mémoire).
     func lookup(mac: String) -> String? {
         loadIfNeeded()
-        let hex = normalize(mac)
+        let hex = Self.normalize(mac)
         guard !hex.isEmpty else { return nil }
 
         for length in prefixLengths {
@@ -82,11 +82,19 @@ actor OUIDatabase {
 
     // MARK: - Helpers
 
-    /// Normalise une MAC en hex pur uppercase : `48:e1:e9:bc:a2:8b` → `48E1E9BCA28B`.
-    private func normalize(_ mac: String) -> String {
-        mac.replacingOccurrences(of: ":", with: "")
-           .replacingOccurrences(of: "-", with: "")
-           .uppercased()
+    /// Normalise une MAC en hex pur uppercase, chaque octet sur deux chiffres :
+    /// `48:e1:e9:bc:a2:8b` → `48E1E9BCA28B`, `0:11:32:a7:0:ca` → `001132A700CA`.
+    ///
+    /// `arp` omet le zéro de tête des octets. Sans le compléter, `0:11:32` donnait le
+    /// préfixe `01132A` au lieu de `001132` : Synology, Parallels, Brother, Philips Hue
+    /// et la Freebox elle-même restaient sans fabricant.
+    nonisolated static func normalize(_ mac: String) -> String {
+        let octets = mac.split(whereSeparator: { $0 == ":" || $0 == "-" })
+        guard octets.count > 1 else { return mac.uppercased() }
+        return octets
+            .map { $0.count == 1 ? "0\($0)" : String($0) }
+            .joined()
+            .uppercased()
     }
 
     /// Parse le champ MAC du fichier manuf :

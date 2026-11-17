@@ -11,10 +11,10 @@ Dépôt : `git@github.com:Lyosis/NetGuard.git`
 - Architecture : `HSplitView` 3 colonnes (Sidebar | NetworkMapView | DeviceDetailView)
 - Services : `actor` NetworkScanner, PortScanner, DeviceEnricher, VulnerabilityChecker, SecurityAuditor, SSDPDiscovery ; AppState (`@MainActor`)
 - Réseau : `NWConnection` (port scan), `NWPathMonitor` (changements réseau), `NWBrowser` (Bonjour ✅), `NWMulticastGroup` (SSDP/UPnP), URLSession (HTTP banners)
-- Enrichissement : ping TTL, `NWBrowser` (mDNS/Bonjour), `nmblookup` (NetBIOS), OUI vendor lookup (`manuf.txt`), SSDP/UPnP
+- Enrichissement : ping TTL, `NWBrowser` (mDNS/Bonjour), `smbutil status` (NetBIOS — `nmblookup` n'existe pas sur macOS), `dig -x` vers la passerelle (nom DHCP connu de la box), OUI vendor lookup (`manuf.txt`, octets MAC complétés à 2 chiffres), SSDP/UPnP
 - Persistance : **SwiftData** (`PersistedDevice`, `ScanSnapshot`) ✅ — Keychain non implémenté (aucun secret à stocker à ce jour)
 - Localisation : **`Localizable.xcstrings` + `InfoPlist.xcstrings` (FR + EN complets)** ✅ + `Utils/L10n.swift` (enum type-safe). ⚠️ `L10n.t()` passe la clé via une variable → les clés doivent être en `extractionState: "manual"` dans le catalogue, sinon Xcode émet 100+ warnings « References to this key could not be found ». Ne **pas** mettre les clés format auto-extraites (`%@`, `%lld`) en `manual` : erreur « Unable to derive a symbol name ».
-- Sécurité réseau : garde `IPv4.isValid` avant tout `Process` (ping/nmblookup), `isLANURL` + `NoRedirectDelegate` sur le fetch UPnP (une redirection contournerait la restriction LAN), sessions `URLSessionConfiguration.ephemeral`
+- Sécurité réseau : garde `IPv4.isValid` / `IPv4.isPrivate` avant tout `Process` (ping/smbutil/dig), `isLANURL` + `NoRedirectDelegate` sur le fetch UPnP (une redirection contournerait la restriction LAN), sessions `URLSessionConfiguration.ephemeral`
 
 ## Améliorations — état réel
 

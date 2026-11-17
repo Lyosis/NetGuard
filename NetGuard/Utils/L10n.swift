@@ -240,6 +240,7 @@ enum L10n {
         static let appletv   = t("device.type.appletv",  "Apple TV / HomePod")
         static let iot       = t("device.type.iot",      "Objet connecté")
         static let gaming    = t("device.type.gaming",   "Console")
+        static let virtualMachine = t("device.type.vm",  "Machine virtuelle")
         static let unknown   = t("device.type.unknown",  "Inconnu")
         static let internet  = t("device.type.internet", "Internet")
     }
@@ -323,6 +324,10 @@ enum L10n {
         static let vnc             = t("port.risk.vnc",               "Bureau distant non chiffré")
         static let winrm           = t("port.risk.winrm",             "Gestion Windows non chiffrée")
         static let httpAlt         = t("port.risk.http_alt",          "Interface admin non sécurisée")
+        /// Port HTTP qui accepte la connexion puis la ferme sans réponse HTTP (`OpenPort.nonWeb`).
+        static let nonWebService   = t("port.non_web.service",        "Service non web")
+        static let nonWebNotes     = t("port.non_web.notes",
+                                       "Accepte les connexions mais ne répond pas comme un serveur web : service propre à l'appareil")
         static let httpProxy       = t("port.risk.http_proxy",        "Proxy ou service non chiffré")
         static let dbExposedNoAuth = t("port.risk.db_exposed_noauth", "Base de données exposée sans auth")
     }
@@ -394,6 +399,7 @@ enum L10n {
         static let recoFtp     = t("vuln.reco.ftp",     "Utiliser SFTP ou FTPS à la place de FTP")
         static let recoTelnet  = t("vuln.reco.telnet",  "Désactiver Telnet, utiliser SSH")
         static let recoHttp    = t("vuln.reco.http",    "Rediriger HTTP vers HTTPS")
+        static let recoNonWeb  = t("vuln.reco.non_web", "Identifier à quoi sert ce service ; le désactiver s'il n'est pas utilisé")
         static let recoSmb     = t("vuln.reco.smb",     "Désactiver le partage SMB/NetBIOS si non nécessaire")
         static let recoSnmp    = t("vuln.reco.snmp",    "Désactiver SNMP ou utiliser SNMPv3 avec authentification")
         static let recoRdp     = t("vuln.reco.rdp",     "Restreindre RDP à un VPN uniquement")

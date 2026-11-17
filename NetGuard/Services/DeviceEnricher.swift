@@ -115,6 +115,11 @@ actor DeviceEnricher {
             if !httpInfo.banner.isEmpty { device.httpBanner = httpInfo.banner }
             if !httpInfo.title.isEmpty  { device.httpTitle  = httpInfo.title }
             if let cert = httpInfo.certificate { device.sslCertificate = cert }
+            if let port = httpInfo.nonWebPort {
+                // Le port reste ouvert et signalé : seul le libellé « HTTP », déduit du
+                // numéro de port, est corrigé.
+                device.openPorts = device.openPorts.map { $0.port == port ? $0.markedNonWeb() : $0 }
+            }
             device.lastSeen = Date()
         }
 
@@ -128,6 +133,7 @@ actor DeviceEnricher {
     // MARK: - A12 Fingerprinting (Bonjour + vendor + banner + hostname + UPnP)
     private struct InferSnapshot {
         let vendor: String              // lowercased
+        let mac: String
         let hostname: String            // lowercased
         let mdnsName: String            // lowercased
         let netbiosName: String         // lowercased
@@ -144,6 +150,7 @@ actor DeviceEnricher {
         @MainActor
         init(device: NetworkDevice) {
             self.vendor          = device.vendor.lowercased()
+            self.mac             = device.mac
             self.hostname        = device.hostname.lowercased()
             self.mdnsName        = device.mdnsName.lowercased()
             self.netbiosName     = device.netbiosName.lowercased()
@@ -170,6 +177,8 @@ actor DeviceEnricher {
         let strongTypes: Set<DeviceType> = [.router, .switch, .firewall, .wifi, .internet]
         if strongTypes.contains(s.currentType) { return nil }
         if s.isCurrentDevice { return nil }
+        // 1a. Carte réseau virtuelle : quoi que la VM fasse tourner, c'est une VM.
+        if DeviceType.isVirtualMachine(vendor: s.vendor, mac: s.mac) { return .virtualMachine }
 
         let services = s.bonjourServices
         let isApple  = s.vendor.contains("apple")
@@ -292,12 +301,16 @@ actor DeviceEnricher {
            s.vendor.contains("withings") || s.vendor.contains("netatmo") {
             return .iot
         }
-        // TVs / consoles
+        // Consoles de jeu — le type dédié existe, la règle UPnP l'emploie déjà.
+        if s.vendor.contains("nintendo") || allNames.contains("xbox") ||
+           allNames.contains("playstation") {
+            return .gaming
+        }
+        // TVs connectées (Sony : TV comme PlayStation, d'où la règle par nom ci-dessus)
         if s.vendor.contains("samsung") || s.vendor.contains("lg electronics") ||
-           s.vendor.contains("sony") || s.vendor.contains("nintendo") ||
-           s.vendor.contains("microsoft") && (allNames.contains("xbox")) ||
+           s.vendor.contains("sony") ||
            s.vendor.contains("roku") || s.vendor.contains("vizio") {
-            return .iot   // catégorie large : TV connectée, console = IoT au sens « smart device »
+            return .iot
         }
 
         // 5. Hostname hints (fallback)
@@ -571,6 +584,9 @@ actor DeviceEnricher {
             return .macOS
         }
         if v.contains("microsoft") { return .windows }
+        // Nom d'hôte explicite (souvent fourni par la box) : prime sur le TTL, qui ne
+        // distingue pas iOS de macOS — cas des iPhone à MAC privée, sans fabricant.
+        if h.contains("iphone") || h.contains("ipad") { return .ios }
 
         // TTL-based fingerprint (accounting for hops: ±10)
         switch ttl {
@@ -583,35 +599,57 @@ actor DeviceEnricher {
         }
     }
 
-    // MARK: - NetBIOS name (nmblookup)
+    // MARK: - NetBIOS name (smbutil)
+    /// Nom NetBIOS via `smbutil status`.
+    ///
+    /// Les versions jusqu'à 1.1.3 appelaient `/usr/bin/nmblookup`, absent de macOS
+    /// depuis le retrait de Samba : l'appel échouait en silence, pour tous les
+    /// appareils. Mesuré : `smbutil` répond en ~0,05 s pour un hôte SMB et abandonne
+    /// seul en ~1 s sinon ; le délai de garde ne sert qu'en cas de blocage.
     private func resolveNetBIOS(ip: String) async -> String {
-        // Défense en profondeur : jamais d'argument non validé dans l'argv de nmblookup.
+        // Défense en profondeur : jamais d'argument non validé dans l'argv de smbutil.
         guard IPv4.isValid(ip) else { return "" }
         return await withCheckedContinuation { continuation in
-            let nmb = Process()
-            nmb.executableURL = URL(fileURLWithPath: "/usr/bin/nmblookup")
-            nmb.arguments = ["-A", ip]
+            let smb = Process()
+            smb.executableURL = URL(fileURLWithPath: "/usr/bin/smbutil")
+            smb.arguments = ["status", ip]
             let pipe = Pipe()
-            nmb.standardOutput = pipe
-            nmb.standardError  = Pipe()
-            nmb.terminationHandler = { _ in
+            smb.standardOutput = pipe
+            smb.standardError  = Pipe()
+            // Délai de garde, annulé dès la fin du processus. `isRunning` protège aussi
+            // le cas où `run()` échoue : `terminate()` sur un processus jamais lancé
+            // lève une exception. `terminate()` déclenche `terminationHandler`.
+            let watchdog = Task {
+                guard (try? await Task.sleep(for: .seconds(3))) != nil else { return }
+                if smb.isRunning { smb.terminate() }
+            }
+            smb.terminationHandler = { _ in
+                watchdog.cancel()
                 let out = String(data: pipe.fileHandleForReading.readDataToEndOfFile(),
                                  encoding: .utf8) ?? ""
-                // Format: "   HOSTNAME         <00> -         B <ACTIVE>"
-                let regex = try? NSRegularExpression(pattern: #"^\s+(\S+)\s+<00>"#,
-                                                      options: .anchorsMatchLines)
-                let ns = out as NSString
-                if let m = regex?.firstMatch(in: out, range: NSRange(location: 0, length: ns.length)),
-                   m.numberOfRanges > 1 {
-                    let name = ns.substring(with: m.range(at: 1))
-                    continuation.resume(returning: name)
-                } else {
-                    continuation.resume(returning: "")
-                }
+                continuation.resume(returning: Self.parseSMBStatus(out))
             }
-            do { try nmb.run() }
-            catch { continuation.resume(returning: "") }
+            do {
+                try smb.run()
+            } catch {
+                watchdog.cancel()
+                continuation.resume(returning: "")
+            }
         }
+    }
+
+    /// Extrait le nom de la ligne `Server: NOM` de `smbutil status`.
+    ///
+    /// Le nom vient de l'appareil : donnée non fiable. Un nom NetBIOS fait au plus
+    /// 15 caractères ; tout ce qui sort d'un jeu restreint est rejeté plutôt qu'affiché.
+    nonisolated static func parseSMBStatus(_ output: String) -> String {
+        for line in output.split(whereSeparator: \.isNewline) {
+            guard line.hasPrefix("Server:") else { continue }
+            let name = line.dropFirst("Server:".count).trimmingCharacters(in: .whitespaces)
+            let allowed = name.allSatisfy { $0.isASCII && ($0.isLetter || $0.isNumber || "-_.".contains($0)) }
+            return (1...15).contains(name.count) && allowed ? name : ""
+        }
+        return ""
     }
 
     // MARK: - Récupération d'un SecTrust frais (A3 — bouton « Voir le certificat »)
@@ -648,6 +686,9 @@ actor DeviceEnricher {
         var banner: String
         var title: String
         var certificate: CertificateInfo?
+        /// Port HTTP en clair (80, 8080, 8888) qui a accepté la connexion puis l'a
+        /// fermée sans réponse HTTP. nil sinon — délai dépassé compris.
+        var nonWebPort: Int? = nil
     }
 
     private func grabHTTP(ip: String, ports: [Int]) async -> HTTPInfo {
@@ -680,7 +721,7 @@ actor DeviceEnricher {
                                      delegate: delegate,
                                      delegateQueue: nil)
 
-            session.dataTask(with: request) { data, response, _ in
+            session.dataTask(with: request) { data, response, error in
                 let banner = (response as? HTTPURLResponse)?
                     .value(forHTTPHeaderField: "Server") ?? ""
 
@@ -703,9 +744,16 @@ actor DeviceEnricher {
                     certificate = CertificateInspector.inspect(trust: trust)
                 }
 
+                // Mesuré : connexion fermée sans réponse → -1005 en ~0,1 s ; appareil
+                // lent → -1001 au bout du délai. Seul le premier cas prouve que le
+                // service n'est pas un serveur web.
+                let closedWithoutResponse = response == nil
+                    && (error as? URLError)?.code == .networkConnectionLost
+
                 continuation.resume(returning: HTTPInfo(banner: banner,
                                                         title: title,
-                                                        certificate: certificate))
+                                                        certificate: certificate,
+                                                        nonWebPort: !isHTTPS && closedWithoutResponse ? port : nil))
                 session.finishTasksAndInvalidate()   // libère session + delegate
             }.resume()
         }

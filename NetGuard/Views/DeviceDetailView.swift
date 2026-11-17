@@ -229,7 +229,7 @@ struct DeviceDetailView: View {
     /// de sens pour un appareil du LAN, et `.unknown` qui est l'absence d'override).
     private static let selectableTypes: [DeviceType] = [
         .router, .wifi, .switch, .firewall,
-        .mac, .iphone, .ipad,
+        .mac, .iphone, .ipad, .virtualMachine,
         .nas, .printer,
         .appletv, .gaming, .iot
     ]
@@ -603,11 +603,11 @@ struct DeviceDetailView: View {
                         )
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(port.service)
+                        Text(port.displayService)
                             .font(.system(size: 13, weight: .semibold))
                             .foregroundColor(.white.opacity(0.9))
-                        if !port.notes.isEmpty {
-                            Text(port.notes)
+                        if !port.displayNotes.isEmpty {
+                            Text(port.displayNotes)
                                 .font(.system(size: 11))
                                 .foregroundColor(port.isVulnerable
                                                  ? Color.orange.opacity(0.8)
