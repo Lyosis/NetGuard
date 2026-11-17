@@ -399,16 +399,17 @@ actor DeviceEnricher {
             }
             for await (ip, result) in group {
                 guard let ip else { continue }
+                let name = Self.displayInstanceName(result.instanceName)
                 if var existing = table[ip] {
                     if !existing.services.contains(result.serviceType) {
                         existing.services.append(result.serviceType)
                     }
                     if existing.instanceName.isEmpty {
-                        existing.instanceName = result.instanceName
+                        existing.instanceName = name
                     }
                     table[ip] = existing
                 } else {
-                    table[ip] = BonjourInfo(instanceName: result.instanceName,
+                    table[ip] = BonjourInfo(instanceName: name,
                                             services: [result.serviceType])
                 }
             }
@@ -481,7 +482,14 @@ actor DeviceEnricher {
         let state = State()
 
         return await withCheckedContinuation { (continuation: CheckedContinuation<String?, Never>) in
-            let conn = NWConnection(to: endpoint, using: .tcp)
+            // IPv4 imposé : la table Bonjour est indexée par l'IPv4 des appareils scannés.
+            // Sans contrainte, la connexion passait en IPv6 pour 12 services sur 16 mesurés
+            // (adresse globale ou fe80::), et le service était perdu.
+            let parameters = NWParameters.tcp
+            if let ip = parameters.defaultProtocolStack.internetProtocol as? NWProtocolIP.Options {
+                ip.version = .v4
+            }
+            let conn = NWConnection(to: endpoint, using: parameters)
 
             conn.stateUpdateHandler = { newState in
                 guard !state.resumed else { return }
@@ -494,13 +502,9 @@ actor DeviceEnricher {
                         let ipString: String?
                         switch host {
                         case .ipv4(let addr):
-                            // NWIPv4Address n'est pas directement StringConvertible en Swift 6
-                            // On passe par debugDescription : "192.168.1.5"
-                            ipString = "\(addr)"
-                        case .name(let name, _):
-                            // Fallback si on récupère un nom plutôt qu'une IP
-                            ipString = name.isEmpty ? nil : name
+                            ipString = Self.dottedQuad(addr.rawValue)
                         default:
+                            // Un nom ou une IPv6 ne peut correspondre à aucune clé de la table.
                             ipString = nil
                         }
                         conn.cancel()
@@ -527,6 +531,29 @@ actor DeviceEnricher {
                 continuation.resume(returning: nil)
             }
         }
+    }
+
+    /// Adresse IPv4 en notation pointée, construite à partir de ses octets.
+    ///
+    /// La description texte de `NWIPv4Address` porte la portée de l'interface
+    /// (`192.168.1.73%en0`) : indexée telle quelle, elle ne correspondait jamais à l'IP
+    /// d'un appareil, et aucun nom mDNS n'était retenu.
+    nonisolated static func dottedQuad(_ bytes: Data) -> String? {
+        guard bytes.count == 4 else { return nil }
+        return bytes.map { String($0) }.joined(separator: ".")
+    }
+
+    /// Nom d'instance Bonjour lisible.
+    ///
+    /// Les récepteurs AirPlay audio (`_raop._tcp`) s'annoncent sous la forme
+    /// `<12 chiffres hexadécimaux>@<nom>` : `062882A4DDF2@Chambre`. Le préfixe est
+    /// l'adresse MAC du récepteur ; seul le nom est gardé.
+    nonisolated static func displayInstanceName(_ raw: String) -> String {
+        guard let at = raw.firstIndex(of: "@") else { return raw }
+        let prefix = raw[..<at]
+        let name = raw[raw.index(after: at)...]
+        guard prefix.count == 12, prefix.allSatisfy(\.isHexDigit), !name.isEmpty else { return raw }
+        return String(name)
     }
 
     // MARK: - Precise Ping (parses TTL + RTT)
