@@ -219,7 +219,7 @@ class NetworkInfoService {
 // MARK: - Validation IPv4
 
 /// Validation IPv4 stricte, utilisée comme garde de défense en profondeur avant
-/// tout lancement de `Process` réseau (`/sbin/ping`, `/usr/bin/nmblookup`).
+/// tout lancement de `Process` réseau (`/sbin/ping`, `/usr/bin/smbutil`, `/usr/bin/dig`).
 ///
 /// Les IPs manipulées par l'app proviennent du parsing de sources externes
 /// (table ARP, headers SSDP, résolution mDNS). Aucune injection shell n'est
@@ -242,5 +242,16 @@ enum IPv4 {
             else { return false }
         }
         return true
+    }
+
+    /// Adresse des plages privées RFC 1918 : `10/8`, `172.16/12`, `192.168/16`.
+    static func isPrivate(_ ip: String) -> Bool {
+        guard isValid(ip) else { return false }
+        let octets = ip.split(separator: ".").compactMap { Int($0) }
+        switch (octets[0], octets[1]) {
+        case (10, _), (192, 168): return true
+        case (172, 16...31):      return true
+        default:                  return false
+        }
     }
 }

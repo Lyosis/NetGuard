@@ -42,6 +42,9 @@ actor SecurityAuditor {
         var findings: [AuditFinding] = []
 
         let portNumbers = Set(device.openPorts.map(\.port))
+        // Ports mesurés « non web » (connexion acceptée, aucune réponse HTTP) : ni
+        // interface web à signaler, ni identifiants par défaut à y essayer.
+        let webPortNumbers = Set(device.openPorts.filter { !$0.isNonWeb }.map(\.port))
 
         // Telnet
         if portNumbers.contains(23) {
@@ -60,8 +63,8 @@ actor SecurityAuditor {
         }
 
         // HTTP sans HTTPS
-        let hasHTTP  = portNumbers.contains(80)  || portNumbers.contains(8080)
-        let hasHTTPS = portNumbers.contains(443) || portNumbers.contains(8443)
+        let hasHTTP  = webPortNumbers.contains(80)  || webPortNumbers.contains(8080)
+        let hasHTTPS = webPortNumbers.contains(443) || webPortNumbers.contains(8443)
         if hasHTTP && !hasHTTPS {
             score -= 10
             findings.append(.init(severity: .medium,
@@ -102,7 +105,7 @@ actor SecurityAuditor {
         }
 
         // Identifiants par défaut (test actif — LAN uniquement)
-        let webPorts = portNumbers.intersection([80, 8080, 443, 8443])
+        let webPorts = webPortNumbers.intersection([80, 8080, 443, 8443])
         var credentialsTested = false
         if !webPorts.isEmpty {
             credentialsTested = true

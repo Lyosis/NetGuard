@@ -321,6 +321,8 @@ class AppState: ObservableObject {
             device.userAlias        = known.userAlias
             device.userNote         = known.userNote
             device.userOverrideType = known.userOverrideType
+            // Date du premier contact : celle de la fiche, pas celle du scan en cours.
+            device.firstSeen        = known.firstSeen
 
             // Type et OS établis par l'enrichissement priment sur la devinette faite à la
             // découverte à partir du seul constructeur. Seul un scan complet les révise.
@@ -777,7 +779,10 @@ class AppState: ObservableObject {
             timeout: 1.0
         ) { _, _ in }
 
-        device.openPorts = ports
+        // Ce scan ne réinterroge pas les ports en HTTP : il garde la mesure « non web »
+        // de l'enrichissement précédent plutôt que de revenir au libellé « HTTP ».
+        let nonWebPorts = Set(device.openPorts.filter(\.isNonWeb).map(\.port))
+        device.openPorts = ports.map { nonWebPorts.contains($0.port) ? $0.markedNonWeb() : $0 }
         device.lastSeen  = Date()
         upsertToStore([device])
     }

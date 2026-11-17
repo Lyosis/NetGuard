@@ -142,21 +142,14 @@ actor SSDPDiscovery {
 
     // MARK: - 3. UPnP descriptor fetch + parse
 
-    /// Vérifie que l'URL pointe vers une adresse LAN privée (RFC 1918 / RFC 4193)
-    /// et utilise un schéma http/https — évite le SSRF vers localhost, cloud metadata, etc.
+    /// Vérifie que l'URL pointe vers une adresse IPv4 privée (RFC 1918) et utilise un
+    /// schéma http/https — évite le SSRF vers localhost, cloud metadata, etc. Un nom
+    /// d'hôte ou une adresse IPv6 sont refusés.
     private nonisolated static func isLANURL(_ url: URL) -> Bool {
         guard let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https" else { return false }
         guard let host = url.host else { return false }
-        // Bloquer loopback et link-local
-        if host == "localhost" || host.hasPrefix("127.") || host.hasPrefix("169.254.") { return false }
-        // N'autoriser que les plages RFC 1918 : 10.x, 172.16-31.x, 192.168.x
-        if host.hasPrefix("10.") { return true }
-        if host.hasPrefix("192.168.") { return true }
-        if host.hasPrefix("172.") {
-            let parts = host.split(separator: ".").compactMap { Int($0) }
-            if parts.count >= 2, parts[1] >= 16, parts[1] <= 31 { return true }
-        }
-        return false
+        // Loopback (127/8) et link-local (169.254/16) sont hors RFC 1918 : refusés.
+        return IPv4.isPrivate(host)
     }
 
     private nonisolated static func buildInfo(headers: [String: String]) async -> UPnPInfo {

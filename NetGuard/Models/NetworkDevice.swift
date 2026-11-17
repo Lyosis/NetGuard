@@ -23,6 +23,7 @@ enum DeviceType: String, Codable, CaseIterable {
     case appletv     = "appletv"
     case iot         = "iot"
     case gaming      = "gaming"
+    case virtualMachine = "vm"
     case unknown     = "unknown"
     case internet    = "internet"
 
@@ -41,6 +42,7 @@ enum DeviceType: String, Codable, CaseIterable {
         case .appletv:  return L10n.DeviceType.appletv
         case .iot:      return L10n.DeviceType.iot
         case .gaming:   return L10n.DeviceType.gaming
+        case .virtualMachine: return L10n.DeviceType.virtualMachine
         case .unknown:  return L10n.DeviceType.unknown
         case .internet: return L10n.DeviceType.internet
         }
@@ -60,6 +62,7 @@ enum DeviceType: String, Codable, CaseIterable {
         case .appletv:  return "appletv.fill"
         case .iot:      return "homepod.mini"
         case .gaming:   return "gamecontroller.fill"
+        case .virtualMachine: return "macwindow.on.rectangle"
         case .unknown:  return "questionmark.circle.fill"
         case .internet: return "globe"
         }
@@ -79,9 +82,24 @@ enum DeviceType: String, Codable, CaseIterable {
         case .appletv:  return Color(red: 0.6, green: 0.5, blue: 0.95)   // violet doux
         case .iot:      return Color(red: 1.0, green: 0.8, blue: 0.3)    // jaune ambre
         case .gaming:   return Color(red: 0.75, green: 0.2, blue: 0.3)   // rouge bordeaux
+        case .virtualMachine: return .indigo
         case .unknown:  return .gray
         case .internet: return .blue
         }
+    }
+}
+
+extension DeviceType {
+    /// Carte réseau d'un hyperviseur (Parallels, VMware, VirtualBox, Xen, Hyper-V).
+    ///
+    /// Ces préfixes MAC ne sont attribués qu'à des cartes virtuelles : le fabricant
+    /// suffit. Hyper-V publie le sien au nom de Microsoft, comme la Xbox : seul son
+    /// préfixe `00:15:5D` le distingue.
+    static func isVirtualMachine(vendor: String, mac: String) -> Bool {
+        let v = vendor.lowercased()
+        let hypervisors = ["parallels", "vmware", "pcs systemtechnik", "xensource"]
+        if hypervisors.contains(where: { v.contains($0) }) { return true }
+        return OUIDatabase.normalize(mac).hasPrefix("00155D")
     }
 }
 
@@ -127,13 +145,30 @@ struct OpenPort: Identifiable, Codable {
     let service: String
     let isVulnerable: Bool
     let notes: String
+    /// Port HTTP qui accepte la connexion puis la ferme sans réponse HTTP (mesuré par
+    /// `DeviceEnricher`). Optionnel : absent des fiches enregistrées avant 1.1.4.
+    let nonWeb: Bool?
 
-    init(port: Int, service: String, isVulnerable: Bool = false, notes: String = "") {
+    init(port: Int, service: String, isVulnerable: Bool = false, notes: String = "",
+         nonWeb: Bool? = nil) {
         self.id = UUID()
         self.port = port
         self.service = service
         self.isVulnerable = isVulnerable
         self.notes = notes
+        self.nonWeb = nonWeb
+    }
+
+    var isNonWeb: Bool { nonWeb == true }
+
+    /// Libellés affichés : calculés, pour suivre la langue courante de l'app.
+    var displayService: String { isNonWeb ? L10n.Port.nonWebService : service }
+    var displayNotes: String   { isNonWeb ? L10n.Port.nonWebNotes   : notes }
+
+    /// Même port, marqué non web.
+    func markedNonWeb() -> OpenPort {
+        OpenPort(port: port, service: service, isVulnerable: isVulnerable,
+                 notes: notes, nonWeb: true)
     }
 }
 
