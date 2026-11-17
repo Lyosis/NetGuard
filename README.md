@@ -10,7 +10,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/macOS-15%2B-000000?style=flat&logo=apple&logoColor=white" />
-  <img src="https://img.shields.io/badge/Swift-6-FA7343?style=flat&logo=swift&logoColor=white" />
+  <img src="https://img.shields.io/badge/Swift-5%20language%20mode-FA7343?style=flat&logo=swift&logoColor=white" />
   <img src="https://img.shields.io/badge/SwiftUI-5-0071E3?style=flat" />
   <img src="https://img.shields.io/badge/SwiftData-✓-34C759?style=flat" />
   <img src="https://img.shields.io/badge/license-MIT-lightgrey?style=flat" />
@@ -21,7 +21,7 @@
 
 ## Overview
 
-**NetGuard** scans your local network, identifies every connected device, checks open ports, inspects SSL certificates, detects known vulnerabilities, and runs a passive security audit — all without sending any data outside your machine.
+**NetGuard** scans your local network, identifies every connected device, checks open ports, inspects SSL certificates, detects known vulnerabilities, and runs a passive security audit. Everything stays on your Mac: the scan only talks to devices on your local network, plus reverse-DNS lookups of local addresses sent to your router and, failing that, to the DNS server configured on your Mac.
 
 No telemetry. No cloud. No subscription.
 
@@ -60,7 +60,7 @@ No telemetry. No cloud. No subscription.
 ### 🔍 Network Discovery
 - **Full scan** — ping sweep → port scan → OS fingerprinting → service enrichment
 - **Quick scan** — host discovery only (no port scan)
-- Resolves hostnames via DNS, mDNS/Bonjour, and NetBIOS
+- Resolves hostnames via reverse DNS (your router first, then the system resolver), NetBIOS (`smbutil`) and mDNS/Bonjour — known issue: mDNS currently returns no names on some networks, under investigation
 - OUI vendor lookup from MAC address
 - OS guessing from TTL fingerprint
 
@@ -135,7 +135,7 @@ NetGuard/
 ```
 
 **Concurrency model**
-- All services are `actor`-isolated (Swift 6 strict concurrency)
+- All services are `actor`-isolated. The project still builds in Swift 5 language mode; enabling Swift 6 strict concurrency is tracked in [#31](https://github.com/Lyosis/NetGuard/issues/31)
 - `AppState` is `@MainActor` — single source of truth for the UI
 - `SecurityAuditor` runs credential checks on a background actor, never on main thread
 
@@ -147,10 +147,10 @@ NetGuard/
 |---|---|
 | macOS | **15.0 or later** |
 | Xcode | **16.0 or later** |
-| Swift | **6.0** |
+| Swift | **Swift 6 compiler, Swift 5 language mode** |
 | Architecture | **Apple Silicon (M-series)** |
 
-> NetGuard is **not sandboxed** — it requires direct network access (`/sbin/ping`, `NWConnection`, `nmblookup`). Distribution outside the Mac App Store only.
+> NetGuard is **not sandboxed** — it requires direct network access (`/sbin/ping`, `NWConnection`, `/usr/bin/smbutil`, `/usr/bin/dig`). Distribution outside the Mac App Store only.
 
 ---
 
@@ -211,7 +211,7 @@ Pull requests are welcome. For significant changes, please open an issue first t
 Feature branches  →  PR  →  merge to main
 ```
 
-Code style: follow Swift API Design Guidelines, Swift 6 strict concurrency, no force-unwraps in production paths.
+Code style: follow Swift API Design Guidelines, code ready for Swift 6 strict concurrency (see #31), no force-unwraps in production paths.
 
 ---
 
@@ -222,5 +222,5 @@ MIT © [Wilfrid Bombilaj](https://github.com/Lyosis)
 ---
 
 <p align="center">
-  Built on Apple Silicon · SwiftUI · Swift 6 · No telemetry
+  Built on Apple Silicon · SwiftUI · Swift · No telemetry
 </p>
