@@ -6,6 +6,7 @@ import Network
 private struct BonjourInfo {
     var instanceName: String        // ex: "Mon NAS" (nom Bonjour instance)
     var services: [String]          // ex: ["_smb._tcp", "_afpovertcp._tcp"]
+    var model: String = ""          // ex: "Mac14,3" — clé model / am / rpMd du TXT
 }
 
 // MARK: - DeviceEnricher
@@ -109,6 +110,7 @@ actor DeviceEnricher {
             if os != .unknown { device.osGuess = os }
             if let b = bonjour {
                 if !b.instanceName.isEmpty { device.mdnsName = b.instanceName }
+                if !b.model.isEmpty { device.bonjourModel = b.model }
                 device.bonjourServices = b.services
             }
             if !nbName.isEmpty    { device.netbiosName = nbName }
@@ -146,6 +148,7 @@ actor DeviceEnricher {
         let isPrivateMAC: Bool
         let currentType: DeviceType
         let isCurrentDevice: Bool
+        let appleModel: String
 
         @MainActor
         init(device: NetworkDevice) {
@@ -165,6 +168,7 @@ actor DeviceEnricher {
             self.isPrivateMAC    = device.isPrivateMAC
             self.currentType     = device.type
             self.isCurrentDevice = device.isCurrentDevice
+            self.appleModel      = device.bonjourModel
         }
     }
 
@@ -189,6 +193,10 @@ actor DeviceEnricher {
         if s.isCurrentDevice { return nil }
         // 1a. Carte réseau virtuelle : quoi que la VM fasse tourner, c'est une VM.
         if DeviceType.isVirtualMachine(vendor: s.vendor, mac: s.mac) { return .virtualMachine }
+        // 1b. Modèle Apple annoncé par l'appareil : plus sûr que le fabricant, illisible
+        // derrière une MAC privée. Sans lui, un Mac récepteur AirPlay passait pour un objet
+        // connecté (MAC privée) ou pour une Apple TV (MAC Apple).
+        if let type = Self.typeFromAppleModel(s.appleModel) { return type }
 
         let services = s.bonjourServices
         let isApple  = s.vendor.contains("apple")
@@ -412,10 +420,14 @@ actor DeviceEnricher {
                         if existing.instanceName.isEmpty {
                             existing.instanceName = name
                         }
+                        if existing.model.isEmpty {
+                            existing.model = result.model
+                        }
                         table[ip] = existing
                     } else {
                         table[ip] = BonjourInfo(instanceName: name,
-                                                services: [result.serviceType])
+                                                services: [result.serviceType],
+                                                model: result.model)
                     }
                 }
             }
@@ -430,6 +442,7 @@ actor DeviceEnricher {
         var instanceName: String
         var serviceType: String
         var domain: String
+        var model: String
     }
 
     private func browse(_ serviceType: String, timeout: TimeInterval) async -> [BrowseResult] {
@@ -460,9 +473,18 @@ actor DeviceEnricher {
                     guard case let .service(name, type, domain, _) = result.endpoint else { return nil }
                     // Normaliser le type : supprimer le point final éventuel ("_ssh._tcp." → "_ssh._tcp")
                     let normalizedType = type.hasSuffix(".") ? String(type.dropLast()) : type
+                    var model = ""
+                    if case let .bonjour(txt) = result.metadata {
+                        // AirPlay : model ; AirPlay audio : am ; Continuité : rpMd.
+                        model = ["model", "am", "rpMd"].lazy
+                            .compactMap { txt[$0] }
+                            .compactMap { Self.sanitizedModel($0) }
+                            .first ?? ""
+                    }
                     return BrowseResult(instanceName: name,
                                         serviceType: normalizedType,
-                                        domain: domain.isEmpty ? "local." : domain)
+                                        domain: domain.isEmpty ? "local." : domain,
+                                        model: model)
                 }
             }
 
@@ -475,6 +497,30 @@ actor DeviceEnricher {
                 continuation.resume(returning: box.results)
             }
         }
+    }
+
+    // MARK: - Modèle Apple (TXT Bonjour)
+
+    /// Modèle annoncé, s'il a la forme d'un identifiant de modèle : 1 à 64 caractères,
+    /// lettres et chiffres ASCII, virgule, tiret. Sinon nil — la donnée vient de l'appareil.
+    nonisolated static func sanitizedModel(_ raw: String) -> String? {
+        guard (1...64).contains(raw.count),
+              raw.allSatisfy({ $0.isASCII && ($0.isLetter || $0.isNumber || $0 == "," || $0 == "-") })
+        else { return nil }
+        return raw
+    }
+
+    /// Type déduit d'un identifiant de modèle Apple. Nil si le modèle n'est pas reconnu :
+    /// les autres règles s'appliquent alors.
+    ///
+    /// NetGuard n'a pas de type HomePod : `AudioAccessory` reste classé avec l'Apple TV,
+    /// comme le faisait déjà la règle AirPlay.
+    nonisolated static func typeFromAppleModel(_ model: String) -> DeviceType? {
+        if model.hasPrefix("AppleTV") || model.hasPrefix("AudioAccessory") { return .appletv }
+        if model.hasPrefix("iPhone") { return .iphone }
+        if model.hasPrefix("iPad") { return .ipad }
+        if model.hasPrefix("Mac") || model.hasPrefix("iMac") { return .mac }
+        return nil
     }
 
     // MARK: - Noms Bonjour
