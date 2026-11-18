@@ -240,6 +240,10 @@ class NetworkDevice: ObservableObject, Identifiable, Codable {
     @Published var lastSeen: Date
     @Published var parentIP: String?
     @Published var bonjourServices: [String]   // services Bonjour découverts via NWBrowser
+    /// Modèle Apple annoncé dans les enregistrements texte Bonjour (`Mac14,3`, `AppleTV6,2`…).
+    /// En mémoire seulement : sert à déduire le type pendant l'enrichissement, et c'est le
+    /// type déduit qui est enregistré. Le garder en base demanderait un schéma V3.
+    var bonjourModel: String = ""
     @Published var userAlias: String           // nom personnalisé saisi par l'utilisateur
     @Published var userNote: String            // notes libres de l'utilisateur
     @Published var sslCertificate: CertificateInfo?  // capté lors d'un GET HTTPS (A2)
